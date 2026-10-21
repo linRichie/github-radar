@@ -18,18 +18,14 @@ const GH = "https://github.com";
 const TOKEN = process.env.GITHUB_TOKEN || "";
 const PAGE = "https://radar.moniter.top";
 
-// 重点追踪的 skills / MCP 生态仓库（保留原能力）
+// 重点追踪的 skills / MCP 生态仓库：收敛为 5 个代表性仓库（2 个 awesome 列表 + 3 个官方/框架本体），
+// 避免 watch 区被 awesome 列表占满；watch 在页面上降为次要信息。
 const WATCH = [
   "anthropics/skills",
   "modelcontextprotocol/servers",
-  "punkpeye/awesome-mcp-servers",
-  "ComposioHQ/awesome-claude-skills",
-  "VoltAgent/awesome-agent-skills",
-  "sickn33/antigravity-awesome-skills",
-  "hesreallyhim/awesome-claude-code",
-  "affaan-m/everything-claude-code",
   "obra/superpowers",
-  "rohitg00/awesome-claude-code-toolkit",
+  "sickn33/antigravity-awesome-skills",
+  "punkpeye/awesome-mcp-servers",
 ];
 
 // 生态热榜检索主题（GitHub topic）——聚焦 AI / Skills / MCP 细分赛道
@@ -227,8 +223,20 @@ async function main() {
   }
   payload.enriched = enriched;
 
-  writeFileSync(join(ROOT, "index.html"), renderHtml(payload));
-  console.log(enriched ? `✔ 已注入 ${Object.keys(enriched.projects || {}).length} 个上榜项目解读卡片` : "· 无当日解读数据，渲染普通版");
+  // 中文简介缓存（跨天累积，不按日过期；由 WorkBuddy 定时任务维护）
+  let zh = {};
+  try {
+    const zp = join(ROOT, "data", "zh-cache.json");
+    if (existsSync(zp)) zh = JSON.parse(readFileSync(zp, "utf8")).zh || {};
+  } catch (err) {
+    console.warn(`  ! zh-cache: ${err.message}`);
+  }
+  payload.zh = zh;
+
+  writeFileSync(join(ROOT, "index.html"), renderIndex(payload));
+  writeFileSync(join(ROOT, "cards.html"), renderCards(payload));
+  console.log(`✔ 中文简介缓存 ${Object.keys(zh).length} 条`);
+  console.log(enriched ? `✔ 已注入 ${Object.keys(enriched.projects || {}).length} 个上榜项目解读（cards.html）` : "· 无当日解读数据，cards.html 为空态");
 
   console.log(`✔ 热榜 ${trending.length} | 生态热榜 ${topicHot.length} | 新锐 ${rising.length} | 活跃仓库 ${activeWatch.length}/${watch.length}`);
   console.log("—— 高增长 Top5 ——");
@@ -236,46 +244,169 @@ async function main() {
   return payload;
 }
 
-// ---------- 渲染（单文件 HTML，全内联，无外部资源 · Swiss 数据报风格：白底/黑/瑞士红）----------
+// ---------- 渲染（双页：index.html 首页 + cards.html 上榜项目详解）----------
+const ICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='34' y='45' font-family='Helvetica,Arial,sans-serif' font-size='36' font-weight='900' fill='%23fff' text-anchor='middle'%3ER%3C/text%3E%3Ccircle cx='47' cy='17' r='5' fill='%23E30613'/%3E%3C/svg%3E";
+const AUTHOR = "老王";
+const AUTHOR_MAIL = "wlh.richard@gmail.com";
+
+const CSS = `
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e8e8e6;color:#111;font-family:"Helvetica Neue",Helvetica,Arial,"PingFang SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.6;padding:36px 16px}
+  .page{max-width:1080px;margin:0 auto;background:#fff;border:1px solid #111}
+  .masthead{display:flex;justify-content:space-between;align-items:flex-start;padding:30px 36px 24px;border-bottom:3px solid #111}
+  .mh-left h1{font-size:44px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+  .mh-left h1 em{font-style:normal;color:#e30613}
+  .mh-left .sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#555;margin-top:8px;font-weight:600}
+  .mh-right{text-align:right;font-size:12px;line-height:1.8}
+  .mh-right .date{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .mh-right a{color:#111;font-weight:700}
+  .badge{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:3px 10px;text-transform:uppercase}
+  .nav{display:flex;align-items:stretch;border-bottom:3px solid #111}
+  .nav a{padding:10px 20px;font-size:12.5px;font-weight:800;letter-spacing:.06em;color:#111;text-decoration:none;border-right:1px solid #ddd}
+  .nav a.on{background:#111;color:#fff}
+  .nav a:hover{background:#e30613;color:#fff}
+  .nav .navwriter{margin-left:auto;display:flex;align-items:center;padding:0 20px;font-size:11px;color:#666;letter-spacing:.02em}
+  .nav .navwriter b{color:#111;margin-left:4px}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:3px solid #111}
+  .metric{padding:18px 22px;border-right:1px solid #ddd}
+  .metric:last-child{border-right:none}
+  .metric .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#666;font-weight:700}
+  .metric .v{font-size:36px;font-weight:900;letter-spacing:-.03em;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1}
+  .metric .v em{font-style:normal;font-size:12px;font-weight:700;color:#666;margin-left:4px;letter-spacing:0}
+  .metric.hot .v{color:#e30613}
+  section{padding:24px 36px;border-bottom:1px solid #111}
+  section:last-of-type{border-bottom:3px solid #111}
+  h2{font-size:15px;font-weight:900;letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  h2 .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+  h2 .en{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  h2 .hint{font-size:11px;color:#6b6b6b;font-weight:400;letter-spacing:0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#666;font-weight:700;padding:5px 10px 7px;border-bottom:1px solid #111}
+  th.r{text-align:right}
+  td{padding:8px 10px;border-bottom:1px solid #e4e4e4;vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  .rk{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums;width:32px;color:#111}
+  tbody tr:nth-child(-n+3) .rk{color:#e30613}
+  .repo a{color:#111;text-decoration:none;font-weight:700;border-bottom:1px solid #111}
+  .repo a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .dz{display:block;color:#2b2b2b}
+  .de{display:block;color:#6b6b6b;font-size:11.5px;line-height:1.45;margin-top:2px}
+  .num{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .inc{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#e30613}
+  .per{color:#6b6b6b;font-size:11px;font-weight:700}
+  .lang{color:#666;font-size:12px;white-space:nowrap}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #111}
+  .cards a{display:block;padding:16px 18px;text-decoration:none;border-right:1px solid #ddd;border-bottom:1px solid #ddd}
+  .cards a:nth-child(3n){border-right:none}
+  .cards a:nth-last-child(-n+3){border-bottom:none}
+  .cname{color:#111;font-weight:800;font-size:12.5px;word-break:break-all;border-bottom:1px solid #111;display:inline-block}
+  .cdesc{color:#555;font-size:12px;margin:6px 0 8px;line-height:1.55}
+  .cmeta{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .cmeta .s{color:#111}
+  .cmeta .l{color:#6b6b6b}
+  .tag{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;padding:1px 7px;margin-right:8px;letter-spacing:.04em}
+  .tag a{color:#fff;text-decoration:none}
+  .reltime{color:#6b6b6b;font-size:11.5px}
+  .cmsg a{color:#111;text-decoration:none;font-weight:600;border-bottom:1px solid #ddd}
+  .cmsg a:hover{color:#e30613;border-color:#e30613}
+  .muted{color:#767676}
+  .empty{text-align:center;color:#6b6b6b;padding:24px}
+  .lead{padding:18px 36px;background:#f6f6f4;border-bottom:1px solid #111;font-size:12.5px;color:#555}
+  .lead b{color:#111}
+  .proj{border:1px solid #111;margin-bottom:22px}
+  .proj:last-child{margin-bottom:0}
+  .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
+  .proj-kind{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+  .proj-kind .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+  .proj-kind .kind{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  .proj-name{font-size:34px;font-weight:900;letter-spacing:-.02em;line-height:1.1;word-break:break-all}
+  .proj-name a{color:#111;text-decoration:none;border-bottom:2px solid #e30613}
+  .proj-name a:hover{background:#e30613;color:#fff}
+  .proj-tagline{font-size:15px;color:#111;margin-top:8px;font-weight:600}
+  .proj-owner{font-size:12px;color:#6b6b6b;margin-top:4px}
+  .proj-owner a{color:#111;font-weight:700}
+  .value{margin:14px 26px 0;border-left:5px solid #e30613;background:#fafafa;padding:12px 16px}
+  .value .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#e30613;font-weight:800;margin-bottom:4px}
+  .value .v{font-size:14px;font-weight:700;color:#111}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #111}
+  .proj-cell{padding:16px 26px;border-right:1px solid #ddd}
+  .proj-cell:nth-child(2n){border-right:none}
+  .proj-cell:nth-child(-n+2){border-bottom:1px solid #ddd}
+  .proj-cell .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#6b6b6b;font-weight:800;margin-bottom:8px}
+  .proj-cell ul{margin:0;padding:0;list-style:none}
+  .proj-cell li{font-size:13px;padding:4px 0 4px 14px;position:relative;color:#2b2b2b;line-height:1.55}
+  .proj-cell li::before{content:"—";position:absolute;left:0;color:#e30613;font-weight:700}
+  .proj-stats{display:grid;grid-template-columns:repeat(3,1fr)}
+  .proj-stat{padding:14px 26px;border-right:1px solid #ddd}
+  .proj-stat:last-child{border-right:none}
+  .proj-stat .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  .proj-stat .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+  .proj-stat.hot .v{color:#e30613}
+  .proj-stat .v em{font-style:normal;font-size:12px;font-weight:700;color:#6b6b6b;margin-left:2px;letter-spacing:0}
+  .proj-foot{padding:8px 26px;font-size:10.5px;color:#6b6b6b;letter-spacing:.04em;border-top:1px solid #111}
+  footer{padding:16px 36px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#666;letter-spacing:.04em;border-top:3px solid #111}
+  footer a{color:#111;font-weight:700}
+  footer .by b{color:#111}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}}
+`;
+
 function cut(s, n) {
   s = s || "";
   return s.length <= n ? s : s.slice(0, n - 1) + "…";
 }
 
-function rowTrend(r, i) {
+// 中文优先的简介：中文主行 + 英文原文小字。原描述本身是中文时只显示一行。
+function descHtml(r, p, limit) {
+  const zh = (p.zh && p.zh[r.full]) || "";
+  const raw = (r.desc || "").trim();
+  const lim = limit || 60;
+  const rawIsZh = /[\u4e00-\u9fa5]/.test(raw);
+  if (!raw && !zh) return `<span class="muted">暂无简介</span>`;
+  if (rawIsZh && !zh) return `<span class="dz">${esc(cut(raw, lim))}</span>`;
+  const z = zh || `（英文简介待翻译）`;
+  const e = raw && !rawIsZh ? `<span class="de">${esc(cut(raw, lim + 30))}</span>` : "";
+  return `<span class="dz">${esc(cut(z, lim + 8))}</span>${e}`;
+}
+
+function rowTrend(r, i, p) {
   return `<tr>
       <td class="rk">${i + 1}</td>
       <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
-      <td class="desc">${esc(r.desc)}</td>
+      <td class="desc">${descHtml(r, p, 62)}</td>
       <td class="num">${r.stars.toLocaleString()}</td>
       <td class="inc">▲ +${r.starsToday.toLocaleString()}</td>
       <td class="lang">${esc(r.lang) || "—"}</td>
     </tr>`;
 }
 
-function rowGrowth(r, i) {
+function rowGrowth(r, i, p) {
   return `<tr>
       <td class="rk">${i + 1}</td>
       <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
+      <td class="desc">${descHtml(r, p, 48)}</td>
       <td class="num">${r.stars.toLocaleString()}</td>
       <td class="inc">▲ +${r.starsToday.toLocaleString()}<span class="per">/${r.starsPeriod === "week" ? "week" : "day"}</span></td>
     </tr>`;
 }
 
-function rowTopic(r, i) {
+function rowTopic(r, i, p) {
   return `<tr>
       <td class="rk">${i + 1}</td>
       <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
-      <td class="desc">${esc(r.desc)}</td>
+      <td class="desc">${descHtml(r, p, 56)}</td>
       <td class="num">${r.stars.toLocaleString()}</td>
       <td class="lang">${esc(r.lang) || "—"}</td>
     </tr>`;
 }
 
-function risingCard(r) {
+function risingCard(r, p) {
+  const zh = (p.zh && p.zh[r.full]) || "";
+  const raw = (r.desc || "").trim();
+  const rawIsZh = /[\u4e00-\u9fa5]/.test(raw);
+  const text = zh || (rawIsZh ? raw : raw) || "";
   return `<a href="${esc(r.url)}" target="_blank" rel="noopener">
       <div class="cname">${esc(r.full)}</div>
-      <div class="cdesc">${esc(cut(r.desc, 56))}</div>
+      <div class="cdesc">${text ? esc(cut(text, 56)) : `<span class="muted">暂无简介</span>`}</div>
       <div class="cmeta"><span class="s">★ ${r.stars.toLocaleString()}</span><span class="l">${esc(r.lang) || "—"}</span></div>
     </a>`;
 }
@@ -347,73 +478,17 @@ function renderProjectCards(p) {
     .join("");
 }
 
-function renderHtml(p) {
+// 页面骨架：masthead + 导航 + 正文 + 页脚（两页共用）
+function pageShell(p, { title, navActive, metrics, body }) {
   const badge = p.mode === "weekly" ? "WEEKLY 周报" : "DAILY 日报";
-  const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
-  const trendRows = p.trending.map(rowTrend).join("");
-  const growthRows = p.growthRank.map(rowGrowth).join("");
-  const topicRows = p.topicHot.map(rowTopic).join("");
-  const risingCards = p.rising.map(risingCard).join("");
-  const watchRows = p.watch.map(watchRow).join("");
-  const top1 = p.growthRank[0];
   const { ymd, hm } = bjParts(p.generatedAt);
-
-  // 分区编号动态生成（有解读卡片时自动后移）
-  let _n = 0;
-  const no = () => `<span class="no">${String(++_n).padStart(2, "0")}</span>`;
-  const secTrend = `
-  <section>
-    <h2>${no()}GitHub ${periodWord}热榜<span class="en">Trending</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th class="r">${periodWord}增量</th><th>语言</th></tr></thead>
-      <tbody>${trendRows || `<tr><td colspan="6" class="empty">本周期未抓取到热榜数据</td></tr>`}</tbody>
-    </table>
-  </section>`;
-  const secGrowth = `
-  <section>
-    <h2>${no()}高增长排行<span class="en">Growth</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th class="r">总 star</th><th class="r">增量</th></tr></thead>
-      <tbody>${growthRows || `<tr><td colspan="4" class="empty">本周期无热榜增量数据</td></tr>`}</tbody>
-    </table>
-  </section>`;
-  const cards = renderProjectCards(p);
-  const secCards = cards
-    ? `
-  <section>
-    <h2>${no()}上榜项目详解<span class="en">Project Cards</span></h2>
-    ${cards}
-  </section>`
-    : "";
-  const secTopic = `
-  <section>
-    <h2>${no()}AI / Skills / MCP 生态热榜<span class="en">Ecosystem</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
-      <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
-    </table>
-  </section>`;
-  const secRising = `
-  <section>
-    <h2>${no()}新锐项目<span class="en">Rising</span></h2>
-    <div class="cards">${risingCards || `<div class="empty">本周期未检索到新锐项目</div>`}</div>
-  </section>`;
-  const secWatch = `
-  <section>
-    <h2>${no()}生态 watch 动态<span class="en">Watchlist</span></h2>
-    <table>
-      <thead><tr><th>仓库</th><th>最新 release</th><th>最近提交</th></tr></thead>
-      <tbody>${watchRows || `<tr><td colspan="3" class="empty">本周期无 watch 数据</td></tr>`}</tbody>
-    </table>
-  </section>`;
-
   return `<!doctype html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='34' y='45' font-family='Helvetica,Arial,sans-serif' font-size='36' font-weight='900' fill='%23fff' text-anchor='middle'%3ER%3C/text%3E%3Ccircle cx='47' cy='17' r='5' fill='%23E30613'/%3E%3C/svg%3E">
-<title>GitHub 雷达 · ${badge}</title>
+<link rel="icon" href="${ICON}">
+<title>${esc(title)}</title>
 </head>
 <body>
 <div class="page">
@@ -429,113 +504,102 @@ function renderHtml(p) {
       <a href="${PAGE}" target="_blank" rel="noopener">${PAGE}</a>
     </div>
   </div>
-  <div class="metrics">
-    <div class="metric"><div class="k">${periodWord}热榜</div><div class="v">${p.counts.trending}<em>repos</em></div></div>
-    <div class="metric hot"><div class="k">高增长 Top 1</div><div class="v">${top1 ? "+" + top1.starsToday.toLocaleString() : "—"}<em>/${top1 ? (top1.starsPeriod === "week" ? "week" : "day") : ""}</em></div></div>
-    <div class="metric"><div class="k">生态热榜</div><div class="v">${p.counts.topicHot}<em>repos</em></div></div>
-    <div class="metric"><div class="k">新锐项目</div><div class="v">${p.counts.rising}<em>new</em></div></div>
-  </div>
-  ${secTrend}${secGrowth}${secCards}${secTopic}${secRising}${secWatch}
+  <nav class="nav">
+    <a href="./" class="${navActive === "index" ? "on" : ""}">首页</a>
+    <a href="./cards.html" class="${navActive === "cards" ? "on" : ""}">上榜项目详解</a>
+    <span class="navwriter">撰稿<b>${AUTHOR}</b> · ${AUTHOR_MAIL}</span>
+  </nav>
+  ${metrics || ""}
+  ${body}
   <footer>
     <span>数据来源：GitHub Trending / GitHub API · radar.mjs 自动抓取 · 窗口 ${p.windowDays} 天（自 ${p.since}）</span>
-    <a href="${PAGE}" target="_blank" rel="noopener">${PAGE} ↗</a>
+    <span class="by">撰稿：<b>${AUTHOR}</b> · <a href="mailto:${AUTHOR_MAIL}">${AUTHOR_MAIL}</a> · <a href="${PAGE}" target="_blank" rel="noopener">${PAGE} ↗</a></span>
   </footer>
 </div>
-<style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:#e8e8e6;color:#111;font-family:"Helvetica Neue",Helvetica,Arial,"PingFang SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.6;padding:36px 16px}
-  .page{max-width:1080px;margin:0 auto;background:#fff;border:1px solid #111}
-  .masthead{display:flex;justify-content:space-between;align-items:flex-start;padding:30px 36px 24px;border-bottom:3px solid #111}
-  .mh-left h1{font-size:44px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
-  .mh-left h1 em{font-style:normal;color:#e30613}
-  .mh-left .sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#555;margin-top:8px;font-weight:600}
-  .mh-right{text-align:right;font-size:12px;line-height:1.8}
-  .mh-right .date{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
-  .mh-right a{color:#111;font-weight:700}
-  .badge{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:3px 10px;text-transform:uppercase}
-  .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:3px solid #111}
-  .metric{padding:18px 22px;border-right:1px solid #ddd}
-  .metric:last-child{border-right:none}
-  .metric .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#666;font-weight:700}
-  .metric .v{font-size:36px;font-weight:900;letter-spacing:-.03em;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1}
-  .metric .v em{font-style:normal;font-size:12px;font-weight:700;color:#666;margin-left:4px;letter-spacing:0}
-  .metric.hot .v{color:#e30613}
-  section{padding:24px 36px;border-bottom:1px solid #111}
-  section:last-of-type{border-bottom:3px solid #111}
-  h2{font-size:15px;font-weight:900;letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:baseline;gap:12px}
-  h2 .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
-  h2 .en{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#666;font-weight:700;padding:5px 10px 7px;border-bottom:1px solid #111}
-  th.r{text-align:right}
-  td{padding:8px 10px;border-bottom:1px solid #e4e4e4;vertical-align:top}
-  tbody tr:last-child td{border-bottom:none}
-  .rk{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums;width:32px;color:#111}
-  tbody tr:nth-child(-n+3) .rk{color:#e30613}
-  .repo a{color:#111;text-decoration:none;font-weight:700;border-bottom:1px solid #111}
-  .repo a:hover{background:#e30613;color:#fff;border-color:#e30613}
-  .desc{color:#555}
-  .num{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .inc{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#e30613}
-  .per{color:#6b6b6b;font-size:11px;font-weight:700}
-  .lang{color:#666;font-size:12px;white-space:nowrap}
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #111}
-  .cards a{display:block;padding:16px 18px;text-decoration:none;border-right:1px solid #ddd;border-bottom:1px solid #ddd}
-  .cards a:nth-child(3n){border-right:none}
-  .cards a:nth-last-child(-n+3){border-bottom:none}
-  .cname{color:#111;font-weight:800;font-size:12.5px;word-break:break-all;border-bottom:1px solid #111;display:inline-block}
-  .cdesc{color:#555;font-size:12px;margin:6px 0 8px;line-height:1.55}
-  .cmeta{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
-  .cmeta .s{color:#111}
-  .cmeta .l{color:#6b6b6b}
-  .tag{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;padding:1px 7px;margin-right:8px;letter-spacing:.04em}
-  .tag a{color:#fff;text-decoration:none}
-  .reltime{color:#6b6b6b;font-size:11.5px}
-  .cmsg a{color:#111;text-decoration:none;font-weight:600;border-bottom:1px solid #ddd}
-  .cmsg a:hover{color:#e30613;border-color:#e30613}
-  .muted{color:#767676}
-  .empty{text-align:center;color:#6b6b6b;padding:24px}
-  .proj{border:1px solid #111}
-  .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
-  .proj-kind{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
-  .proj-kind .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
-  .proj-kind .kind{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
-  .proj-name{font-size:34px;font-weight:900;letter-spacing:-.02em;line-height:1.1;word-break:break-all}
-  .proj-name a{color:#111;text-decoration:none;border-bottom:2px solid #e30613}
-  .proj-name a:hover{background:#e30613;color:#fff}
-  .proj-tagline{font-size:15px;color:#111;margin-top:8px;font-weight:600}
-  .proj-owner{font-size:12px;color:#6b6b6b;margin-top:4px}
-  .proj-owner a{color:#111;font-weight:700}
-  .value{margin:14px 26px 0;border-left:5px solid #e30613;background:#fafafa;padding:12px 16px}
-  .value .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#e30613;font-weight:800;margin-bottom:4px}
-  .value .v{font-size:14px;font-weight:700;color:#111}
-  .proj-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #111}
-  .proj-cell{padding:16px 26px;border-right:1px solid #ddd}
-  .proj-cell:nth-child(2n){border-right:none}
-  .proj-cell:nth-child(-n+2){border-bottom:1px solid #ddd}
-  .proj-cell .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#6b6b6b;font-weight:800;margin-bottom:8px}
-  .proj-cell ul{margin:0;padding:0;list-style:none}
-  .proj-cell li{font-size:13px;padding:4px 0 4px 14px;position:relative;color:#2b2b2b;line-height:1.55}
-  .proj-cell li::before{content:"—";position:absolute;left:0;color:#e30613;font-weight:700}
-  .proj-stats{display:grid;grid-template-columns:repeat(3,1fr)}
-  .proj-stat{padding:14px 26px;border-right:1px solid #ddd}
-  .proj-stat:last-child{border-right:none}
-  .proj-stat .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
-  .proj-stat .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
-  .proj-stat.hot .v{color:#e30613}
-  .proj-stat .v em{font-style:normal;font-size:12px;font-weight:700;color:#6b6b6b;margin-left:2px;letter-spacing:0}
-  .proj-foot{padding:8px 26px;font-size:10.5px;color:#6b6b6b;letter-spacing:.04em;border-top:1px solid #111}
-  footer{padding:16px 36px;display:flex;justify-content:space-between;font-size:11px;color:#666;letter-spacing:.04em}
-  footer a{color:#111;font-weight:700}
-  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-kind{flex-wrap:wrap}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}}
-</style>
+<style>${CSS}</style>
 </body>
 </html>`;
 }
 
+function renderIndex(p) {
+  const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
+  const top1 = p.growthRank[0];
+  const trendRows = p.trending.map((r, i) => rowTrend(r, i, p)).join("");
+  const growthRows = p.growthRank.map((r, i) => rowGrowth(r, i, p)).join("");
+  const topicRows = p.topicHot.map((r, i) => rowTopic(r, i, p)).join("");
+  const risingCards = p.rising.map((r) => risingCard(r, p)).join("");
+  const watchRows = p.watch.map(watchRow).join("");
+  const cardCount = renderProjectCards(p) ? Object.keys(p.enriched.projects || {}).length : 0;
+
+  let n = 0;
+  const no = () => `<span class="no">${String(++n).padStart(2, "0")}</span>`;
+  const metrics = `<div class="metrics">
+    <div class="metric"><div class="k">${periodWord}热榜</div><div class="v">${p.counts.trending}<em>repos</em></div></div>
+    <div class="metric hot"><div class="k">高增长 Top 1</div><div class="v">${top1 ? "+" + top1.starsToday.toLocaleString() : "—"}<em>/${top1 ? (top1.starsPeriod === "week" ? "week" : "day") : ""}</em></div></div>
+    <div class="metric"><div class="k">生态热榜</div><div class="v">${p.counts.topicHot}<em>repos</em></div></div>
+    <div class="metric"><div class="k">新锐项目</div><div class="v">${p.counts.rising}<em>new</em></div></div>
+  </div>`;
+
+  const body = `
+  <section>
+    <h2>${no()}GitHub ${periodWord}热榜<span class="en">Trending</span><span class="hint">中文简介在上，英文原文在下</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th class="r">${periodWord}增量</th><th>语言</th></tr></thead>
+      <tbody>${trendRows || `<tr><td colspan="6" class="empty">本周期未抓取到热榜数据</td></tr>`}</tbody>
+    </table>
+  </section>
+  <section>
+    <h2>${no()}高增长排行<span class="en">Growth</span><span class="hint">按${periodWord} star 增量降序</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">总 star</th><th class="r">增量</th></tr></thead>
+      <tbody>${growthRows || `<tr><td colspan="5" class="empty">本周期无热榜增量数据</td></tr>`}</tbody>
+    </table>
+  </section>
+  <section>
+    <h2>${no()}AI / Skills / MCP 生态热榜<span class="en">Ecosystem</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
+      <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
+    </table>
+  </section>
+  <section>
+    <h2>${no()}新锐项目<span class="en">Rising</span><span class="hint">窗口内新建、快速涨星</span></h2>
+    <div class="cards">${risingCards || `<div class="empty">本周期未检索到新锐项目</div>`}</div>
+  </section>
+  <section>
+    <h2>${no()}生态 watch 动态<span class="en">Watchlist</span><span class="hint">次要信息 · 仅保留 5 个代表性仓库，只列有更新的</span></h2>
+    <table>
+      <thead><tr><th>仓库</th><th>最新 release</th><th>最近提交</th></tr></thead>
+      <tbody>${watchRows || `<tr><td colspan="3" class="empty">本周期无 watch 数据</td></tr>`}</tbody>
+    </table>
+  </section>
+  <section>
+    <h2>${no()}上榜项目详解<span class="en">Project Cards</span></h2>
+    <p style="font-size:13px;color:#555">${cardCount ? `已为 ${cardCount} 个上榜项目撰写结构化解读（一句话定位 / 核心价值 / 主要功能 / 应用场景 / 输入建议 / 使用提醒），为避免首页过长已移至独立页面。` : `解读将在每日 09:00 生成后上线。`}</p>
+    <p style="margin-top:10px"><a href="./cards.html" style="display:inline-block;background:#111;color:#fff;padding:8px 18px;font-size:13px;font-weight:800;text-decoration:none;letter-spacing:.04em">查看上榜项目详解 →</a></p>
+  </section>`;
+
+  return pageShell(p, { title: `GitHub 雷达 · ${p.mode === "weekly" ? "周报" : "日报"}`, navActive: "index", metrics, body });
+}
+
+function renderCards(p) {
+  const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
+  const cards = renderProjectCards(p);
+  const count = p.enriched ? Object.keys(p.enriched.projects || {}).length : 0;
+  const body = cards
+    ? `<div class="lead"><b>${periodWord}上榜项目详解</b> · 共 ${count} 个项目 · 覆盖${periodWord}热榜与高增长排行 Top 10 · 解读由 AI 基于公开信息生成，仅供参考</div>
+  <section>
+    <h2><span class="no">01</span>项目卡片<span class="en">Project Cards</span></h2>
+    ${cards}
+  </section>`
+    : `<div class="lead">${periodWord}的上榜项目解读将在每日 09:00 生成后上线</div>
+  <section><p class="empty">暂无解读数据，请稍后访问。</p></section>`;
+  return pageShell(p, { title: `GitHub 雷达 · 上榜项目详解 · ${p.mode === "weekly" ? "周报" : "日报"}`, navActive: "cards", body });
+}
+
 // 仅当以 `node radar.mjs` 直接运行时执行；被 import 时仅导出函数（便于单测）
 const isSelf = process.argv[1] && process.argv[1].replace(/^.*\//, "") === "radar.mjs";
-export { parseTrending, fetchTrending, renderHtml, main };
+export { parseTrending, fetchTrending, renderIndex, renderCards, main };
 
 if (isSelf) {
   main().catch((e) => { console.error("FATAL", e); process.exit(1); });
