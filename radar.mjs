@@ -512,7 +512,7 @@ function pageShell(p, { title, navActive, metrics, body }) {
   ${metrics || ""}
   ${body}
   <footer>
-    <span>数据来源：GitHub Trending / GitHub API · radar.mjs 自动抓取 · 窗口 ${p.windowDays} 天（自 ${p.since}）</span>
+    <span>数据抓取：${ymd} ${hm}（北京时间）· 来源 GitHub Trending / GitHub API · 检索窗口：最近 ${p.windowDays} 天内有活跃更新的项目</span>
     <span class="by">撰稿：<b>${AUTHOR}</b> · <a href="mailto:${AUTHOR_MAIL}">${AUTHOR_MAIL}</a> · <a href="${PAGE}" target="_blank" rel="noopener">${PAGE} ↗</a></span>
   </footer>
 </div>
