@@ -29,10 +29,11 @@ node radar.mjs --mode weekly            # 周报（近 7 天，周榜）
 ## 自动化
 
 - GitHub Actions：`radar-daily`（每日 北京时间 08:00`）、`radar-weekly`（每周一 08:00）自动抓取并提交。
-- WorkBuddy 定时任务：每日 / 每周生成中文摘要并经邮件推送。
+- WorkBuddy 定时任务：每日 / 每周 `git pull` 同步 CI 产物 → `scripts/shoot.mjs` 渲染整页**长文图（PNG）** → 邮件推送「文字摘要 + 长图附件 + 真实链接」到 `wlh_richard@163.com`（**不再附 HTML 文件**）。
 - 自定义域名：`radar.moniter.top` → `linRichie.github.io`（CNAME，于阿里云解析添加主机记录 `radar`）。
 
 ## 维护
 
 - 调整重点仓库 / 生态热榜主题：编辑 `radar.mjs` 顶部的 `WATCH` 与 `TOPICS`。
 - 热榜周期：日榜（`daily`）/ 周榜（`weekly`）由 `--mode` 决定；趋势页解析逻辑见 `parseTrending()`。
+- 长文图渲染：`node scripts/shoot.mjs [输入.html|URL] [输出.png]`（全局 puppeteer，离屏渲染整页 PNG，供邮件内嵌）。
