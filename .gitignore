@@ -7,3 +7,10 @@ node_modules/
 .workspace/
 digest/
 prototypes/
+
+# 数据库 / 云凭据（绝不入库；实际凭据放在仓外 ~/.config/github-radar/db.env）
+db.env
+.env
+.env.*
+*.secret
+私密-*
