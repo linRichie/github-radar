@@ -1,3 +1,8 @@
 node_modules/
 *.log
 .DS_Store
+
+# 自动化运行产生的本地状态/降级产物（不入库）
+.workbuddy/
+.workspace/
+digest/

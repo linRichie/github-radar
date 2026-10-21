@@ -1,9 +1,9 @@
 {
-  "name": "skills-mcp-radar",
+  "name": "github-radar",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Skills / MCP 生态雷达：追踪 AI Skills 与 MCP 工具链的开源更新，生成公网页面并邮件推送",
+  "description": "GitHub 雷达：追踪 GitHub 热门排行动态、高增长项目、有趣新锐与 AI Skills / MCP 生态，生成公网页面并邮件推送",
   "scripts": {
     "daily": "node radar.mjs --mode daily",
     "weekly": "node radar.mjs --mode weekly"
