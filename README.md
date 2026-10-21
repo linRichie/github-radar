@@ -33,6 +33,22 @@ node radar.mjs --mode weekly            # 周报（近 7 天，周榜）
 - `index.html`：首页仪表盘（单文件、全内联、无外部资源）
 - `cards.html`：上榜项目详解页（同上，独立页面）
 
+## 数据落盘（阿里云 MySQL）
+
+每次抓取后，CI 会调用 `scripts/load_db.py` 把数据写入阿里云 RDS（MySQL 8），便于长期趋势分析。
+
+- **凭据**：全部通过仓库 Secrets 注入（`MYSQL_HOST` / `MYSQL_PORT` / `MYSQL_USER` / `MYSQL_PASSWORD` / `MYSQL_DB`），**代码中不含任何连接信息**；脚本检测到未设置 `MYSQL_HOST` 时自动跳过，不影响页面发布。
+- **表结构**（库 `github_radar`）：
+  - `runs`：每次运行一行（模式、抓取时间、各分区数量、解读数量），`(mode, generated_at)` 唯一。
+  - `projects`：项目主表（`full_name` 唯一），含 `stars`、`desc_zh`（中文简介）、`tagline` / `core_value` / `features` / `scenarios` / `inputs` / `caveats`（解读六字段，JSON）、`first_seen` / `last_seen`。
+  - `snapshots`：榜单快照（`run_id` + 分区 + 排名 + star + 增量），用于回溯任何一天的榜单位置与涨星曲线。
+- **幂等**：`runs` 按唯一键 UPSERT；同一 `run_id` 的 `snapshots` 先删后插；`projects` 按 `full_name` UPSERT。
+- **本地手动落库**：
+  ```bash
+  export MYSQL_HOST=... MYSQL_USER=... MYSQL_PASSWORD=... MYSQL_DB=github_radar
+  pip install pymysql && python scripts/load_db.py --mode daily
+  ```
+
 ## 自动化
 
 - GitHub Actions：`radar-daily`（每日 北京时间 08:00）、`radar-weekly`（每周一 08:00）自动抓取并提交。

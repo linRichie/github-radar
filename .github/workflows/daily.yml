@@ -13,13 +13,28 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: install pymysql
+        run: pip install --quiet pymysql
       - name: fetch & build
         run: node radar.mjs --mode daily
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: save to aliyun mysql
+        # 落库失败不阻断页面发布；凭据全部来自仓库 Secrets，不入代码
+        continue-on-error: true
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+        run: python scripts/load_db.py --mode daily
       - name: commit
         run: |
-          git config user.name "skills-mcp-radar"
+          git config user.name "github-radar"
           git config user.email "actions@github.com"
           git add -A
           git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
