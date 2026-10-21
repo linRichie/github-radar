@@ -4,7 +4,7 @@
 // 生成 data/*.json 与单文件 index.html（全内联、无外部资源、Swiss 数据报风格：白底/黑/瑞士红、人话时间）。
 // 用法：node radar.mjs --mode daily | weekly   （可选 GITHUB_TOKEN 提升速率上限）
 
-import { writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFile } from "node:child_process";
@@ -213,7 +213,22 @@ async function main() {
   mkdirSync(join(ROOT, "data"), { recursive: true });
   writeFileSync(join(ROOT, "data", `${MODE}-${TODAY}.json`), JSON.stringify(payload, null, 2));
   writeFileSync(join(ROOT, "data", `${MODE}-latest.json`), JSON.stringify(payload, null, 2));
+
+  // 上榜项目结构化解读（由 WorkBuddy 定时任务生成并提交；仅当日数据才会渲染成卡片）
+  let enriched = null;
+  try {
+    const ep = join(ROOT, "data", `enriched-${MODE}.json`);
+    if (existsSync(ep)) {
+      const e = JSON.parse(readFileSync(ep, "utf8"));
+      if (e.date === TODAY) enriched = e;
+    }
+  } catch (err) {
+    console.warn(`  ! enriched: ${err.message}`);
+  }
+  payload.enriched = enriched;
+
   writeFileSync(join(ROOT, "index.html"), renderHtml(payload));
+  console.log(enriched ? `✔ 已注入 ${Object.keys(enriched.projects || {}).length} 个上榜项目解读卡片` : "· 无当日解读数据，渲染普通版");
 
   console.log(`✔ 热榜 ${trending.length} | 生态热榜 ${topicHot.length} | 新锐 ${rising.length} | 活跃仓库 ${activeWatch.length}/${watch.length}`);
   console.log("—— 高增长 Top5 ——");
@@ -280,6 +295,58 @@ function watchRow(w) {
     </tr>`;
 }
 
+// 上榜项目详解卡片（数据来自 data/enriched-<mode>.json，由 WorkBuddy 定时任务生成）
+function renderProjectCards(p) {
+  const e = p.enriched;
+  if (!e || !e.projects) return "";
+  const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
+  const items = [];
+  const seen = new Set();
+  p.trending.slice(0, 10).forEach((r, i) => {
+    if (e.projects[r.full] && !seen.has(r.full)) {
+      items.push({ r, kind: `${periodWord}热榜第 ${i + 1} · TRENDING · ${(r.lang || "—").toUpperCase()}` });
+      seen.add(r.full);
+    }
+  });
+  p.growthRank.slice(0, 10).forEach((r, i) => {
+    if (e.projects[r.full] && !seen.has(r.full)) {
+      items.push({ r, kind: `高增长第 ${i + 1} · GROWTH · ${(r.lang || "—").toUpperCase()}` });
+      seen.add(r.full);
+    }
+  });
+  if (!items.length) return "";
+  const li = (arr) => (arr || []).map((x) => `<li>${esc(x)}</li>`).join("");
+  return items
+    .map((it, i) => {
+      const d = e.projects[it.r.full];
+      const base = it.r.stars - it.r.starsToday;
+      const gain = base > 0 && it.r.starsToday ? ((it.r.starsToday / base) * 100).toFixed(1) : "0";
+      return `
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-kind"><span class="no">${String(i + 1).padStart(2, "0")}</span><span class="kind">${esc(it.kind)}</span></div>
+        <div class="proj-name"><a href="${esc(it.r.url)}" target="_blank" rel="noopener">${esc(it.r.full)}</a></div>
+        <div class="proj-tagline">${esc(d.tagline)}</div>
+        <div class="proj-owner"><a href="${esc(GH + "/" + it.r.owner)}" target="_blank" rel="noopener">${esc(it.r.owner)}</a> / ${esc(it.r.name)}</div>
+      </div>
+      <div class="value"><div class="k">核心价值</div><div class="v">${esc(d.value)}</div></div>
+      <div class="proj-grid">
+        <div class="proj-cell"><div class="k">主要功能</div><ul>${li(d.features)}</ul></div>
+        <div class="proj-cell"><div class="k">应用场景</div><ul>${li(d.scenarios)}</ul></div>
+        <div class="proj-cell"><div class="k">输入建议</div><ul>${li(d.inputs)}</ul></div>
+        <div class="proj-cell"><div class="k">使用提醒</div><ul>${li(d.caveats)}</ul></div>
+      </div>
+      <div class="proj-stats">
+        <div class="proj-stat"><div class="k">总 Star</div><div class="v">${it.r.stars.toLocaleString()}</div></div>
+        <div class="proj-stat hot"><div class="k">${periodWord}新增</div><div class="v">+${it.r.starsToday.toLocaleString()}</div></div>
+        <div class="proj-stat hot"><div class="k">获星增幅</div><div class="v">+${gain}<em>%</em></div></div>
+      </div>
+      <div class="proj-foot">解读由 AI 基于公开信息生成，仅供参考 · 增幅=期内新增÷期初累计获星，非净增</div>
+    </div>`;
+    })
+    .join("");
+}
+
 function renderHtml(p) {
   const badge = p.mode === "weekly" ? "WEEKLY 周报" : "DAILY 日报";
   const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
@@ -290,6 +357,55 @@ function renderHtml(p) {
   const watchRows = p.watch.map(watchRow).join("");
   const top1 = p.growthRank[0];
   const { ymd, hm } = bjParts(p.generatedAt);
+
+  // 分区编号动态生成（有解读卡片时自动后移）
+  let _n = 0;
+  const no = () => `<span class="no">${String(++_n).padStart(2, "0")}</span>`;
+  const secTrend = `
+  <section>
+    <h2>${no()}GitHub ${periodWord}热榜<span class="en">Trending</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th class="r">${periodWord}增量</th><th>语言</th></tr></thead>
+      <tbody>${trendRows || `<tr><td colspan="6" class="empty">本周期未抓取到热榜数据</td></tr>`}</tbody>
+    </table>
+  </section>`;
+  const secGrowth = `
+  <section>
+    <h2>${no()}高增长排行<span class="en">Growth</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th class="r">总 star</th><th class="r">增量</th></tr></thead>
+      <tbody>${growthRows || `<tr><td colspan="4" class="empty">本周期无热榜增量数据</td></tr>`}</tbody>
+    </table>
+  </section>`;
+  const cards = renderProjectCards(p);
+  const secCards = cards
+    ? `
+  <section>
+    <h2>${no()}上榜项目详解<span class="en">Project Cards</span></h2>
+    ${cards}
+  </section>`
+    : "";
+  const secTopic = `
+  <section>
+    <h2>${no()}AI / Skills / MCP 生态热榜<span class="en">Ecosystem</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
+      <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
+    </table>
+  </section>`;
+  const secRising = `
+  <section>
+    <h2>${no()}新锐项目<span class="en">Rising</span></h2>
+    <div class="cards">${risingCards || `<div class="empty">本周期未检索到新锐项目</div>`}</div>
+  </section>`;
+  const secWatch = `
+  <section>
+    <h2>${no()}生态 watch 动态<span class="en">Watchlist</span></h2>
+    <table>
+      <thead><tr><th>仓库</th><th>最新 release</th><th>最近提交</th></tr></thead>
+      <tbody>${watchRows || `<tr><td colspan="3" class="empty">本周期无 watch 数据</td></tr>`}</tbody>
+    </table>
+  </section>`;
 
   return `<!doctype html>
 <html lang="zh-CN">
@@ -319,38 +435,7 @@ function renderHtml(p) {
     <div class="metric"><div class="k">生态热榜</div><div class="v">${p.counts.topicHot}<em>repos</em></div></div>
     <div class="metric"><div class="k">新锐项目</div><div class="v">${p.counts.rising}<em>new</em></div></div>
   </div>
-  <section>
-    <h2><span class="no">01</span>GitHub ${periodWord}热榜<span class="en">Trending</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th class="r">${periodWord}增量</th><th>语言</th></tr></thead>
-      <tbody>${trendRows || `<tr><td colspan="6" class="empty">本周期未抓取到热榜数据</td></tr>`}</tbody>
-    </table>
-  </section>
-  <section>
-    <h2><span class="no">02</span>高增长排行<span class="en">Growth</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th class="r">总 star</th><th class="r">增量</th></tr></thead>
-      <tbody>${growthRows || `<tr><td colspan="4" class="empty">本周期无热榜增量数据</td></tr>`}</tbody>
-    </table>
-  </section>
-  <section>
-    <h2><span class="no">03</span>AI / Skills / MCP 生态热榜<span class="en">Ecosystem</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
-      <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
-    </table>
-  </section>
-  <section>
-    <h2><span class="no">04</span>新锐项目<span class="en">Rising</span></h2>
-    <div class="cards">${risingCards || `<div class="empty">本周期未检索到新锐项目</div>`}</div>
-  </section>
-  <section>
-    <h2><span class="no">05</span>生态 watch 动态<span class="en">Watchlist</span></h2>
-    <table>
-      <thead><tr><th>仓库</th><th>最新 release</th><th>最近提交</th></tr></thead>
-      <tbody>${watchRows || `<tr><td colspan="3" class="empty">本周期无 watch 数据</td></tr>`}</tbody>
-    </table>
-  </section>
+  ${secTrend}${secGrowth}${secCards}${secTopic}${secRising}${secWatch}
   <footer>
     <span>数据来源：GitHub Trending / GitHub API · radar.mjs 自动抓取 · 窗口 ${p.windowDays} 天（自 ${p.since}）</span>
     <a href="${PAGE}" target="_blank" rel="noopener">${PAGE} ↗</a>
@@ -410,9 +495,39 @@ function renderHtml(p) {
   .cmsg a:hover{color:#e30613;border-color:#e30613}
   .muted{color:#767676}
   .empty{text-align:center;color:#6b6b6b;padding:24px}
+  .proj{border:1px solid #111}
+  .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
+  .proj-kind{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+  .proj-kind .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+  .proj-kind .kind{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  .proj-name{font-size:34px;font-weight:900;letter-spacing:-.02em;line-height:1.1;word-break:break-all}
+  .proj-name a{color:#111;text-decoration:none;border-bottom:2px solid #e30613}
+  .proj-name a:hover{background:#e30613;color:#fff}
+  .proj-tagline{font-size:15px;color:#111;margin-top:8px;font-weight:600}
+  .proj-owner{font-size:12px;color:#6b6b6b;margin-top:4px}
+  .proj-owner a{color:#111;font-weight:700}
+  .value{margin:14px 26px 0;border-left:5px solid #e30613;background:#fafafa;padding:12px 16px}
+  .value .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#e30613;font-weight:800;margin-bottom:4px}
+  .value .v{font-size:14px;font-weight:700;color:#111}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #111}
+  .proj-cell{padding:16px 26px;border-right:1px solid #ddd}
+  .proj-cell:nth-child(2n){border-right:none}
+  .proj-cell:nth-child(-n+2){border-bottom:1px solid #ddd}
+  .proj-cell .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#6b6b6b;font-weight:800;margin-bottom:8px}
+  .proj-cell ul{margin:0;padding:0;list-style:none}
+  .proj-cell li{font-size:13px;padding:4px 0 4px 14px;position:relative;color:#2b2b2b;line-height:1.55}
+  .proj-cell li::before{content:"—";position:absolute;left:0;color:#e30613;font-weight:700}
+  .proj-stats{display:grid;grid-template-columns:repeat(3,1fr)}
+  .proj-stat{padding:14px 26px;border-right:1px solid #ddd}
+  .proj-stat:last-child{border-right:none}
+  .proj-stat .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  .proj-stat .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+  .proj-stat.hot .v{color:#e30613}
+  .proj-stat .v em{font-style:normal;font-size:12px;font-weight:700;color:#6b6b6b;margin-left:2px;letter-spacing:0}
+  .proj-foot{padding:8px 26px;font-size:10.5px;color:#6b6b6b;letter-spacing:.04em;border-top:1px solid #111}
   footer{padding:16px 36px;display:flex;justify-content:space-between;font-size:11px;color:#666;letter-spacing:.04em}
   footer a{color:#111;font-weight:700}
-  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-kind{flex-wrap:wrap}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}}
 </style>
 </body>
 </html>`;
