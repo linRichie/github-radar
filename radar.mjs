@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // radar.mjs —— GitHub 雷达
 // 抓取 GitHub 上的「热门排行动态 / 高增长项目 / 有趣的新锐项目 / AI Skills 与 MCP 生态」，
-// 生成 data/*.json 与单文件 index.html（全内联、无外部资源、朱橙品牌色、人话时间）。
+// 生成 data/*.json 与单文件 index.html（全内联、无外部资源、Swiss 数据报风格：白底/黑/瑞士红、人话时间）。
 // 用法：node radar.mjs --mode daily | weekly   （可选 GITHUB_TOKEN 提升速率上限）
 
 import { writeFileSync, mkdirSync } from "node:fs";
@@ -16,7 +16,6 @@ const ROOT = dirname(fileURLToPath(import.meta.url));
 const API = "https://api.github.com";
 const GH = "https://github.com";
 const TOKEN = process.env.GITHUB_TOKEN || "";
-const ACCENT = "#E8552D";
 const PAGE = "https://radar.moniter.top";
 
 // 重点追踪的 skills / MCP 生态仓库（保留原能力）
@@ -94,9 +93,10 @@ function human(iso) {
   if (day < 30) return `${day} 天前`;
   return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
 }
-function fmtFull(iso) {
-  const d = iso ? new Date(iso) : new Date();
-  return `${d.getMonth() + 1}月${d.getDate()}日 ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+// 北京时间部件（generatedAt 为 UTC ISO）：输出 2026.10.21 / 10:53
+function bjParts(iso) {
+  const d = new Date(new Date(iso || Date.now()).getTime() + 8 * 3600e3);
+  return { ymd: `${d.getUTCFullYear()}.${pad(d.getUTCMonth() + 1)}.${pad(d.getUTCDate())}`, hm: `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}` };
 }
 
 // ---------- 抓取：GitHub 官方热榜 ----------
@@ -221,39 +221,75 @@ async function main() {
   return payload;
 }
 
-// ---------- 渲染（单文件 HTML，全内联，无外部资源）----------
-function repoRow(r, i, withGrowth) {
-  const growth = withGrowth && r.starsToday ? `<td class="num hot">▲ +${r.starsToday.toLocaleString()}<span class="per">/${r.starsPeriod}</span></td>` : "";
-  return `
-    <tr>
-      <td class="idx">${i + 1}</td>
-      <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a>${r.topics && r.topics.length ? `<span class="topics">${r.topics.slice(0, 4).map((t) => "#" + esc(t)).join(" ")}</span>` : ""}</td>
+// ---------- 渲染（单文件 HTML，全内联，无外部资源 · Swiss 数据报风格：白底/黑/瑞士红）----------
+function cut(s, n) {
+  s = s || "";
+  return s.length <= n ? s : s.slice(0, n - 1) + "…";
+}
+
+function rowTrend(r, i) {
+  return `<tr>
+      <td class="rk">${i + 1}</td>
+      <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
       <td class="desc">${esc(r.desc)}</td>
-      <td class="num">⭐ ${r.stars.toLocaleString()}</td>
-      ${withGrowth ? growth : ""}
-      <td class="lang">${esc(r.lang)}</td>
-      <td class="time">${human(r.pushed)}</td>
+      <td class="num">${r.stars.toLocaleString()}</td>
+      <td class="inc">▲ +${r.starsToday.toLocaleString()}</td>
+      <td class="lang">${esc(r.lang) || "—"}</td>
+    </tr>`;
+}
+
+function rowGrowth(r, i) {
+  return `<tr>
+      <td class="rk">${i + 1}</td>
+      <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
+      <td class="num">${r.stars.toLocaleString()}</td>
+      <td class="inc">▲ +${r.starsToday.toLocaleString()}<span class="per">/${r.starsPeriod === "week" ? "week" : "day"}</span></td>
+    </tr>`;
+}
+
+function rowTopic(r, i) {
+  return `<tr>
+      <td class="rk">${i + 1}</td>
+      <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
+      <td class="desc">${esc(r.desc)}</td>
+      <td class="num">${r.stars.toLocaleString()}</td>
+      <td class="lang">${esc(r.lang) || "—"}</td>
+    </tr>`;
+}
+
+function risingCard(r) {
+  return `<a href="${esc(r.url)}" target="_blank" rel="noopener">
+      <div class="cname">${esc(r.full)}</div>
+      <div class="cdesc">${esc(cut(r.desc, 56))}</div>
+      <div class="cmeta"><span class="s">★ ${r.stars.toLocaleString()}</span><span class="l">${esc(r.lang) || "—"}</span></div>
+    </a>`;
+}
+
+function watchRow(w) {
+  const rel = w.latestRelease
+    ? `<span class="tag"><a href="${esc(w.latestRelease.url)}" target="_blank" rel="noopener">${esc(w.latestRelease.tag)}</a></span><span class="reltime">${human(w.latestRelease.date)}</span>`
+    : `<span class="reltime muted">无新版本</span>`;
+  const cm = (w.commits || [])[0];
+  const cmHtml = cm
+    ? `<a href="${esc(cm.url)}" target="_blank" rel="noopener">${esc(cut(cm.msg, 42))}</a> <span class="reltime">${human(cm.date)}</span>`
+    : `<span class="muted">本期无提交</span>`;
+  return `<tr>
+      <td class="repo"><a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.repo)}</a></td>
+      <td class="rel">${rel}</td>
+      <td class="cmsg">${cmHtml}</td>
     </tr>`;
 }
 
 function renderHtml(p) {
-  const badge = p.mode === "weekly" ? "周报" : "日报";
-  const trendHead = p.trendPeriod === "weekly" ? "本周 star 增量" : "今日 star 增量";
-  const trendRows = p.trending.map((r, i) => repoRow(r, i, true)).join("");
-  const topicRows = p.topicHot.map((r, i) => repoRow(r, i, false)).join("");
-  const risingRows = p.rising.map((r, i) => repoRow(r, i, false)).join("");
-
-  const watchBlocks = p.watch.map((w) => {
-    const rel = w.latestRelease
-      ? `<span class="rel"><a href="${esc(w.latestRelease.url)}" target="_blank" rel="noopener">${esc(w.latestRelease.tag)}</a> · ${human(w.latestRelease.date)}</span>`
-      : `<span class="rel muted">无新版本</span>`;
-    const cs = (w.commits || []).slice(0, 5).map((c) => `<li><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.msg)}</a> <span class="cm">${esc(c.author)} · ${human(c.date)}</span></li>`).join("");
-    return `
-    <div class="wcard">
-      <div class="whead"><a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.repo)}</a> ${rel}</div>
-      ${cs ? `<ul class="wcommits">${cs}</ul>` : `<div class="wcommits muted">本期无提交</div>`}
-    </div>`;
-  }).join("");
+  const badge = p.mode === "weekly" ? "WEEKLY 周报" : "DAILY 日报";
+  const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
+  const trendRows = p.trending.map(rowTrend).join("");
+  const growthRows = p.growthRank.map(rowGrowth).join("");
+  const topicRows = p.topicHot.map(rowTopic).join("");
+  const risingCards = p.rising.map(risingCard).join("");
+  const watchRows = p.watch.map(watchRow).join("");
+  const top1 = p.growthRank[0];
+  const { ymd, hm } = bjParts(p.generatedAt);
 
   return `<!doctype html>
 <html lang="zh-CN">
@@ -263,117 +299,119 @@ function renderHtml(p) {
 <title>GitHub 雷达 · ${badge}</title>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="t1">GitHub 雷达</div>
-    <div class="t2">追踪 GitHub 热门排行动态、高增长项目、有趣新锐与 AI Skills / MCP 生态</div>
-    <div class="meta"><span class="badge">${badge}</span> 更新于 ${fmtFull(p.generatedAt)} · 窗口 ${p.windowDays} 天（自 ${p.since}）· 热榜周期 ${p.trendPeriod === "weekly" ? "本周" : "今日"}</div>
-  </header>
-
-  <section class="cards">
-    <div class="card"><div class="cv">${p.counts.trending}</div><div class="ck">GitHub 热榜</div></div>
-    <div class="card"><div class="cv">${p.counts.topicHot}</div><div class="ck">生态热榜</div></div>
-    <div class="card"><div class="cv">${p.counts.rising}</div><div class="ck">新锐项目</div></div>
-    <div class="card"><div class="cv">${p.activeWatchCount}/${p.watch.length}</div><div class="ck">生态活跃仓库</div></div>
-  </section>
-
-  <section>
-    <h2>GitHub 热榜 <span class="sub">（${p.trendPeriod === "weekly" ? "本周" : "今日"}排行，含 ${trendHead}）</span></h2>
-    <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th>star</th><th>${trendHead}</th><th>语言</th><th>更新</th></tr></thead>
-      <tbody>${trendRows || `<tr><td colspan="7" class="empty">本周期未抓取到热榜数据</td></tr>`}</tbody>
-    </table>
-  </section>
-
-  <section>
-    <h2>高增长排行 <span class="sub">（按 ${trendHead} 降序 Top 10）</span></h2>
-    <div class="growth">
-      ${p.growthRank.map((r, i) => `<div class="gitem"><span class="grank">${i + 1}</span><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a><span class="gval">▲ +${r.starsToday.toLocaleString()}★/${r.starsPeriod}</span></div>`).join("") || `<div class="empty">无数据</div>`}
+<div class="page">
+  <div class="masthead">
+    <div class="mh-left">
+      <h1>GitHub<br>雷达<em>.</em></h1>
+      <div class="sub">GITHUB RADAR — TRENDING / GROWTH / AI SKILLS &amp; MCP</div>
     </div>
-  </section>
-
+    <div class="mh-right">
+      <span class="badge">${badge}</span>
+      <div class="date">${ymd}</div>
+      <div>北京时间 ${hm} 更新</div>
+      <a href="${PAGE}" target="_blank" rel="noopener">${PAGE}</a>
+    </div>
+  </div>
+  <div class="metrics">
+    <div class="metric"><div class="k">${periodWord}热榜</div><div class="v">${p.counts.trending}<em>repos</em></div></div>
+    <div class="metric hot"><div class="k">高增长 Top 1</div><div class="v">${top1 ? "+" + top1.starsToday.toLocaleString() : "—"}<em>/${top1 ? (top1.starsPeriod === "week" ? "week" : "day") : ""}</em></div></div>
+    <div class="metric"><div class="k">生态热榜</div><div class="v">${p.counts.topicHot}<em>repos</em></div></div>
+    <div class="metric"><div class="k">新锐项目</div><div class="v">${p.counts.rising}<em>new</em></div></div>
+  </div>
   <section>
-    <h2>AI / Skills / MCP 生态热榜 <span class="sub">（topic 检索，按 star 排序）</span></h2>
+    <h2><span class="no">01</span>GitHub ${periodWord}热榜<span class="en">Trending</span></h2>
     <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th>star</th><th>语言</th><th>更新</th></tr></thead>
-      <tbody>${topicRows || `<tr><td colspan="6" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th class="r">${periodWord}增量</th><th>语言</th></tr></thead>
+      <tbody>${trendRows || `<tr><td colspan="6" class="empty">本周期未抓取到热榜数据</td></tr>`}</tbody>
     </table>
   </section>
-
   <section>
-    <h2>新锐项目 <span class="sub">（窗口内新建且快速涨星）</span></h2>
+    <h2><span class="no">02</span>高增长排行<span class="en">Growth</span></h2>
     <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th>star</th><th>语言</th><th>更新</th></tr></thead>
-      <tbody>${risingRows || `<tr><td colspan="6" class="empty">本周期未检索到新锐项目</td></tr>`}</tbody>
+      <thead><tr><th>#</th><th>仓库</th><th class="r">总 star</th><th class="r">增量</th></tr></thead>
+      <tbody>${growthRows || `<tr><td colspan="4" class="empty">本周期无热榜增量数据</td></tr>`}</tbody>
     </table>
   </section>
-
   <section>
-    <h2>生态 watch 动态 <span class="sub">（${p.watch.length} 个重点仓库）</span></h2>
-    <div class="wgrid">${watchBlocks}</div>
+    <h2><span class="no">03</span>AI / Skills / MCP 生态热榜<span class="en">Ecosystem</span></h2>
+    <table>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
+      <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
+    </table>
   </section>
-
+  <section>
+    <h2><span class="no">04</span>新锐项目<span class="en">Rising</span></h2>
+    <div class="cards">${risingCards || `<div class="empty">本周期未检索到新锐项目</div>`}</div>
+  </section>
+  <section>
+    <h2><span class="no">05</span>生态 watch 动态<span class="en">Watchlist</span></h2>
+    <table>
+      <thead><tr><th>仓库</th><th>最新 release</th><th>最近提交</th></tr></thead>
+      <tbody>${watchRows || `<tr><td colspan="3" class="empty">本周期无 watch 数据</td></tr>`}</tbody>
+    </table>
+  </section>
   <footer>
-    <div>数据来源：GitHub Trending 页面（热门/高增长排行）+ GitHub Search API（topic 检索 / 新锐项目）+ 各重点仓库 releases / commits。</div>
-    <div>由 <code>radar.mjs</code> 自动生成 · 公网页面 <a href="${PAGE}" target="_blank" rel="noopener">${PAGE}</a> · 每日 / 每周自动更新并邮件推送。</div>
+    <span>数据来源：GitHub Trending / GitHub API · radar.mjs 自动抓取 · 窗口 ${p.windowDays} 天（自 ${p.since}）</span>
+    <a href="${PAGE}" target="_blank" rel="noopener">${PAGE} ↗</a>
   </footer>
 </div>
 <style>
-  :root{ --accent:${ACCENT}; --ink:#2c2c2a; --mut:#6b6b66; --line:#ececea; --bg:#faf9f7; --card:#fff; }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
-  .wrap{max-width:1000px;margin:0 auto;padding:28px 20px 56px;}
-  header{border-left:5px solid var(--accent);padding:4px 0 4px 16px;margin-bottom:22px;}
-  .t1{font-size:26px;font-weight:600;}
-  .t2{color:var(--mut);margin-top:4px;}
-  .meta{margin-top:10px;color:var(--mut);font-size:13px;}
-  .badge{display:inline-block;background:var(--accent);color:#fff;border-radius:6px;padding:1px 9px;font-size:12px;font-weight:500;}
-  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 30px;}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 12px;text-align:center;}
-  .cv{font-size:24px;font-weight:600;color:var(--accent);}
-  .ck{color:var(--mut);font-size:12px;margin-top:4px;}
-  h2{font-size:18px;margin:26px 0 12px;border-bottom:1px solid var(--line);padding-bottom:8px;}
-  .sub{font-size:13px;color:var(--mut);font-weight:400;}
-  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;}
-  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px;}
-  th{background:#f4f3f0;color:var(--mut);font-weight:500;font-size:13px;}
-  tr:last-child td{border-bottom:none;}
-  .idx{color:var(--mut);width:28px;}
-  .repo a{color:var(--accent);text-decoration:none;font-weight:500;}
-  .repo a:hover{text-decoration:underline;}
-  .topics{display:block;color:var(--mut);font-size:12px;margin-top:2px;}
-  .desc{color:var(--ink);}
-  .num{white-space:nowrap;color:var(--accent);font-weight:500;}
-  .num.hot{color:#1a8f4a;}
-  .per{color:var(--mut);font-weight:400;font-size:12px;}
-  .lang{color:var(--mut);white-space:nowrap;}
-  .time{color:var(--mut);white-space:nowrap;font-size:13px;}
-  .empty{text-align:center;color:var(--mut);padding:24px;}
-  .growth{display:grid;grid-template-columns:1fr 1fr;gap:8px 18px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 18px;}
-  .gitem{display:flex;align-items:center;gap:8px;font-size:14px;padding:3px 0;border-bottom:1px dashed var(--line);}
-  .gitem:last-child,.gitem:nth-last-child(2){border-bottom:none;}
-  .grank{display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;background:var(--accent);color:#fff;border-radius:50%;font-size:12px;font-weight:600;flex:none;}
-  .gitem a{color:var(--ink);text-decoration:none;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .gitem a:hover{color:var(--accent);}
-  .gval{color:#1a8f4a;font-size:12px;font-weight:500;flex:none;}
-  .wgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .wcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;}
-  .whead{font-weight:500;}
-  .whead a{color:var(--accent);text-decoration:none;}
-  .whead a:hover{text-decoration:underline;}
-  .rel{margin-left:8px;font-size:12px;color:var(--mut);}
-  .rel a{color:var(--accent);text-decoration:none;}
-  .rel.muted{color:#9a9a95;}
-  .wcommits{margin:8px 0 0;padding:0;list-style:none;}
-  .wcommits li{font-size:13px;padding:3px 0;border-top:1px dashed var(--line);}
-  .wcommits li a{color:var(--ink);text-decoration:none;}
-  .wcommits li a:hover{color:var(--accent);}
-  .cm{color:var(--mut);font-size:12px;margin-left:4px;}
-  .wcommits.muted{color:var(--mut);font-size:13px;border-top:1px dashed var(--line);}
-  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);color:var(--mut);font-size:13px;line-height:1.8;}
-  footer a{color:var(--accent);}
-  code{background:#f0efec;padding:1px 5px;border-radius:4px;font-size:12px;}
-  @media(max-width:720px){.cards{grid-template-columns:repeat(2,1fr);}.wgrid,.growth{grid-template-columns:1fr;}.desc,.lang{display:none;}}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e8e8e6;color:#111;font-family:"Helvetica Neue",Helvetica,Arial,"PingFang SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.6;padding:36px 16px}
+  .page{max-width:1080px;margin:0 auto;background:#fff;border:1px solid #111}
+  .masthead{display:flex;justify-content:space-between;align-items:flex-start;padding:30px 36px 24px;border-bottom:3px solid #111}
+  .mh-left h1{font-size:44px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+  .mh-left h1 em{font-style:normal;color:#e30613}
+  .mh-left .sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#555;margin-top:8px;font-weight:600}
+  .mh-right{text-align:right;font-size:12px;line-height:1.8}
+  .mh-right .date{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .mh-right a{color:#111;font-weight:700}
+  .badge{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:3px 10px;text-transform:uppercase}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:3px solid #111}
+  .metric{padding:18px 22px;border-right:1px solid #ddd}
+  .metric:last-child{border-right:none}
+  .metric .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#666;font-weight:700}
+  .metric .v{font-size:36px;font-weight:900;letter-spacing:-.03em;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1}
+  .metric .v em{font-style:normal;font-size:12px;font-weight:700;color:#666;margin-left:4px;letter-spacing:0}
+  .metric.hot .v{color:#e30613}
+  section{padding:24px 36px;border-bottom:1px solid #111}
+  section:last-of-type{border-bottom:3px solid #111}
+  h2{font-size:15px;font-weight:900;letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:baseline;gap:12px}
+  h2 .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+  h2 .en{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#666;font-weight:700;padding:5px 10px 7px;border-bottom:1px solid #111}
+  th.r{text-align:right}
+  td{padding:8px 10px;border-bottom:1px solid #e4e4e4;vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  .rk{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums;width:32px;color:#111}
+  tbody tr:nth-child(-n+3) .rk{color:#e30613}
+  .repo a{color:#111;text-decoration:none;font-weight:700;border-bottom:1px solid #111}
+  .repo a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .desc{color:#555}
+  .num{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .inc{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#e30613}
+  .per{color:#6b6b6b;font-size:11px;font-weight:700}
+  .lang{color:#666;font-size:12px;white-space:nowrap}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #111}
+  .cards a{display:block;padding:16px 18px;text-decoration:none;border-right:1px solid #ddd;border-bottom:1px solid #ddd}
+  .cards a:nth-child(3n){border-right:none}
+  .cards a:nth-last-child(-n+3){border-bottom:none}
+  .cname{color:#111;font-weight:800;font-size:12.5px;word-break:break-all;border-bottom:1px solid #111;display:inline-block}
+  .cdesc{color:#555;font-size:12px;margin:6px 0 8px;line-height:1.55}
+  .cmeta{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .cmeta .s{color:#111}
+  .cmeta .l{color:#6b6b6b}
+  .tag{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;padding:1px 7px;margin-right:8px;letter-spacing:.04em}
+  .tag a{color:#fff;text-decoration:none}
+  .reltime{color:#6b6b6b;font-size:11.5px}
+  .cmsg a{color:#111;text-decoration:none;font-weight:600;border-bottom:1px solid #ddd}
+  .cmsg a:hover{color:#e30613;border-color:#e30613}
+  .muted{color:#767676}
+  .empty{text-align:center;color:#6b6b6b;padding:24px}
+  footer{padding:16px 36px;display:flex;justify-content:space-between;font-size:11px;color:#666;letter-spacing:.04em}
+  footer a{color:#111;font-weight:700}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}}
 </style>
 </body>
 </html>`;
