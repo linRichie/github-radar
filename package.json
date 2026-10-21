@@ -1,0 +1,11 @@
+{
+  "name": "skills-mcp-radar",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Skills / MCP 生态雷达：追踪 AI Skills 与 MCP 工具链的开源更新，生成公网页面并邮件推送",
+  "scripts": {
+    "daily": "node radar.mjs --mode daily",
+    "weekly": "node radar.mjs --mode weekly"
+  }
+}

@@ -1,0 +1,832 @@
+{
+  "mode": "daily",
+  "generatedAt": "2026-10-21T02:22:36.349Z",
+  "windowDays": 2,
+  "since": "2026-10-19",
+  "sources": {
+    "topics": [
+      "mcp",
+      "agent-skills",
+      "claude-skills",
+      "ai-agents",
+      "llm",
+      "claude-code"
+    ],
+    "watch": [
+      "anthropics/skills",
+      "modelcontextprotocol/servers",
+      "punkpeye/awesome-mcp-servers",
+      "ComposioHQ/awesome-claude-skills",
+      "VoltAgent/awesome-agent-skills",
+      "sickn33/antigravity-awesome-skills",
+      "hesreallyhim/awesome-claude-code",
+      "affaan-m/everything-claude-code",
+      "obra/superpowers",
+      "rohitg00/awesome-claude-code-toolkit"
+    ]
+  },
+  "trending": [
+    {
+      "full": "morluto/rea",
+      "name": "rea",
+      "owner": "morluto",
+      "desc": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+      "stars": 348734,
+      "lang": "TypeScript",
+      "url": "https://github.com/morluto/rea",
+      "pushed": "2026-10-21T00:19:03Z",
+      "updated": "2026-10-21T02:22:35Z",
+      "topics": [
+        "agent-skills",
+        "ai-agents",
+        "binary-analysis",
+        "claude-code",
+        "cli",
+        "codex",
+        "cordis",
+        "decompiler",
+        "developer-tools",
+        "dsh",
+        "dsh-plugin",
+        "ghidra",
+        "hopper",
+        "llm",
+        "mcp",
+        "model-context-protocol",
+        "rea",
+        "reverse-engineering",
+        "static-analysis",
+        "touhou"
+      ]
+    },
+    {
+      "full": "affaan-m/ECC",
+      "name": "ECC",
+      "owner": "affaan-m",
+      "desc": "The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.",
+      "stars": 284942,
+      "lang": "JavaScript",
+      "url": "https://github.com/affaan-m/ECC",
+      "pushed": "2026-10-20T23:08:28Z",
+      "updated": "2026-10-21T02:21:54Z",
+      "topics": [
+        "ai-agents",
+        "anthropic",
+        "claude",
+        "claude-code",
+        "developer-tools",
+        "llm",
+        "mcp",
+        "productivity"
+      ]
+    },
+    {
+      "full": "NousResearch/hermes-agent",
+      "name": "hermes-agent",
+      "owner": "NousResearch",
+      "desc": "The agent that grows with you",
+      "stars": 255612,
+      "lang": "Python",
+      "url": "https://github.com/NousResearch/hermes-agent",
+      "pushed": "2026-10-21T02:13:01Z",
+      "updated": "2026-10-21T02:21:26Z",
+      "topics": [
+        "ai",
+        "ai-agent",
+        "ai-agents",
+        "anthropic",
+        "chatgpt",
+        "claude",
+        "claude-code",
+        "codex",
+        "hermes",
+        "hermes-agent",
+        "llm",
+        "nous-research",
+        "openai"
+      ]
+    },
+    {
+      "full": "n8n-io/n8n",
+      "name": "n8n",
+      "owner": "n8n-io",
+      "desc": "Fair-code workflow automation platform with native AI capabilities. Combine visual building with custom code, self-host or cloud, 400+ integrations.",
+      "stars": 208164,
+      "lang": "TypeScript",
+      "url": "https://github.com/n8n-io/n8n",
+      "pushed": "2026-10-20T23:52:29Z",
+      "updated": "2026-10-21T02:22:15Z",
+      "topics": [
+        "ai",
+        "apis",
+        "automation",
+        "cli",
+        "data-flow",
+        "development",
+        "integration-framework",
+        "integrations",
+        "ipaas",
+        "low-code",
+        "low-code-platform",
+        "mcp",
+        "mcp-client",
+        "mcp-server",
+        "n8n",
+        "no-code",
+        "self-hosted",
+        "typescript",
+        "workflow",
+        "workflow-automation"
+      ]
+    },
+    {
+      "full": "firecrawl/firecrawl",
+      "name": "firecrawl",
+      "owner": "firecrawl",
+      "desc": "Supercharge your AI agents with data from the web and beyond. Building the library for superintelligence. 🔥",
+      "stars": 193510,
+      "lang": "TypeScript",
+      "url": "https://github.com/firecrawl/firecrawl",
+      "pushed": "2026-10-21T02:18:30Z",
+      "updated": "2026-10-21T02:20:40Z",
+      "topics": [
+        "ai",
+        "ai-agents",
+        "ai-crawler",
+        "ai-scraping",
+        "ai-search",
+        "crawler",
+        "data-extraction",
+        "html-to-markdown",
+        "llm",
+        "markdown",
+        "scraper",
+        "scraping",
+        "web-crawler",
+        "web-data",
+        "web-data-extraction",
+        "web-scraper",
+        "web-scraping",
+        "web-search",
+        "webscraping"
+      ]
+    },
+    {
+      "full": "Significant-Gravitas/AutoGPT",
+      "name": "AutoGPT",
+      "owner": "Significant-Gravitas",
+      "desc": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters.",
+      "stars": 187679,
+      "lang": "Python",
+      "url": "https://github.com/Significant-Gravitas/AutoGPT",
+      "pushed": "2026-10-21T02:20:46Z",
+      "updated": "2026-10-21T02:17:00Z",
+      "topics": [
+        "agentic-ai",
+        "agents",
+        "ai",
+        "artificial-intelligence",
+        "autonomous-agents",
+        "claude",
+        "gpt",
+        "llama-api",
+        "llm",
+        "openai",
+        "python"
+      ]
+    },
+    {
+      "full": "ollama/ollama",
+      "name": "ollama",
+      "owner": "ollama",
+      "desc": "Get up and running with Kimi, GLM, MiniMax, DeepSeek, gpt-oss, Qwen, Gemma and other models.",
+      "stars": 184084,
+      "lang": "Go",
+      "url": "https://github.com/ollama/ollama",
+      "pushed": "2026-10-20T22:09:49Z",
+      "updated": "2026-10-21T02:16:04Z",
+      "topics": [
+        "deepseek",
+        "gemma",
+        "gemma3",
+        "glm",
+        "go",
+        "golang",
+        "gpt-oss",
+        "llama",
+        "llama3",
+        "llm",
+        "llms",
+        "minimax",
+        "mistral",
+        "ollama",
+        "qwen"
+      ]
+    },
+    {
+      "full": "f/prompts.chat",
+      "name": "prompts.chat",
+      "owner": "f",
+      "desc": "f.k.a. Awesome ChatGPT Prompts. Share, discover, and collect prompts from the community. Free and open source — self-host for your organization with complete privacy.",
+      "stars": 173716,
+      "lang": "HTML",
+      "url": "https://github.com/f/prompts.chat",
+      "pushed": "2026-10-20T06:48:50Z",
+      "updated": "2026-10-21T02:21:36Z",
+      "topics": [
+        "ai",
+        "artificial-intelligence",
+        "awesome-list",
+        "chatgpt",
+        "chatgpt-prompts",
+        "claude",
+        "gemini",
+        "gpt",
+        "gpt-4",
+        "llm",
+        "machine-learning",
+        "nextjs",
+        "open-source",
+        "openai",
+        "prompt-engineering",
+        "prompts",
+        "prompts-chat",
+        "typescript"
+      ]
+    },
+    {
+      "full": "huggingface/transformers",
+      "name": "transformers",
+      "owner": "huggingface",
+      "desc": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. ",
+      "stars": 167926,
+      "lang": "Python",
+      "url": "https://github.com/huggingface/transformers",
+      "pushed": "2026-10-21T01:57:53Z",
+      "updated": "2026-10-21T02:13:57Z",
+      "topics": [
+        "audio",
+        "deep-learning",
+        "deepseek",
+        "gemma",
+        "glm",
+        "hacktoberfest",
+        "llm",
+        "machine-learning",
+        "model-hub",
+        "natural-language-processing",
+        "nlp",
+        "pretrained-models",
+        "python",
+        "pytorch",
+        "pytorch-transformers",
+        "qwen",
+        "speech-recognition",
+        "transformer",
+        "vlm"
+      ]
+    },
+    {
+      "full": "langgenius/dify",
+      "name": "dify",
+      "owner": "langgenius",
+      "desc": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack.",
+      "stars": 159073,
+      "lang": "Python",
+      "url": "https://github.com/langgenius/dify",
+      "pushed": "2026-10-21T02:21:50Z",
+      "updated": "2026-10-21T02:18:14Z",
+      "topics": [
+        "agent",
+        "agentic-ai",
+        "agentic-framework",
+        "agentic-workflow",
+        "ai",
+        "automation",
+        "claude",
+        "deepseek",
+        "genai",
+        "gpt",
+        "llm",
+        "low-code",
+        "mcp",
+        "nextjs",
+        "no-code",
+        "openai",
+        "python",
+        "skills",
+        "workflow"
+      ]
+    },
+    {
+      "full": "open-webui/open-webui",
+      "name": "open-webui",
+      "owner": "open-webui",
+      "desc": "User-friendly AI Interface (Supports Ollama, OpenAI API, ...)",
+      "stars": 156306,
+      "lang": "Python",
+      "url": "https://github.com/open-webui/open-webui",
+      "pushed": "2026-10-21T02:17:45Z",
+      "updated": "2026-10-21T02:18:46Z",
+      "topics": [
+        "ai",
+        "llm",
+        "llm-ui",
+        "llm-webui",
+        "llms",
+        "mcp",
+        "ollama",
+        "ollama-webui",
+        "open-webui",
+        "openai",
+        "openapi",
+        "rag",
+        "self-hosted",
+        "ui",
+        "webui"
+      ]
+    },
+    {
+      "full": "langchain-ai/langchain",
+      "name": "langchain",
+      "owner": "langchain-ai",
+      "desc": "The agent engineering platform.",
+      "stars": 148164,
+      "lang": "Python",
+      "url": "https://github.com/langchain-ai/langchain",
+      "pushed": "2026-10-20T18:35:35Z",
+      "updated": "2026-10-21T02:21:13Z",
+      "topics": [
+        "agents",
+        "ai",
+        "ai-agents",
+        "anthropic",
+        "chatgpt",
+        "deepagents",
+        "enterprise",
+        "framework",
+        "gemini",
+        "generative-ai",
+        "langchain",
+        "langgraph",
+        "llm",
+        "multiagent",
+        "open-source",
+        "openai",
+        "pydantic",
+        "python",
+        "rag",
+        "typescript"
+      ]
+    }
+  ],
+  "watch": [
+    {
+      "repo": "anthropics/skills",
+      "url": "https://github.com/anthropics/skills",
+      "latestRelease": null,
+      "commits": []
+    },
+    {
+      "repo": "modelcontextprotocol/servers",
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "latestRelease": {
+        "tag": "v2.0.0",
+        "date": "2026-10-19T06:46:48Z",
+        "url": "https://github.com/modelcontextprotocol/servers/releases/tag/v2.0.0"
+      },
+      "commits": [
+        {
+          "msg": "Merge pull request #5166 from modelcontextprotocol/v2/chore/5159-release-v2.0.0",
+          "date": "2026-10-19T06:37:30Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/51b6382a3e827aceb6bce430b1208d69b93d95ea",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "Merge pull request #5179 from modelcontextprotocol/v2/fix/5178-dispatch-status-supersede",
+          "date": "2026-10-19T06:26:26Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/f18beb744adcb9fd8c9b1e0e1ef3d779ab1768a7",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "test: skip the dispatch-status script tests without bash or jq",
+          "date": "2026-10-19T06:21:31Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/163a5e9357567a19be2eacfb4ae5ec4f9614394b",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "Merge pull request #5177 from modelcontextprotocol/v2/chore/5159-python-calver-2026.10.19",
+          "date": "2026-10-19T06:14:01Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/803df28a37fb8a5e55cc3f58e2c4e58a882d3fe5",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "fix(ci): a superseded dispatched run posts no status, whatever its jobs did",
+          "date": "2026-10-19T06:13:35Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/d533150b9854e389b03a91b764a4f35a463501d0",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "chore: stamp Python CalVer versions for 2026.10.19",
+          "date": "2026-10-19T06:06:40Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/eaaa712b228bfcbb848622b746ca22defbe2c8b5",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "Merge pull request #5175 from modelcontextprotocol/v2/feat/5174-python-mcpserver",
+          "date": "2026-10-19T06:05:21Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/f1783c3f30d418d5f7dc86801fab256729aab35c",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "fix(python): serialize git tool calls, delegate malformed names, require mcp 2.3",
+          "date": "2026-10-19T05:53:34Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/005e7e6ea55a61300f05bd2e02a02bc0822db0f4",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "test(git): expect the platform's form of / in the outside-repository message",
+          "date": "2026-10-19T05:43:24Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/a5587f2835ddd0c6e8dfe4eeb9bc2e0d3bd70ab2",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "fix(git): report a detached HEAD in git_create_branch instead of catching TypeError",
+          "date": "2026-10-19T05:32:23Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/2b2e2a2f58e23e4921c1697eb79882027d702fb7",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "feat(git): build the git server on MCPServer; unknown tool is -32602",
+          "date": "2026-10-19T05:31:03Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/916cdc9c0f753cc7940d546a9d2dac39e090acce",
+          "author": "cliffhall"
+        },
+        {
+          "msg": "feat(fetch): build on MCPServer; an unknown tool is a -32602 error (#5174)",
+          "date": "2026-10-19T05:29:38Z",
+          "url": "https://github.com/modelcontextprotocol/servers/commit/50c68234b09c95cfa3789ea9cf4da36d369bc9b8",
+          "author": "cliffhall"
+        }
+      ]
+    },
+    {
+      "repo": "punkpeye/awesome-mcp-servers",
+      "url": "https://github.com/punkpeye/awesome-mcp-servers",
+      "latestRelease": null,
+      "commits": []
+    },
+    {
+      "repo": "ComposioHQ/awesome-claude-skills",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "latestRelease": null,
+      "commits": []
+    },
+    {
+      "repo": "VoltAgent/awesome-agent-skills",
+      "url": "https://github.com/VoltAgent/awesome-agent-skills",
+      "latestRelease": null,
+      "commits": [
+        {
+          "msg": "Merge pull request #1172 from yuwen-cool/add-yuwen-publish-precheck",
+          "date": "2026-10-20T14:56:48Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/68dd71d55456414e9b4ae2f7385283985b8cba4a",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge branch 'main' into add-yuwen-publish-precheck",
+          "date": "2026-10-20T14:31:57Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/cc7f2bf7cc49168af265bd93acff8259a1c92fe0",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge pull request #1163 from bablobanov/agent/add-telegram-checklist",
+          "date": "2026-10-19T06:01:00Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/aad12458dd990f1af4f752b271f9c8c7cab01513",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge branch 'main' into agent/add-telegram-checklist",
+          "date": "2026-10-19T05:55:15Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/3a0f731e27adacf389934e2c040d9998d0739914",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge pull request #1154 from hasuwini77/add-3d-logo-skill",
+          "date": "2026-10-19T05:43:22Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/540b4057081124d5d3aa9798f74c79ceb837c9ae",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge pull request #1216 from moxno/add-privacyscrubber-guard",
+          "date": "2026-10-19T05:42:10Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/76ef6f99f61d49b7135430831ba7a5a68a22e394",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge pull request #1219 from assafkip/add-claudemy",
+          "date": "2026-10-19T05:41:07Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/ee09e8082a896ff0c0d82b1b753017efc7090aa1",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge branch 'main' into add-3d-logo-skill",
+          "date": "2026-10-19T05:36:31Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/5fb58c0ef3bc4e71489259df8985fac09f4863c0",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge pull request #1161 from AceDataCloud/add-acedatacloud-fish-audio",
+          "date": "2026-10-19T05:36:11Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/bfe8a927548640da4ae7ae4595c84794582d1df4",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge branch 'main' into add-acedatacloud-fish-audio",
+          "date": "2026-10-19T05:29:43Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/1d411debb759ab42663e56c91ec982768c24c884",
+          "author": "necatiozmen"
+        },
+        {
+          "msg": "Merge pull request #1158 from yang0/add-handraw-style",
+          "date": "2026-10-19T05:28:38Z",
+          "url": "https://github.com/VoltAgent/awesome-agent-skills/commit/112f17522f6459231fab53d03bf7a0d3ef02adac",
+          "author": "necatiozmen"
+        }
+      ]
+    },
+    {
+      "repo": "sickn33/antigravity-awesome-skills",
+      "url": "https://github.com/sickn33/antigravity-awesome-skills",
+      "latestRelease": {
+        "tag": "v19.12.1",
+        "date": "2026-10-20T18:04:36Z",
+        "url": "https://github.com/sickn33/agentic-awesome-skills/releases/tag/v19.12.1"
+      },
+      "commits": [
+        {
+          "msg": "fix: reject staged candidate drift and false-ready intake (#2023)",
+          "date": "2026-10-20T19:30:35Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/32b8ad933cfb84065a4ce5304c2557c9e39b25fa",
+          "author": "sickn33"
+        },
+        {
+          "msg": "fix: reject missing release identity and skipped source validation (#2022)",
+          "date": "2026-10-20T19:08:58Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/f0cc16fef9052530f4cf7f3249fdef45a65d23a1",
+          "author": "sickn33"
+        },
+        {
+          "msg": "feat: add agy-powerline skill for the Antigravity CLI statusline (#2021)",
+          "date": "2026-10-20T18:44:35Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/f93a5ecf95ca955af7b35e698c498e832223c3a3",
+          "author": "wassim-azi"
+        },
+        {
+          "msg": "feat: add neverapply skill (official, hosted MCP) (#2020)",
+          "date": "2026-10-20T18:41:43Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/ae7e606147c61f832487f09c3d7dd36b9eec0b64",
+          "author": "msohaildev"
+        },
+        {
+          "msg": "Update Datacircle's skill (#2017)",
+          "date": "2026-10-20T18:33:49Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/86bdaa22ecfd2c22990fc4f008a6c61163e0605d",
+          "author": "waynehamadi"
+        },
+        {
+          "msg": "chore: release v19.12.1 (#2019)",
+          "date": "2026-10-20T18:04:14Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/0c10eb88e6e16284d9b6f0c760b1c7c6aa61044f",
+          "author": "sickn33"
+        },
+        {
+          "msg": "fix: record the npm release commit when packing the candidate (#2018)",
+          "date": "2026-10-20T18:00:08Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/c3e51179828217276664aa01213a46ddb0dde2ef",
+          "author": "sickn33"
+        },
+        {
+          "msg": "chore: release v19.12.0 (#2016)",
+          "date": "2026-10-20T16:57:28Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/456bb3daf003cd84737a558a8224aea4372c2a4c",
+          "author": "sickn33"
+        },
+        {
+          "msg": "chore: add 19.12.0 changelog entry (#2015)",
+          "date": "2026-10-20T16:53:41Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/20027d10260d6a7d2552bc1951a1d84a97540eca",
+          "author": "sickn33"
+        },
+        {
+          "msg": "feat: add design-token-contrast skill (WCAG contrast on color tokens) (#2007)",
+          "date": "2026-10-20T16:45:30Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/645d58d00c1215081b997349d2314938dbec6757",
+          "author": "Clagoss"
+        },
+        {
+          "msg": "Add Meta Ad Library research skill (#2013)",
+          "date": "2026-10-20T16:33:51Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/d239f19a389a6bbb6b597b777bb64dc5e1485795",
+          "author": "harshmaur"
+        },
+        {
+          "msg": "Add TikTok research skill (#2012)",
+          "date": "2026-10-20T16:26:15Z",
+          "url": "https://github.com/sickn33/agentic-awesome-skills/commit/d5a4cfba7efdd41a243a65780e7503ea19e24365",
+          "author": "harshmaur"
+        }
+      ]
+    },
+    {
+      "repo": "hesreallyhim/awesome-claude-code",
+      "url": "https://github.com/hesreallyhim/awesome-claude-code",
+      "latestRelease": null,
+      "commits": [
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-21T00:24:29Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/70cde01797b5ed0e5f32b49eee36816c7fa0348a",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T21:09:23Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/e7c0a2024183a5aeb9c8a0327ce26b4b8ac83681",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T18:12:22Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/e4dd8f6ce8351509b757ac120f97f072597c7c6e",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T15:09:36Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/bae161c166e6ff1604646b5c027cc20065615594",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T12:14:48Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/22313954bf90e920f45a30a44bfe48643821bb22",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T09:10:46Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/696d1db277819d500fc1a102b86df39d3ca598e8",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T06:16:27Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/ed62cff601335b186ce6f348e4ba82774b1fcf51",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T03:11:36Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/1eb7887cf2297898e97b0cd530cbb6a4c0e729e6",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-20T00:25:44Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/410eabe10651ff0d486450a18a35c26911e6a24e",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-19T21:08:53Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/22a90fd95aba6081844178162e2ef12f80007dc6",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-19T18:13:00Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/df3b5fcbb169493df599a424448c62908f334528",
+          "author": "github-actions[bot]"
+        },
+        {
+          "msg": "chore: update repo ticker data and SVGs [skip ci]",
+          "date": "2026-10-19T15:11:47Z",
+          "url": "https://github.com/hesreallyhim/awesome-claude-code/commit/2963615d273b5abd22e87d6d8eb6d50e15d0bdcc",
+          "author": "github-actions[bot]"
+        }
+      ]
+    },
+    {
+      "repo": "affaan-m/everything-claude-code",
+      "url": "https://github.com/affaan-m/everything-claude-code",
+      "latestRelease": {
+        "tag": "v2.2.3",
+        "date": "2026-10-01T23:00:36Z",
+        "url": "https://github.com/affaan-m/ECC/releases/tag/v2.2.3"
+      },
+      "commits": [
+        {
+          "msg": "docs: correct MODULE_NOT_FOUND plugin cache path (#3586)",
+          "date": "2026-10-20T21:28:23Z",
+          "url": "https://github.com/affaan-m/ECC/commit/90606c8315ee09cafc303515c5f33024db6b9882",
+          "author": "Misty-Star"
+        },
+        {
+          "msg": "fix(install): treat .pi as a foreign platform path (#3560)",
+          "date": "2026-10-20T19:37:53Z",
+          "url": "https://github.com/affaan-m/ECC/commit/30b68924ae9729159f44326aa3134b1d9d67c0e2",
+          "author": "gaurav0107"
+        },
+        {
+          "msg": "ci: replace the 33-way test matrix with full and package-manager lanes",
+          "date": "2026-10-19T02:45:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/07971588f8ac7a60080ba8c1b7920c9e8e733e7d",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "test(runner): add a worker pool and an ECC_TEST_ONLY filter to run-all",
+          "date": "2026-10-19T01:20:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/9471ef4724ddcdf8f3de302f08c1ee38c8ef7721",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(lib): split nasiko install, uninstall and tar extraction",
+          "date": "2026-10-18T03:02:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/6f1881aeafa3c48f7b603cc4be4b2e4e70daad59",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(lib): split search evidence by tool and credit path",
+          "date": "2026-10-18T02:16:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/5c507e0704d4444cd2503f3e583da47b0c1394c5",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(lib): split the gateguard code lexer by token class",
+          "date": "2026-10-18T01:29:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/87aaef56cbfe70d310f76f12aa1c3ff38940a8aa",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(hooks): split shell-scan into per-token helpers",
+          "date": "2026-10-18T00:41:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/26d2010a16878fe3bf91f90178a0402ac87c6576",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(eval): split the context-profile evaluator run loop",
+          "date": "2026-10-17T03:14:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/35f57c80e6b7573755fd63136338ca0dc7a0bdb7",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(scripts): table-drive the operator readiness dashboard",
+          "date": "2026-10-16T01:36:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/d53359a9741741c8fa809ff6f23ee251e0659b89",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(lib): split gateguard file-context scanners by token",
+          "date": "2026-10-14T02:58:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/905bb16ff23b3096f35dcc5b6e34713cd2add312",
+          "author": "affaan-m"
+        },
+        {
+          "msg": "refactor(lib): split install-lifecycle repair and inspect paths",
+          "date": "2026-10-12T00:47:00Z",
+          "url": "https://github.com/affaan-m/ECC/commit/1e787f62f5f751d22aca31e7e4d7960249601cfb",
+          "author": "affaan-m"
+        }
+      ]
+    },
+    {
+      "repo": "obra/superpowers",
+      "url": "https://github.com/obra/superpowers",
+      "latestRelease": {
+        "tag": "v7.0.0",
+        "date": "2026-10-10T00:28:58Z",
+        "url": "https://github.com/obra/superpowers/releases/tag/v7.0.0"
+      },
+      "commits": [
+        {
+          "msg": "Templates: require a human-written summary and the filer's instructions (#2570)",
+          "date": "2026-10-20T20:13:37Z",
+          "url": "https://github.com/obra/superpowers/commit/b739a8af570e10a95898f2bdf6cec97467fa6c12",
+          "author": "obra"
+        }
+      ]
+    },
+    {
+      "repo": "rohitg00/awesome-claude-code-toolkit",
+      "url": "https://github.com/rohitg00/awesome-claude-code-toolkit",
+      "latestRelease": {
+        "tag": "v0.5.0",
+        "date": "2026-05-11T19:44:23Z",
+        "url": "https://github.com/rohitg00/awesome-claude-code-toolkit/releases/tag/v0.5.0"
+      },
+      "commits": []
+    }
+  ],
+  "activeWatchCount": 7
+}
