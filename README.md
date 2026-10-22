@@ -84,6 +84,15 @@ README 请求走 GitHub 核心 API（配额 5000/h），**不占用 Search API �
 
 调整领域或检索式：编辑 `radar.mjs` 顶部的 `DOMAINS` 数组即可。
 
+### 任意类别实时检索（页面搜索框）
+
+`domains.html` 顶部有搜索框，可输入**任意类别**（如「电商 / 法务 / 教育 / 量化交易 / 网络安全」），**实时调用 GitHub Search API**，不查本地数据库。
+
+- 内置 **72 条中英映射**（运营→marketing、电商→ecommerce、法务→legal…）；未命中映射时按原文检索
+- 三栏查询：`topic:agent-skills <kw>` / `topic:<kw> stars:>100` / `topic:<kw> created:>=90d`；非 ASCII 词退化为 `in:name,description` 检索
+- **限制（页面已明示）**：纯前端匿名调用，限流 10 次/分钟（每次检索消耗 3 次），因此**不做 README 校验、不做中文翻译**——定位是"轻量探路"
+- 需要精确结果（README 校验 + 中文简介 + 落库统计）时，在 WorkBuddy 对话里检索，走完整后端流程
+
 ## 数据落盘（阿里云 MySQL）
 
 每次抓取后，CI 会调用 `scripts/load_db.py` 把数据写入阿里云 RDS（MySQL 8），便于长期趋势分析。

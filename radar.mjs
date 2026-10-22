@@ -448,6 +448,18 @@ const CSS = `
   .ditem .dz2{display:block;color:#666;font-size:11.5px;margin-top:3px;line-height:1.45}
   .dq{font-size:10.5px;color:#6b6b6b;margin-top:10px;letter-spacing:.02em;line-height:1.7}
   .dq code{background:#f4f4f2;padding:1px 5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px}
+  .searchbar{padding:16px 36px;background:#f7f7f5;border-bottom:1px solid #111}
+  .sb-row{display:flex;max-width:820px}
+  .sb-row input{flex:1;border:1px solid #111;border-right:none;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;background:#fff;color:#111}
+  .sb-row input:focus{box-shadow:inset 0 0 0 2px #e30613}
+  .sb-row button{background:#111;color:#fff;border:1px solid #111;padding:10px 22px;font-size:13px;font-weight:800;letter-spacing:.08em;cursor:pointer;font-family:inherit}
+  .sb-row button:hover{background:#e30613;border-color:#e30613}
+  .sb-tip{font-size:11px;color:#6b6b6b;margin-top:8px;line-height:1.65;max-width:820px}
+  .sb-tip b{color:#e30613}
+  .sb-msg{font-size:12.5px;color:#111;margin-top:9px;font-weight:700;line-height:1.6}
+  .sb-msg code{background:#eee;padding:1px 5px;font-size:11px}
+  #dres{margin-top:14px}
+  #dres .dgrid{margin-bottom:10px}
   .proj{border:1px solid #111;margin-bottom:22px}
   .proj:last-child{margin-bottom:0}
   .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
@@ -743,6 +755,15 @@ function renderDomains(p) {
 
   const body = domains.length
     ? `<div class="lead"><b>领域雷达</b> · ${domains.length} 个业务领域 · 每领域三栏：<b>Agent Skills</b>（已抓取 README 校验：<span class="mtag dedicated">专属</span>=名字即该领域技能库 <span class="mtag related">相关</span>=含该领域技能但定位更宽）/ <b>可用工具</b>（成熟项目）/ <b>新项目</b>（近 90 天新建）· 每栏 Top 5 · 检索式公开可审计</div>
+  <div class="searchbar">
+    <div class="sb-row">
+      <input id="dq" type="text" placeholder="输入任意类别实时检索 GitHub，如：电商 / 法务 / 教育 / 量化交易 / 网络安全" autocomplete="off">
+      <button id="dgo" type="button">检索</button>
+    </div>
+    <div class="sb-tip">实时查 GitHub Search API（不走本地库）· 匿名限流 10 次/分钟，每次检索消耗 3 次 · <b>轻量探路模式：未做 README 校验与中文翻译</b>，需要精确结果（含校验、中文简介、落库）请让 WorkBuddy 在对话里检索</div>
+    <div id="dmsg" class="sb-msg"></div>
+    <div id="dres"></div>
+  </div>
   ${domains
     .map(
       (d, i) => `
@@ -756,7 +777,109 @@ function renderDomains(p) {
     <div class="dq">检索式：<code>${esc(d.queries.skills)}</code> · <code>${esc(d.queries.repos)}</code> · <code>${esc(d.queries.fresh)}</code></div>
   </section>`,
     )
-    .join("")}`
+    .join("")}
+  <script>
+  (function () {
+    var MAP = {
+      "运营": "marketing", "增长": "marketing", "营销": "marketing", "推广": "marketing",
+      "产品设计": "design", "设计": "design", "ui": "design", "ux": "design", "交互": "design",
+      "产品经理": "product management", "pm": "product management", "需求": "product management",
+      "数据分析": "analytics", "数据": "analytics", "bi": "analytics", "报表": "analytics",
+      "内容创作": "writing", "写作": "writing", "文案": "writing", "内容": "writing", "博客": "writing",
+      "运维": "devops", "研发效率": "devops", "devops": "devops", "sre": "devops", "可观测": "observability",
+      "销售": "sales", "客户成功": "sales", "crm": "crm", "客服": "customer-support",
+      "招聘": "recruiting", "hr": "hr", "人力资源": "hr", "简历": "resume",
+      "电商": "ecommerce", "跨境电商": "ecommerce", "独立站": "ecommerce",
+      "法务": "legal", "法律": "legal", "合同": "legal", "合规": "compliance",
+      "教育": "education", "学习": "education", "培训": "education",
+      "金融": "finance", "量化": "quantitative-finance", "投资": "investing", "股票": "stock",
+      "医疗": "healthcare", "健康": "healthcare", "生物": "bioinformatics",
+      "游戏": "gamedev", "游戏开发": "gamedev", "unity": "unity",
+      "安全": "security", "网络安全": "security", "渗透": "pentest",
+      "区块链": "blockchain", "web3": "web3", "智能合约": "smart-contracts",
+      "设计系统": "design-system", "品牌": "branding", "视频": "video", "剪辑": "video-editing",
+      "音频": "audio", "翻译": "translation", "知识管理": "knowledge-management", "笔记": "note-taking"
+    };
+    var inp = document.getElementById("dq");
+    var btn = document.getElementById("dgo");
+    var msg = document.getElementById("dmsg");
+    var res = document.getElementById("dres");
+    if (!inp || !btn) return;
+
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function topicOf(kw) {
+      return kw.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+    }
+    function daysAgo(n) {
+      return new Date(Date.now() - n * 864e5).toISOString().slice(0, 10);
+    }
+    function api(q) {
+      var url = "https://api.github.com/search/repositories?q=" + encodeURIComponent(q) +
+        "&sort=stars&order=desc&per_page=5";
+      return fetch(url).then(function (r) {
+        if (r.status === 403 || r.status === 429) {
+          throw new Error("触发 GitHub 匿名限流（10 次/分钟），请等 1 分钟后再试");
+        }
+        if (!r.ok) throw new Error("GitHub API " + r.status);
+        return r.json();
+      }).then(function (d) { return d.items || []; });
+    }
+    function cell(title, arr, empty) {
+      var h = '<div class="dcol"><h3>' + title + "</h3>";
+      if (!arr.length) {
+        h += '<div class="ditem"><span class="dz2">' + empty + "</span></div>";
+      } else {
+        arr.forEach(function (r) {
+          h += '<div class="ditem"><span class="st">★ ' + r.stargazers_count.toLocaleString() +
+            '</span><span class="nm"><a href="' + esc(r.html_url) + '" target="_blank" rel="noopener">' +
+            esc(r.full_name) + '</a></span><span class="dz2">' +
+            esc((r.description || "暂无简介").slice(0, 90)) + "</span></div>";
+        });
+      }
+      return h + "</div>";
+    }
+    function run() {
+      var raw = inp.value.trim();
+      if (!raw) { msg.textContent = "请先输入一个类别"; return; }
+      var kw = MAP[raw.toLowerCase()] || MAP[raw] || raw;
+      var isAscii = /^[a-z0-9\-\s]+$/i.test(kw);
+      var tp = topicOf(kw) || kw.toLowerCase().replace(/\s+/g, "-");
+      var qs = isAscii
+        ? {
+            skills: "topic:agent-skills " + kw + " stars:>10 pushed:>=" + daysAgo(2),
+            repos: "topic:" + tp + " stars:>100 pushed:>=" + daysAgo(2),
+            fresh: "topic:" + tp + " created:>=" + daysAgo(90)
+          }
+        : {
+            skills: "topic:agent-skills " + kw,
+            repos: kw + " in:name,description stars:>100",
+            fresh: kw + " in:name,description created:>=" + daysAgo(90)
+          };
+      msg.textContent = "正在检索「" + raw + "」→ GitHub 关键词 " + kw + " …";
+      res.innerHTML = "";
+      api(qs.skills).catch(function () { return []; })
+        .then(function (a) {
+          return api(qs.repos).catch(function () { return []; }).then(function (b) {
+            return api(qs.fresh).catch(function () { return []; }).then(function (c) {
+              msg.innerHTML = "「" + esc(raw) + "」检索完成 · 关键词 <code>" + esc(kw) +
+                "</code> · 结果来自 GitHub 实时 API（<b>未做 README 校验</b>，可能含噪声）";
+              res.innerHTML = '<div class="dgrid">' + cell("Agent Skills", a, "暂无") +
+                cell("可用工具", b, "暂无") + cell("新项目 · 近 90 天", c, "暂无") + "</div>" +
+                '<div class="dq">检索式：<code>' + esc(qs.skills) + "</code> · <code>" +
+                esc(qs.repos) + "</code> · <code>" + esc(qs.fresh) + "</code></div>";
+            });
+          });
+        })
+        .catch(function (e) { msg.textContent = "检索失败：" + e.message; });
+    }
+    btn.addEventListener("click", run);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") run(); });
+  })();
+  <\/script>`
     : `<div class="lead"><b>领域雷达</b> · 本次未抓取到领域数据（GitHub API 限流或网络异常），下次运行会重试</div>
   <section><p class="empty">暂无领域数据。</p></section>`;
 
