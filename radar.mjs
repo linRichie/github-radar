@@ -45,7 +45,7 @@ const DOMAINS = [
   // 视觉/组件/图标方向，与「产品设计」分工——design 偏产品原型，ui 偏界面视觉
   { slug: "ui", zh: "UI / 界面设计", kws: ["ui design", "design system", "interface"], topics: ["ui-design"] },
   { slug: "pm", zh: "产品经理", kws: ["product management", "product", "prd"], topics: ["product-management"] },
-  { slug: "data", zh: "数据分析", kws: ["analytics", "data analysis", "bi"], topics: ["data-analysis"] },
+  { slug: "data", zh: "数据分析", kws: ["analytics", "data analysis", "dashboard", "metrics", "visualization", "sql"], topics: ["data-analysis"] },
   { slug: "content", zh: "内容创作", kws: ["writing", "copywriting", "content"], topics: ["content-management"] },
   { slug: "devops", zh: "研发效率 / DevOps", kws: ["devops", "sre", "observability"], topics: ["devops"] },
   { slug: "sales", zh: "销售 / 客户成功", kws: ["sales", "crm", "customer success"], topics: ["crm", "sales"] },
