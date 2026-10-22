@@ -779,7 +779,7 @@ function renderDomains(p) {
   }</div>`;
 
   const body = domains.length
-    ? `<div class="lead"><b>领域雷达</b> · ${domains.length} 个业务领域 · 每领域三栏：<b>Agent Skills</b>（已抓取 README 校验：<span class="mtag dedicated">专属</span>=名字即该领域技能库 <span class="mtag related">相关</span>=含该领域技能但定位更宽）/ <b>可用工具</b>（成熟项目）/ <b>新项目</b>（近 90 天新建）· 每栏 Top 5 · 检索式公开可审计</div>
+    ? `<div class="lead"><b>领域雷达</b> · ${domains.length} 个业务领域 · 每领域三栏：<b>Agent Skills</b>（已抓取 README 校验：<span class="mtag dedicated">专属</span>=名字即该领域技能库 <span class="mtag related">相关</span>=含该领域技能但定位更宽）/ <b>可用工具</b>（成熟项目）/ <b>新项目</b>（近 90 天新建）· 每栏 Top 5</div>
   <div class="searchbar">
     <div class="sb-row">
       <input id="dq" type="text" placeholder="输入任意类别实时检索 GitHub，如：电商 / 法务 / 教育 / 量化交易 / 网络安全" autocomplete="off">
@@ -799,7 +799,6 @@ function renderDomains(p) {
       ${cell("可用工具", d.repos, "暂无", p, false)}
       ${cell("新项目 · 近 90 天", d.fresh, "暂无新建项目", p, false)}
     </div>
-    <div class="dq">检索式：<code>${esc(d.queries.skills)}</code> · <code>${esc(d.queries.repos)}</code> · <code>${esc(d.queries.fresh)}</code></div>
   </section>`,
     )
     .join("")}
@@ -893,9 +892,7 @@ function renderDomains(p) {
               msg.innerHTML = "「" + esc(raw) + "」检索完成 · 关键词 <code>" + esc(kw) +
                 "</code> · 结果来自 GitHub 实时 API（<b>未做 README 校验</b>，可能含噪声）";
               res.innerHTML = '<div class="dgrid">' + cell("Agent Skills", a, "暂无") +
-                cell("可用工具", b, "暂无") + cell("新项目 · 近 90 天", c, "暂无") + "</div>" +
-                '<div class="dq">检索式：<code>' + esc(qs.skills) + "</code> · <code>" +
-                esc(qs.repos) + "</code> · <code>" + esc(qs.fresh) + "</code></div>";
+                cell("可用工具", b, "暂无") + cell("新项目 · 近 90 天", c, "暂无") + "</div>";
             });
           });
         })
