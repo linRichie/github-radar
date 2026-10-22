@@ -36,17 +36,27 @@ const TOPICS = ["mcp", "agent-skills", "claude-skills", "ai-agents", "llm", "cla
 //  - skills 用 `topic:agent-skills <领域词>` 最准（marketingskills 55k / pm-skills 27k 均命中）
 //  - 新项目必须用 topic 而非关键词（关键词 + created: 会 0 结果；topic 式 PM 1301 / 运营 1267）
 //  - design-system 被「系统设计面试题」污染，产品设计改用 ui-design；招聘用 hr 而非 recruiting（4 → 17）
+// 每个领域可配多个关键词（kws）与多个 topic（topics）：
+// - skills 栏用 `topic:agent-skills (kw1 OR kw2 …)` 一次查完（OR 语法实测有效）
+// - 工具/新项目栏逐 topic 查询后合并（纯 `topic:a OR topic:b` 会 422）
+// 2026-10-22 起：招聘/HR 补入 resume/cv/interview/career/job 等词（career-ops ⭐76k 靠 resume 才抓到）
 const DOMAINS = [
-  { slug: "growth", zh: "运营 / 增长", kw: "marketing", topic: "marketing" },
-  { slug: "design", zh: "产品设计", kw: "design", topic: "ui-design" },
-  // 2026-10-22 新增（方向池登记后评估通过）：视觉/组件/图标方向，与「产品设计」分工——design 偏产品原型，ui 偏界面视觉
-  { slug: "ui", zh: "UI / 界面设计", kw: "ui design", topic: "ui-design" },
-  { slug: "pm", zh: "产品经理", kw: "product management", topic: "product-management" },
-  { slug: "data", zh: "数据分析", kw: "analytics", topic: "data-analysis" },
-  { slug: "content", zh: "内容创作", kw: "writing", topic: "content-management" },
-  { slug: "devops", zh: "研发效率 / DevOps", kw: "devops", topic: "devops" },
-  { slug: "sales", zh: "销售 / 客户成功", kw: "sales", topic: "crm" },
-  { slug: "hr", zh: "招聘 / HR", kw: "recruiting", topic: "hr" },
+  { slug: "growth", zh: "运营 / 增长", kws: ["marketing", "growth", "seo", "content"], topics: ["marketing"] },
+  { slug: "design", zh: "产品设计", kws: ["design", "ux", "prototype"], topics: ["ui-design"] },
+  // 视觉/组件/图标方向，与「产品设计」分工——design 偏产品原型，ui 偏界面视觉
+  { slug: "ui", zh: "UI / 界面设计", kws: ["ui design", "design system", "interface"], topics: ["ui-design"] },
+  { slug: "pm", zh: "产品经理", kws: ["product management", "product", "prd"], topics: ["product-management"] },
+  { slug: "data", zh: "数据分析", kws: ["analytics", "data analysis", "bi"], topics: ["data-analysis"] },
+  { slug: "content", zh: "内容创作", kws: ["writing", "copywriting", "content"], topics: ["content-management"] },
+  { slug: "devops", zh: "研发效率 / DevOps", kws: ["devops", "sre", "observability"], topics: ["devops"] },
+  { slug: "sales", zh: "销售 / 客户成功", kws: ["sales", "crm", "customer success"], topics: ["crm", "sales"] },
+  {
+    slug: "hr",
+    zh: "招聘 / HR",
+    // 覆盖招聘、简历、面试、职业发展、ATS —— "job" 这类超通用词不单用
+    kws: ["recruiting", "resume", "cv", "interview", "career", "job-search", "job search", "ats"],
+    topics: ["hr", "resume", "job-search", "career"],
+  },
 ];
 const FRESH_SINCE = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10);
 
@@ -198,66 +208,120 @@ const GENERIC_HINTS = [
   "1178", "380 skills", "200+ skills", "1000+ skills", "skill packs",
 ];
 
-// 判定一个 skills 仓库与该领域的相关度
-// dedicated = 领域专属（名字含领域词，如 marketing-skills / pm-skills）
-// related   = 含该领域技能，但定位更宽（如「200+ skills 覆盖 marketing/design/…」）
-// weak      = 只是 README/描述里偶然出现该词 → 剔除
-function judgeSkill(r, readme, kw) {
-  const text = `${readme || ""} ${r.desc || ""}`.toLowerCase();
-  const words = kw.toLowerCase().split(/[\s/]+/).filter(Boolean);
-  const nameLow = (r.name || "").toLowerCase();
-  const descLow = (r.desc || "").toLowerCase();
-  const kwInName = words.some((w) => nameLow.includes(w));
-  const kwInDesc = words.some((w) => descLow.includes(w));
-  const hits = words.reduce((n, w) => n + Math.max(0, text.split(w).length - 1), 0);
-  const generic = GENERIC_HINTS.some((h) => text.includes(h));
-  let score = 0;
-  if (kwInName) score += 3;
-  if (kwInDesc) score += 2;
-  score += Math.min(hits, 8) * 0.4;
-  if (generic) score -= 2;
-  const level = score >= 5 ? "dedicated" : score >= 2 ? "related" : "weak";
-  return { level, score: Math.round(score * 10) / 10, hits, generic };
+// 关键词匹配：多词按短语整体匹配（不拆词），1-3 字母的短词（cv/hr/ui）加词边界
+function kwTest(text, kw) {
+  const k = kw.toLowerCase();
+  if (/^[a-z]{1,3}$/.test(k)) return new RegExp(`(^|[^a-z])${k}([^a-z]|$)`).test(text);
+  return text.includes(k);
+}
+function countKw(text, kw) {
+  const k = kw.toLowerCase();
+  if (/^[a-z]{1,3}$/.test(k)) {
+    const m = text.match(new RegExp(`(^|[^a-z])${k}([^a-z]|$)`, "g"));
+    return m ? m.length : 0;
+  }
+  return Math.max(0, text.split(k).length - 1);
 }
 
-// 领域三栏检索：串行 + 间隔 2.2 秒，避免撞 GitHub Search 的 30 次/分钟限流
-// （8 领域 × 3 栏 = 24 次，均匀分布在约 60 秒内）
+// 判定一个 skills 仓库与该领域的相关度（支持多关键词，取最高分）
+// dedicated = 领域专属（名字含领域词 + 描述也提到）
+// related   = 描述提到该领域词，但定位更宽
+// weak      = 仅 README 偶然提词（如「浏览器搜索」因 search 撞上 job search）→ 剔除
+function judgeSkill(r, readme, kws) {
+  const list = Array.isArray(kws) ? kws : [kws];
+  const nameLow = (r.name || "").toLowerCase();
+  const descLow = (r.desc || "").toLowerCase();
+  const text = `${readme || ""} ${r.desc || ""}`.toLowerCase();
+  const generic = GENERIC_HINTS.some((h) => text.includes(h));
+  let best = -99;
+  let bestHits = 0;
+  let bestInDesc = false;
+  for (const kw of list) {
+    const kwInName = kwTest(nameLow.replace(/\s+/g, "-"), kw) || kwTest(nameLow, kw);
+    const kwInDesc = kwTest(descLow, kw);
+    const hits = countKw(text, kw);
+    let score = 0;
+    if (kwInName) score += 3;
+    if (kwInDesc) score += 2;
+    score += Math.min(hits, 8) * 0.4;
+    if (generic) score -= 2;
+    if (score > best) {
+      best = score;
+      bestHits = hits;
+      bestInDesc = kwInDesc;
+    }
+  }
+  // 两档都要求「描述里真的提到该领域词」，避免仅靠 README 词频的泛用仓库混入
+  const level = best >= 4.5 && bestInDesc ? "dedicated" : best >= 2 && bestInDesc ? "related" : "weak";
+  return { level, score: Math.round(best * 10) / 10, hits: bestHits, generic };
+}
+
+// 领域三栏检索：串行 + 间隔，避免撞 GitHub Search 的 30 次/分钟限流
+// skills 栏用 `topic:agent-skills (kw1 OR kw2 …)` 一次查完；工具/新项目栏逐 topic 查询后合并（纯 topic OR 会 422）
 async function fetchDomains() {
   const out = [];
   for (const d of DOMAINS) {
-    const queries = {
-      skills: `topic:agent-skills ${d.kw} stars:>10 pushed:>=${SINCE}`,
-      repos: `topic:${d.topic} stars:>100 pushed:>=${SINCE}`,
-      fresh: `topic:${d.topic} created:>=${FRESH_SINCE}`,
-    };
-    const item = { slug: d.slug, zh: d.zh, queries, skills: [], repos: [], fresh: [] };
-    for (const key of ["skills", "repos", "fresh"]) {
-      try {
-        // skills 栏多召回一些（12 个），再用 README 校验筛掉泛用库
-        const per = key === "skills" ? 12 : 5;
-        const q = encodeURIComponent(queries[key]);
-        const data = await gh(`/search/repositories?q=${q}&sort=stars&order=desc&per_page=${per}`);
-        let list = (data.items || []).map(normRepo);
-        if (key === "skills") {
-          const judged = [];
-          for (const r of list) {
-            const readme = await fetchReadme(r.full);
-            const m = judgeSkill(r, readme, d.kw);
-            if (m.level !== "weak") judged.push({ ...r, match: m });
-            await sleep(160);
-          }
-          judged.sort((a, b) => {
-            const ded = (b.match.level === "dedicated") - (a.match.level === "dedicated");
-            return ded !== 0 ? ded : b.stars - a.stars;
-          });
-          list = judged.slice(0, 5);
-        }
-        item[key] = list;
-      } catch (e) {
-        console.warn(`  ! 领域 ${d.zh}/${key}: ${e.message}`);
+    const kws = d.kws || [d.kw];
+    const topics = d.topics || [d.topic];
+    const item = { slug: d.slug, zh: d.zh, queries: {}, skills: [], repos: [], fresh: [] };
+
+    // 1) Agent Skills：OR 查询 + README 校验
+    // 注意：OR 组里不能放带空格或连字符的词（GitHub 把 `-` 当排除符，会 422），这类词单独查后合并
+    const plainKws = kws.filter((k) => !k.includes(" ") && !k.includes("-"));
+    const dashKws = kws.filter((k) => k.includes("-"));
+    const skillQs = [];
+    if (plainKws.length) skillQs.push(`topic:agent-skills (${plainKws.join(" OR ")}) stars:>10 pushed:>=${SINCE}`);
+    for (const hk of dashKws) skillQs.push(`topic:agent-skills ${hk} stars:>10 pushed:>=${SINCE}`);
+    item.queries.skills = skillQs.join(" · ");
+    try {
+      const pool = new Map();
+      for (const q of skillQs) {
+        const data = await gh(`/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=8`);
+        for (const r of (data.items || []).map(normRepo)) if (!pool.has(r.full)) pool.set(r.full, r);
+        await sleep(2000);
       }
-      await sleep(2000);
+      const judged = [];
+      for (const r of pool.values()) {
+        const readme = await fetchReadme(r.full);
+        const m = judgeSkill(r, readme, kws);
+        if (m.level !== "weak") judged.push({ ...r, match: m });
+        await sleep(160);
+      }
+      judged.sort((a, b) => {
+        const ded = (b.match.level === "dedicated") - (a.match.level === "dedicated");
+        return ded !== 0 ? ded : b.stars - a.stars;
+      });
+      item.skills = judged.slice(0, 5);
+    } catch (e) {
+      console.warn(`  ! 领域 ${d.zh}/skills: ${e.message}`);
     }
+    await sleep(2000);
+
+    // 2) 可用工具 / 新项目：逐 topic 查询后合并去重
+    for (const key of ["repos", "fresh"]) {
+      const qs = topics.map((t) =>
+        key === "repos" ? `topic:${t} stars:>100 pushed:>=${SINCE}` : `topic:${t} created:>=${FRESH_SINCE}`,
+      );
+      item.queries[key] = qs.join(" · ");
+      const seen = new Set();
+      const merged = [];
+      for (const q of qs) {
+        try {
+          const data = await gh(`/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=5`);
+          for (const r of (data.items || []).map(normRepo)) {
+            if (seen.has(r.full)) continue;
+            seen.add(r.full);
+            merged.push(r);
+          }
+        } catch (e) {
+          console.warn(`  ! 领域 ${d.zh}/${key}: ${e.message}`);
+        }
+        await sleep(2000);
+      }
+      merged.sort((a, b) => b.stars - a.stars);
+      item[key] = merged.slice(0, 5);
+    }
+
     out.push(item);
     const m = (arr) => arr.map((r) => (r.match ? `${r.match.level[0]}` : "-")).join("");
     console.log(`  · ${d.zh}：skills ${item.skills.length}（${m(item.skills)}）/ 工具 ${item.repos.length} / 新项目 ${item.fresh.length}`);
