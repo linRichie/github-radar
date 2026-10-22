@@ -11,7 +11,7 @@
 2. **高增长排行**：从热榜中按 star 增量降序取 Top 10，附中文简介，一眼看清本周 / 今日涨得最猛的项目。
 3. **AI / Skills / MCP 生态热榜**：按 `mcp` / `agent-skills` / `claude-skills` / `ai-agents` / `llm` / `claude-code` 等 topic 检索近 1–7 天有更新的仓库（保留原能力，聚焦细分赛道）。
 4. **新锐项目**：检索窗口内**新建**且已积累较高 star 的仓库——发现**有趣的新项目**。
-5. **生态 watch 动态**：收敛为 5 个代表性仓库（anthropics/skills、modelcontextprotocol/servers、obra/superpowers 等），页面上降为次要信息，只列有更新的。
+5. ~~**生态 watch 动态**~~：**已于 2026-10-22 下线**（内容长期被 awesome 列表类仓库占据、信息价值低；抓取与页面一并移除，节省 10 次 API 调用/次）。`radar.mjs` 顶部保留 `WATCH` 列表注释备查。
 
 ## 中文简介与上榜项目详解
 

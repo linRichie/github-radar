@@ -18,15 +18,14 @@ const GH = "https://github.com";
 const TOKEN = process.env.GITHUB_TOKEN || "";
 const PAGE = "https://radar.moniter.top";
 
-// 重点追踪的 skills / MCP 生态仓库：收敛为 5 个代表性仓库（2 个 awesome 列表 + 3 个官方/框架本体），
-// 避免 watch 区被 awesome 列表占满；watch 在页面上降为次要信息。
-const WATCH = [
-  "anthropics/skills",
-  "modelcontextprotocol/servers",
-  "obra/superpowers",
-  "sickn33/antigravity-awesome-skills",
-  "punkpeye/awesome-mcp-servers",
-];
+// 重点追踪的 skills / MCP 生态仓库（「生态 watch 动态」2026-10-22 下线，此列表暂停使用，保留备查）
+// const WATCH = [
+//   "anthropics/skills",
+//   "modelcontextprotocol/servers",
+//   "obra/superpowers",
+//   "sickn33/antigravity-awesome-skills",
+//   "punkpeye/awesome-mcp-servers",
+// ];
 
 // 生态热榜检索主题（GitHub topic）——聚焦 AI / Skills / MCP 细分赛道
 const TOPICS = ["mcp", "agent-skills", "claude-skills", "ai-agents", "llm", "claude-code"];
@@ -329,30 +328,16 @@ async function fetchDomains() {
   return out;
 }
 
-async function watchRepo(repo) {
-  const [rels, commits] = await Promise.all([
-    gh(`/repos/${repo}/releases?per_page=3`).catch(() => []),
-    gh(`/repos/${repo}/commits?since=${SINCE}T00:00:00Z&per_page=12`).catch(() => []),
-  ]);
-  return {
-    repo, url: `${GH}/${repo}`,
-    latestRelease: rels[0] ? { tag: rels[0].tag_name, date: rels[0].published_at, url: rels[0].html_url } : null,
-    commits: commits.map((c) => ({
-      msg: c.commit.message.split("\n")[0].slice(0, 90),
-      date: c.commit.author?.date, url: c.html_url,
-      author: c.author?.login || c.commit.author?.name || "",
-    })),
-  };
-}
+// 「生态 watch 动态」已于 2026-10-22 按用户要求下线：
+// 内容长期被 awesome 列表类仓库占据、信息价值低，页面与抓取链路一并移除（省 10 次 API 调用）。
 
 // ---------- 主流程 ----------
 async function main() {
   console.log(`▶ 模式=${MODE} 窗口=${DAYS}天 自=${SINCE} 热榜周期=${TREND_SINCE}`);
-  const [trending, topicGroups, rising, watch] = await Promise.all([
+  const [trending, topicGroups, rising] = await Promise.all([
     fetchTrending(TREND_SINCE).catch((e) => { console.warn(`  ! trending: ${e.message}`); return []; }),
     Promise.all(TOPICS.map((t) => searchTopic(t).catch((e) => { console.warn(`  ! topic ${t}: ${e.message}`); return []; }))),
     searchRising().catch((e) => { console.warn(`  ! rising: ${e.message}`); return []; }),
-    Promise.all(WATCH.map((r) => watchRepo(r).catch((e) => { console.warn(`  ! watch ${r}: ${e.message}`); return { repo: r, error: e.message, commits: [] }; }))),
   ]);
 
   // 生态热榜去重（同一仓库可能命中多个 topic），按 star 排序
@@ -362,9 +347,6 @@ async function main() {
 
   // 高增长排行：按「今日/本周 star 增量」降序
   const growthRank = [...trending].sort((a, b) => b.starsToday - a.starsToday).slice(0, 10);
-
-  // 有更新的 watch 仓库
-  const activeWatch = watch.filter((w) => (w.latestRelease || (w.commits && w.commits.length)));
 
   // 领域雷达（串行抓取，约 60 秒；失败不阻断主流程）
   console.log(`· 抓取领域雷达（${DOMAINS.length} 领域 × 3 栏，限流保护中）...`);
@@ -379,15 +361,15 @@ async function main() {
     windowDays: DAYS,
     since: SINCE,
     trendPeriod: TREND_SINCE,
-    sources: { topics: TOPICS, watch: WATCH, trending: `${GH}/trending${TREND_SINCE === "daily" ? "" : "?since=" + TREND_SINCE}` },
+    sources: { topics: TOPICS, trending: `${GH}/trending${TREND_SINCE === "daily" ? "" : "?since=" + TREND_SINCE}` },
     trending,
     growthRank,
     topicHot,
     rising,
-    watch,
+    // 「生态 watch 动态」已按用户要求下线（2026-10-22）：不再抓取、不再渲染
+    watch: [],
     domains,
-    activeWatchCount: activeWatch.length,
-    counts: { trending: trending.length, topicHot: topicHot.length, rising: rising.length, watch: watch.length, domains: domains.length },
+    counts: { trending: trending.length, topicHot: topicHot.length, rising: rising.length, watch: 0, domains: domains.length },
   };
 
   mkdirSync(join(ROOT, "data"), { recursive: true });
@@ -423,7 +405,7 @@ async function main() {
   console.log(`✔ 中文简介缓存 ${Object.keys(zh).length} 条`);
   console.log(enriched ? `✔ 已注入 ${Object.keys(enriched.projects || {}).length} 个上榜项目解读（cards.html）` : "· 无当日解读数据，cards.html 为空态");
 
-  console.log(`✔ 热榜 ${trending.length} | 生态热榜 ${topicHot.length} | 新锐 ${rising.length} | 活跃仓库 ${activeWatch.length}/${watch.length}`);
+  console.log(`✔ 热榜 ${trending.length} | 生态热榜 ${topicHot.length} | 新锐 ${rising.length}`);
   console.log("—— 高增长 Top5 ——");
   growthRank.slice(0, 5).forEach((r, i) => console.log(`  ${i + 1}. ${r.full} +${r.starsToday.toLocaleString()}★/${r.starsPeriod} · ${r.desc.slice(0, 50)}`));
   return payload;
@@ -624,21 +606,6 @@ function risingCard(r, p) {
     </a>`;
 }
 
-function watchRow(w) {
-  const rel = w.latestRelease
-    ? `<span class="tag"><a href="${esc(w.latestRelease.url)}" target="_blank" rel="noopener">${esc(w.latestRelease.tag)}</a></span><span class="reltime">${human(w.latestRelease.date)}</span>`
-    : `<span class="reltime muted">无新版本</span>`;
-  const cm = (w.commits || [])[0];
-  const cmHtml = cm
-    ? `<a href="${esc(cm.url)}" target="_blank" rel="noopener">${esc(cut(cm.msg, 42))}</a> <span class="reltime">${human(cm.date)}</span>`
-    : `<span class="muted">本期无提交</span>`;
-  return `<tr>
-      <td class="repo"><a href="${esc(w.url)}" target="_blank" rel="noopener">${esc(w.repo)}</a></td>
-      <td class="rel">${rel}</td>
-      <td class="cmsg">${cmHtml}</td>
-    </tr>`;
-}
-
 // 上榜项目详解卡片（数据来自 data/enriched-<mode>.json，由 WorkBuddy 定时任务生成）
 function renderProjectCards(p) {
   const e = p.enriched;
@@ -742,7 +709,6 @@ function renderIndex(p) {
   const growthRows = p.growthRank.map((r, i) => rowGrowth(r, i, p)).join("");
   const topicRows = p.topicHot.map((r, i) => rowTopic(r, i, p)).join("");
   const risingCards = p.rising.map((r) => risingCard(r, p)).join("");
-  const watchRows = p.watch.map(watchRow).join("");
   const cardCount = renderProjectCards(p) ? Object.keys(p.enriched.projects || {}).length : 0;
 
   let n = 0;
@@ -779,13 +745,6 @@ function renderIndex(p) {
   <section>
     <h2>${no()}新锐项目<span class="en">Rising</span><span class="hint">窗口内新建、快速涨星</span></h2>
     <div class="cards">${risingCards || `<div class="empty">本周期未检索到新锐项目</div>`}</div>
-  </section>
-  <section>
-    <h2>${no()}生态 watch 动态<span class="en">Watchlist</span><span class="hint">次要信息 · 仅保留 5 个代表性仓库，只列有更新的</span></h2>
-    <table>
-      <thead><tr><th>仓库</th><th>最新 release</th><th>最近提交</th></tr></thead>
-      <tbody>${watchRows || `<tr><td colspan="3" class="empty">本周期无 watch 数据</td></tr>`}</tbody>
-    </table>
   </section>
   <section>
     <h2>${no()}上榜项目详解<span class="en">Project Cards</span></h2>
