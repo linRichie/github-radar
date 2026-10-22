@@ -50,9 +50,30 @@ node radar.mjs --mode weekly            # 周报（近 7 天，周榜）
 
 三栏查询式（页面上会明文展示，便于审计）：
 
-- **Agent Skills**：`topic:agent-skills <领域词> stars:>10 pushed:>=<窗口>`
+- **Agent Skills**：`topic:agent-skills <领域词> stars:>10 pushed:>=<窗口>` 召回 12 个 → **抓 README 校验后取 5 个**
 - **可用工具**：`topic:<topic> stars:>100 pushed:>=<窗口>`
 - **新项目**：`topic:<topic> created:>=<90 天前>`
+
+### Agent Skills 的 README 校验（为什么需要）
+
+`topic:agent-skills <领域词>` 的关键词是**全文匹配**，会把「描述里偶然提到该领域」的泛用技能库也召回——实测数据分析栏曾混入 `sentdm/sent-plugin`（发短信插件）、视频剪辑技能包等完全不相关的项目。
+
+因此 skills 栏做了二次校验：对召回结果逐个抓取 README 前 3000 字符，按下面规则打分并打标签：
+
+| 信号 | 分值 |
+|---|---|
+| 仓库名含领域词（如 `marketing-skills`） | +3 |
+| description 含领域词 | +2 |
+| README + description 中领域词出现次数（上限 8 次） | 每次 +0.4 |
+| 出现「泛用集市」信号（`marketplace` / `all skills` / `380 skills` / `200+ skills` 等） | −2 |
+
+- `score >= 5` → 标 **专属**（名字即该领域技能库）
+- `score >= 2` → 标 **相关**（含该领域技能但定位更宽）
+- `< 2` → **剔除**，不上榜
+
+README 请求走 GitHub 核心 API（配额 5000/h），**不占用 Search API 的 30 次/分钟限流**；8 领域 × 12 个 README 约增加 20 秒。
+
+> 已知现实：HR / 销售 / DevOps 的 agent skills 生态本身较稀薄，过滤后可能只剩 1–2 个甚至空栏——这比塞入不相关的仓库更诚实。
 
 **设计依据（2026-10-21 实测 32 次查询）**：
 - skills 用 `topic:agent-skills <领域词>` 最准（命中 marketingskills ⭐55k、pm-skills ⭐27k 等领域技能集市）

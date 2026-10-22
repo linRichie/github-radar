@@ -172,6 +172,52 @@ async function searchRising() {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// 读 README 前 3000 字符（走核心 API，配额 5000/h，不占 Search 的 30/min）
+async function fetchReadme(full) {
+  try {
+    const res = await fetch(`${API}/repos/${full}/readme`, {
+      headers: {
+        Accept: "application/vnd.github.raw",
+        "User-Agent": "github-radar",
+        ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
+      },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) return "";
+    return (await res.text()).slice(0, 3000);
+  } catch {
+    return "";
+  }
+}
+
+// 泛用技能库信号：出现这些词说明是「大而全的集市」，不是领域专属
+const GENERIC_HINTS = [
+  "marketplace", "all skills", "skills marketplace", "collection of", "tons of",
+  "1178", "380 skills", "200+ skills", "1000+ skills", "skill packs",
+];
+
+// 判定一个 skills 仓库与该领域的相关度
+// dedicated = 领域专属（名字含领域词，如 marketing-skills / pm-skills）
+// related   = 含该领域技能，但定位更宽（如「200+ skills 覆盖 marketing/design/…」）
+// weak      = 只是 README/描述里偶然出现该词 → 剔除
+function judgeSkill(r, readme, kw) {
+  const text = `${readme || ""} ${r.desc || ""}`.toLowerCase();
+  const words = kw.toLowerCase().split(/[\s/]+/).filter(Boolean);
+  const nameLow = (r.name || "").toLowerCase();
+  const descLow = (r.desc || "").toLowerCase();
+  const kwInName = words.some((w) => nameLow.includes(w));
+  const kwInDesc = words.some((w) => descLow.includes(w));
+  const hits = words.reduce((n, w) => n + Math.max(0, text.split(w).length - 1), 0);
+  const generic = GENERIC_HINTS.some((h) => text.includes(h));
+  let score = 0;
+  if (kwInName) score += 3;
+  if (kwInDesc) score += 2;
+  score += Math.min(hits, 8) * 0.4;
+  if (generic) score -= 2;
+  const level = score >= 5 ? "dedicated" : score >= 2 ? "related" : "weak";
+  return { level, score: Math.round(score * 10) / 10, hits, generic };
+}
+
 // 领域三栏检索：串行 + 间隔 2.2 秒，避免撞 GitHub Search 的 30 次/分钟限流
 // （8 领域 × 3 栏 = 24 次，均匀分布在约 60 秒内）
 async function fetchDomains() {
@@ -185,16 +231,34 @@ async function fetchDomains() {
     const item = { slug: d.slug, zh: d.zh, queries, skills: [], repos: [], fresh: [] };
     for (const key of ["skills", "repos", "fresh"]) {
       try {
+        // skills 栏多召回一些（12 个），再用 README 校验筛掉泛用库
+        const per = key === "skills" ? 12 : 5;
         const q = encodeURIComponent(queries[key]);
-        const data = await gh(`/search/repositories?q=${q}&sort=stars&order=desc&per_page=5`);
-        item[key] = (data.items || []).map(normRepo);
+        const data = await gh(`/search/repositories?q=${q}&sort=stars&order=desc&per_page=${per}`);
+        let list = (data.items || []).map(normRepo);
+        if (key === "skills") {
+          const judged = [];
+          for (const r of list) {
+            const readme = await fetchReadme(r.full);
+            const m = judgeSkill(r, readme, d.kw);
+            if (m.level !== "weak") judged.push({ ...r, match: m });
+            await sleep(160);
+          }
+          judged.sort((a, b) => {
+            const ded = (b.match.level === "dedicated") - (a.match.level === "dedicated");
+            return ded !== 0 ? ded : b.stars - a.stars;
+          });
+          list = judged.slice(0, 5);
+        }
+        item[key] = list;
       } catch (e) {
         console.warn(`  ! 领域 ${d.zh}/${key}: ${e.message}`);
       }
-      await sleep(2200);
+      await sleep(2000);
     }
     out.push(item);
-    console.log(`  · ${d.zh}：skills ${item.skills.length} / 工具 ${item.repos.length} / 新项目 ${item.fresh.length}`);
+    const m = (arr) => arr.map((r) => (r.match ? `${r.match.level[0]}` : "-")).join("");
+    console.log(`  · ${d.zh}：skills ${item.skills.length}（${m(item.skills)}）/ 工具 ${item.repos.length} / 新项目 ${item.fresh.length}`);
   }
   return out;
 }
@@ -378,6 +442,9 @@ const CSS = `
   .ditem .nm a{color:#111;text-decoration:none;border-bottom:1px solid #111}
   .ditem .nm a:hover{background:#e30613;color:#fff;border-color:#e30613}
   .ditem .st{float:right;margin-left:8px;font-weight:800;color:#6b6b6b;font-variant-numeric:tabular-nums;font-size:11.5px}
+  .mtag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:1px 5px;margin-right:6px;vertical-align:1px}
+  .mtag.dedicated{background:#111;color:#fff}
+  .mtag.related{background:#eee;color:#333;border:1px solid #ccc}
   .ditem .dz2{display:block;color:#666;font-size:11.5px;margin-top:3px;line-height:1.45}
   .dq{font-size:10.5px;color:#6b6b6b;margin-top:10px;letter-spacing:.02em;line-height:1.7}
   .dq code{background:#f4f4f2;padding:1px 5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px}
@@ -663,28 +730,28 @@ function descPlain(r, p) {
 // 领域雷达页：8 个领域 × 三栏（Agent Skills / 可用工具 / 新项目）
 function renderDomains(p) {
   const domains = p.domains || [];
-  const cell = (title, arr, empty, p) => `<div class="dcol"><h3>${title}</h3>${
+  const cell = (title, arr, empty, p, isSkill) => `<div class="dcol"><h3>${title}</h3>${
     arr.length
       ? arr
           .map(
             (r) =>
-              `<div class="ditem"><span class="st">★ ${r.stars.toLocaleString()}</span><span class="nm"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></span><span class="dz2">${descPlain(r, p)}</span></div>`,
+              `<div class="ditem">${isSkill && r.match ? `<span class="mtag ${r.match.level}">${r.match.level === "dedicated" ? "专属" : "相关"}</span>` : ""}<span class="st">★ ${r.stars.toLocaleString()}</span><span class="nm"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></span><span class="dz2">${descPlain(r, p)}</span></div>`,
           )
           .join("")
       : `<div class="ditem"><span class="dz2">${empty}</span></div>`
   }</div>`;
 
   const body = domains.length
-    ? `<div class="lead"><b>领域雷达</b> · ${domains.length} 个业务领域 · 每领域三栏：<b>Agent Skills</b>（可装进编码 agent 的技能）/ <b>可用工具</b>（成熟项目）/ <b>新项目</b>（近 90 天新建）· 每栏 Top 5 · 检索式公开可审计</div>
+    ? `<div class="lead"><b>领域雷达</b> · ${domains.length} 个业务领域 · 每领域三栏：<b>Agent Skills</b>（已抓取 README 校验：<span class="mtag dedicated">专属</span>=名字即该领域技能库 <span class="mtag related">相关</span>=含该领域技能但定位更宽）/ <b>可用工具</b>（成熟项目）/ <b>新项目</b>（近 90 天新建）· 每栏 Top 5 · 检索式公开可审计</div>
   ${domains
     .map(
       (d, i) => `
   <section>
     <h2><span class="no">${String(i + 1).padStart(2, "0")}</span>${esc(d.zh)}<span class="en">${esc(d.slug)}</span></h2>
     <div class="dgrid">
-      ${cell("Agent Skills", d.skills, "暂无该领域技能", p)}
-      ${cell("可用工具", d.repos, "暂无", p)}
-      ${cell("新项目 · 近 90 天", d.fresh, "暂无新建项目", p)}
+      ${cell("Agent Skills · README 已校验", d.skills, "暂无该领域技能", p, true)}
+      ${cell("可用工具", d.repos, "暂无", p, false)}
+      ${cell("新项目 · 近 90 天", d.fresh, "暂无新建项目", p, false)}
     </div>
     <div class="dq">检索式：<code>${esc(d.queries.skills)}</code> · <code>${esc(d.queries.repos)}</code> · <code>${esc(d.queries.fresh)}</code></div>
   </section>`,
