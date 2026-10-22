@@ -8,8 +8,10 @@
 
 说明：
 - 凭据**只从环境变量读取**，脚本本身不含任何密钥（可安全入公开仓库）。
-- 幂等：runs 按 (mode, generated_at) 唯一；同一 run 的 snapshots 先删后插；
-  projects 按 full_name UPSERT。
+- **只增不删（重要）**：本脚本**不执行任何 DELETE**。snapshots 以
+  `(run_id, section, domain, column_type, rank_no)` 为唯一键做 UPSERT——同一时点重复导入只会
+  更新数值，不会删除既有行；runs / projects 同样只 UPSERT。任何一次历史抓取的数据都完整保留，
+  供后续「历史记录 / 趋势回放」功能使用。
 - 未设置 MYSQL_HOST 时静默跳过（exit 0），便于在无 Secrets 的环境里跑 CI。
 """
 import argparse
@@ -88,7 +90,8 @@ DDL = [
       KEY idx_run (run_id),
       KEY idx_proj_time (full_name, captured_at),
       KEY idx_section_time (mode, section, captured_at),
-      KEY idx_domain (domain, column_type, captured_at)
+      KEY idx_domain (domain, column_type, captured_at),
+      UNIQUE KEY uk_run_slot (run_id, section, domain, column_type, rank_no)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     """,
 ]
@@ -98,6 +101,8 @@ ALTERS = [
     "ALTER TABLE snapshots ADD COLUMN domain VARCHAR(30) NOT NULL DEFAULT '' AFTER section",
     "ALTER TABLE snapshots ADD COLUMN column_type VARCHAR(20) NOT NULL DEFAULT '' AFTER domain",
     "ALTER TABLE snapshots ADD KEY idx_domain (domain, column_type, captured_at)",
+    # 只增不删：同一 (run, 分区, 领域, 栏, 名次) 唯一，重复导入走 UPDATE 而非删除重插
+    "ALTER TABLE snapshots ADD UNIQUE KEY uk_run_slot (run_id, section, domain, column_type, rank_no)",
 ]
 
 
@@ -277,10 +282,13 @@ def main():
             n_enrich += 1
 
     # ---------- snapshots（先删同一 run 再插，保证幂等） ----------
-    cur.execute("DELETE FROM snapshots WHERE run_id=%s", (run_id,))
+    # ---------- snapshots（只增不删：唯一键 UPSERT，绝不 DELETE 历史数据） ----------
     snap_sql = """INSERT INTO snapshots
         (run_id, captured_at, mode, section, domain, column_type, rank_no, full_name, stars, stars_delta, lang)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        ON DUPLICATE KEY UPDATE
+            full_name=VALUES(full_name), stars=VALUES(stars),
+            stars_delta=VALUES(stars_delta), lang=VALUES(lang), captured_at=VALUES(captured_at)"""
     rows = []
     for sec, dom, col, arr in sections:
         for i, r in enumerate(arr, 1):
