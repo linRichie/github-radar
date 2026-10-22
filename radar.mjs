@@ -31,6 +31,23 @@ const WATCH = [
 // 生态热榜检索主题（GitHub topic）——聚焦 AI / Skills / MCP 细分赛道
 const TOPICS = ["mcp", "agent-skills", "claude-skills", "ai-agents", "llm", "claude-code"];
 
+// 领域雷达：8 个业务领域，每领域三栏（Agent Skills / 可用工具 / 新项目）。
+// 检索式依据 2026-10-21 实测：
+//  - skills 用 `topic:agent-skills <领域词>` 最准（marketingskills 55k / pm-skills 27k 均命中）
+//  - 新项目必须用 topic 而非关键词（关键词 + created: 会 0 结果；topic 式 PM 1301 / 运营 1267）
+//  - design-system 被「系统设计面试题」污染，产品设计改用 ui-design；招聘用 hr 而非 recruiting（4 → 17）
+const DOMAINS = [
+  { slug: "growth", zh: "运营 / 增长", kw: "marketing", topic: "marketing" },
+  { slug: "design", zh: "产品设计", kw: "design", topic: "ui-design" },
+  { slug: "pm", zh: "产品经理", kw: "product management", topic: "product-management" },
+  { slug: "data", zh: "数据分析", kw: "analytics", topic: "data-analysis" },
+  { slug: "content", zh: "内容创作", kw: "writing", topic: "content-management" },
+  { slug: "devops", zh: "研发效率 / DevOps", kw: "devops", topic: "devops" },
+  { slug: "sales", zh: "销售 / 客户成功", kw: "sales", topic: "crm" },
+  { slug: "hr", zh: "招聘 / HR", kw: "recruiting", topic: "hr" },
+];
+const FRESH_SINCE = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10);
+
 const MODE = process.argv.includes("--mode") ? process.argv[process.argv.indexOf("--mode") + 1] : "daily";
 const IS_WEEKLY = MODE === "weekly";
 const DAYS = IS_WEEKLY ? 7 : 2;
@@ -153,6 +170,35 @@ async function searchRising() {
   return (data.items || []).map(normRepo);
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// 领域三栏检索：串行 + 间隔 2.2 秒，避免撞 GitHub Search 的 30 次/分钟限流
+// （8 领域 × 3 栏 = 24 次，均匀分布在约 60 秒内）
+async function fetchDomains() {
+  const out = [];
+  for (const d of DOMAINS) {
+    const queries = {
+      skills: `topic:agent-skills ${d.kw} stars:>10 pushed:>=${SINCE}`,
+      repos: `topic:${d.topic} stars:>100 pushed:>=${SINCE}`,
+      fresh: `topic:${d.topic} created:>=${FRESH_SINCE}`,
+    };
+    const item = { slug: d.slug, zh: d.zh, queries, skills: [], repos: [], fresh: [] };
+    for (const key of ["skills", "repos", "fresh"]) {
+      try {
+        const q = encodeURIComponent(queries[key]);
+        const data = await gh(`/search/repositories?q=${q}&sort=stars&order=desc&per_page=5`);
+        item[key] = (data.items || []).map(normRepo);
+      } catch (e) {
+        console.warn(`  ! 领域 ${d.zh}/${key}: ${e.message}`);
+      }
+      await sleep(2200);
+    }
+    out.push(item);
+    console.log(`  · ${d.zh}：skills ${item.skills.length} / 工具 ${item.repos.length} / 新项目 ${item.fresh.length}`);
+  }
+  return out;
+}
+
 async function watchRepo(repo) {
   const [rels, commits] = await Promise.all([
     gh(`/repos/${repo}/releases?per_page=3`).catch(() => []),
@@ -190,6 +236,13 @@ async function main() {
   // 有更新的 watch 仓库
   const activeWatch = watch.filter((w) => (w.latestRelease || (w.commits && w.commits.length)));
 
+  // 领域雷达（串行抓取，约 60 秒；失败不阻断主流程）
+  console.log("· 抓取领域雷达（8 领域 × 3 栏，限流保护中）...");
+  const domains = await fetchDomains().catch((e) => {
+    console.warn(`  ! domains: ${e.message}`);
+    return [];
+  });
+
   const payload = {
     mode: MODE,
     generatedAt: new Date().toISOString(),
@@ -202,8 +255,9 @@ async function main() {
     topicHot,
     rising,
     watch,
+    domains,
     activeWatchCount: activeWatch.length,
-    counts: { trending: trending.length, topicHot: topicHot.length, rising: rising.length, watch: watch.length },
+    counts: { trending: trending.length, topicHot: topicHot.length, rising: rising.length, watch: watch.length, domains: domains.length },
   };
 
   mkdirSync(join(ROOT, "data"), { recursive: true });
@@ -235,6 +289,7 @@ async function main() {
 
   writeFileSync(join(ROOT, "index.html"), renderIndex(payload));
   writeFileSync(join(ROOT, "cards.html"), renderCards(payload));
+  writeFileSync(join(ROOT, "domains.html"), renderDomains(payload));
   console.log(`✔ 中文简介缓存 ${Object.keys(zh).length} 条`);
   console.log(enriched ? `✔ 已注入 ${Object.keys(enriched.projects || {}).length} 个上榜项目解读（cards.html）` : "· 无当日解读数据，cards.html 为空态");
 
@@ -313,6 +368,19 @@ const CSS = `
   .empty{text-align:center;color:#6b6b6b;padding:24px}
   .lead{padding:18px 36px;background:#f6f6f4;border-bottom:1px solid #111;font-size:12.5px;color:#555}
   .lead b{color:#111}
+  .dgrid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #111}
+  .dcol{padding:14px 16px;border-right:1px solid #ddd}
+  .dcol:last-child{border-right:none}
+  .dcol h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#111;font-weight:800;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #111}
+  .ditem{padding:7px 0;border-bottom:1px solid #eee;font-size:12.5px;overflow:hidden}
+  .ditem:last-child{border-bottom:none}
+  .ditem .nm{display:block;font-weight:700;word-break:break-all;line-height:1.4}
+  .ditem .nm a{color:#111;text-decoration:none;border-bottom:1px solid #111}
+  .ditem .nm a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .ditem .st{float:right;margin-left:8px;font-weight:800;color:#6b6b6b;font-variant-numeric:tabular-nums;font-size:11.5px}
+  .ditem .dz2{display:block;color:#666;font-size:11.5px;margin-top:3px;line-height:1.45}
+  .dq{font-size:10.5px;color:#6b6b6b;margin-top:10px;letter-spacing:.02em;line-height:1.7}
+  .dq code{background:#f4f4f2;padding:1px 5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px}
   .proj{border:1px solid #111;margin-bottom:22px}
   .proj:last-child{margin-bottom:0}
   .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
@@ -347,7 +415,7 @@ const CSS = `
   footer{padding:16px 36px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#666;letter-spacing:.04em;border-top:3px solid #111}
   footer a{color:#111;font-weight:700}
   footer .by b{color:#111}
-  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}.dgrid{grid-template-columns:1fr}.dcol{border-right:none;border-bottom:1px solid #ddd}.dcol:last-child{border-bottom:none}}
 `;
 
 function cut(s, n) {
@@ -506,6 +574,7 @@ function pageShell(p, { title, navActive, metrics, body }) {
   </div>
   <nav class="nav">
     <a href="./" class="${navActive === "index" ? "on" : ""}">首页</a>
+    <a href="./domains.html" class="${navActive === "domains" ? "on" : ""}">领域雷达</a>
     <a href="./cards.html" class="${navActive === "cards" ? "on" : ""}">上榜项目详解</a>
     <span class="navwriter">撰稿<b>${AUTHOR}</b> · ${AUTHOR_MAIL}</span>
   </nav>
@@ -582,6 +651,51 @@ function renderIndex(p) {
   return pageShell(p, { title: `GitHub 雷达 · ${p.mode === "weekly" ? "周报" : "日报"}`, navActive: "index", metrics, body });
 }
 
+// 领域页简介：中文优先，无译时直接显示英文原文（不显示「待翻译」占位）
+function descPlain(r, p) {
+  const zh = (p.zh && p.zh[r.full]) || "";
+  const raw = (r.desc || "").trim();
+  if (zh) return esc(cut(zh, 66));
+  if (!raw) return "暂无简介";
+  return esc(cut(raw, 90));
+}
+
+// 领域雷达页：8 个领域 × 三栏（Agent Skills / 可用工具 / 新项目）
+function renderDomains(p) {
+  const domains = p.domains || [];
+  const cell = (title, arr, empty, p) => `<div class="dcol"><h3>${title}</h3>${
+    arr.length
+      ? arr
+          .map(
+            (r) =>
+              `<div class="ditem"><span class="st">★ ${r.stars.toLocaleString()}</span><span class="nm"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></span><span class="dz2">${descPlain(r, p)}</span></div>`,
+          )
+          .join("")
+      : `<div class="ditem"><span class="dz2">${empty}</span></div>`
+  }</div>`;
+
+  const body = domains.length
+    ? `<div class="lead"><b>领域雷达</b> · ${domains.length} 个业务领域 · 每领域三栏：<b>Agent Skills</b>（可装进编码 agent 的技能）/ <b>可用工具</b>（成熟项目）/ <b>新项目</b>（近 90 天新建）· 每栏 Top 5 · 检索式公开可审计</div>
+  ${domains
+    .map(
+      (d, i) => `
+  <section>
+    <h2><span class="no">${String(i + 1).padStart(2, "0")}</span>${esc(d.zh)}<span class="en">${esc(d.slug)}</span></h2>
+    <div class="dgrid">
+      ${cell("Agent Skills", d.skills, "暂无该领域技能", p)}
+      ${cell("可用工具", d.repos, "暂无", p)}
+      ${cell("新项目 · 近 90 天", d.fresh, "暂无新建项目", p)}
+    </div>
+    <div class="dq">检索式：<code>${esc(d.queries.skills)}</code> · <code>${esc(d.queries.repos)}</code> · <code>${esc(d.queries.fresh)}</code></div>
+  </section>`,
+    )
+    .join("")}`
+    : `<div class="lead"><b>领域雷达</b> · 本次未抓取到领域数据（GitHub API 限流或网络异常），下次运行会重试</div>
+  <section><p class="empty">暂无领域数据。</p></section>`;
+
+  return pageShell(p, { title: `GitHub 雷达 · 领域雷达 · ${p.mode === "weekly" ? "周报" : "日报"}`, navActive: "domains", body });
+}
+
 function renderCards(p) {
   const periodWord = p.trendPeriod === "weekly" ? "本周" : "今日";
   const cards = renderProjectCards(p);
@@ -599,7 +713,7 @@ function renderCards(p) {
 
 // 仅当以 `node radar.mjs` 直接运行时执行；被 import 时仅导出函数（便于单测）
 const isSelf = process.argv[1] && process.argv[1].replace(/^.*\//, "") === "radar.mjs";
-export { parseTrending, fetchTrending, renderIndex, renderCards, main };
+export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, main };
 
 if (isSelf) {
   main().catch((e) => { console.error("FATAL", e); process.exit(1); });

@@ -78,6 +78,8 @@ DDL = [
       captured_at DATETIME NOT NULL,
       mode VARCHAR(10) NOT NULL,
       section VARCHAR(20) NOT NULL,
+      domain VARCHAR(30) NOT NULL DEFAULT '',
+      column_type VARCHAR(20) NOT NULL DEFAULT '',
       rank_no SMALLINT UNSIGNED NOT NULL,
       full_name VARCHAR(200) NOT NULL,
       stars INT UNSIGNED NOT NULL DEFAULT 0,
@@ -85,9 +87,17 @@ DDL = [
       lang VARCHAR(50) NOT NULL DEFAULT '',
       KEY idx_run (run_id),
       KEY idx_proj_time (full_name, captured_at),
-      KEY idx_section_time (mode, section, captured_at)
+      KEY idx_section_time (mode, section, captured_at),
+      KEY idx_domain (domain, column_type, captured_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     """,
+]
+
+# 老库升级：给已存在的 snapshots 补领域维度字段（已存在则忽略）
+ALTERS = [
+    "ALTER TABLE snapshots ADD COLUMN domain VARCHAR(30) NOT NULL DEFAULT '' AFTER section",
+    "ALTER TABLE snapshots ADD COLUMN column_type VARCHAR(20) NOT NULL DEFAULT '' AFTER domain",
+    "ALTER TABLE snapshots ADD KEY idx_domain (domain, column_type, captured_at)",
 ]
 
 
@@ -153,6 +163,11 @@ def main():
     cur = conn.cursor()
     for ddl in DDL:
         cur.execute(ddl)
+    for alt in ALTERS:
+        try:
+            cur.execute(alt)
+        except Exception:
+            pass  # 字段/索引已存在
     conn.commit()
 
     gen_at = bj_dt(payload.get("generatedAt"))
@@ -178,15 +193,20 @@ def main():
     cur.execute("SELECT id FROM runs WHERE mode=%s AND generated_at=%s", (args.mode, gen_at))
     run_id = cur.fetchone()["id"]
 
-    # ---------- projects（四分区并集） ----------
+    # ---------- projects（四分区 + 领域三栏并集） ----------
+    # 每项：(section, domain, column_type, 数组)
     sections = [
-        ("trending", payload.get("trending", [])),
-        ("growth", payload.get("growthRank", [])),
-        ("topic_hot", payload.get("topicHot", [])),
-        ("rising", payload.get("rising", [])),
+        ("trending", "", "", payload.get("trending", [])),
+        ("growth", "", "", payload.get("growthRank", [])),
+        ("topic_hot", "", "", payload.get("topicHot", [])),
+        ("rising", "", "", payload.get("rising", [])),
     ]
+    for d in payload.get("domains", []) or []:
+        for key in ("skills", "repos", "fresh"):
+            sections.append(("domain", d.get("slug", ""), key, d.get(key) or []))
+
     merged = {}
-    for sec, arr in sections:
+    for sec, dom, col, arr in sections:
         for i, r in enumerate(arr):
             full = r.get("full")
             if not full:
@@ -259,15 +279,15 @@ def main():
     # ---------- snapshots（先删同一 run 再插，保证幂等） ----------
     cur.execute("DELETE FROM snapshots WHERE run_id=%s", (run_id,))
     snap_sql = """INSERT INTO snapshots
-        (run_id, captured_at, mode, section, rank_no, full_name, stars, stars_delta, lang)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+        (run_id, captured_at, mode, section, domain, column_type, rank_no, full_name, stars, stars_delta, lang)
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
     rows = []
-    for sec, arr in sections:
+    for sec, dom, col, arr in sections:
         for i, r in enumerate(arr, 1):
             if not r.get("full"):
                 continue
             rows.append(
-                (run_id, gen_at, args.mode, sec, i, r["full"],
+                (run_id, gen_at, args.mode, sec, dom, col, i, r["full"],
                  int(r.get("stars") or 0), int(r.get("starsToday") or 0), (r.get("lang") or "")[:50])
             )
     if rows:
