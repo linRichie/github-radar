@@ -33,6 +33,36 @@ node radar.mjs --mode weekly            # 周报（近 7 天，周榜）
 - `index.html`：首页仪表盘（单文件、全内联、无外部资源）
 - `cards.html`：上榜项目详解页（同上，独立页面）
 
+## 领域雷达（按业务领域找项目）
+
+`domains.html`：8 个业务领域的项目发现页，每领域三栏，每栏 Top 5。
+
+| 领域 | slug | Agent Skills 检索 | 可用工具 / 新项目 topic |
+|---|---|---|---|
+| 运营 / 增长 | `growth` | `topic:agent-skills marketing` | `marketing` |
+| 产品设计 | `design` | `topic:agent-skills design` | `ui-design` |
+| 产品经理 | `pm` | `topic:agent-skills product management` | `product-management` |
+| 数据分析 | `data` | `topic:agent-skills analytics` | `data-analysis` |
+| 内容创作 | `content` | `topic:agent-skills writing` | `content-management` |
+| 研发效率 / DevOps | `devops` | `topic:agent-skills devops` | `devops` |
+| 销售 / 客户成功 | `sales` | `topic:agent-skills sales` | `crm` |
+| 招聘 / HR | `hr` | `topic:agent-skills recruiting` | `hr` |
+
+三栏查询式（页面上会明文展示，便于审计）：
+
+- **Agent Skills**：`topic:agent-skills <领域词> stars:>10 pushed:>=<窗口>`
+- **可用工具**：`topic:<topic> stars:>100 pushed:>=<窗口>`
+- **新项目**：`topic:<topic> created:>=<90 天前>`
+
+**设计依据（2026-10-21 实测 32 次查询）**：
+- skills 用 `topic:agent-skills <领域词>` 最准（命中 marketingskills ⭐55k、pm-skills ⭐27k 等领域技能集市）
+- 新项目**必须用 topic 而非关键词**：`product management created:>=90d` 是 0 结果，`topic:product-management created:>=90d` 是 1301
+- `design-system` 被「系统设计面试题」污染（`donnemartin/system-design-primer` ⭐375k），产品设计改用 `ui-design`
+- 招聘用 `topic:hr`（17）而非 `topic:recruiting`（4）
+- 24 次查询串行 + 每次间隔 2.2 秒，避免撞 GitHub Search 的 30 次/分钟限流（CI 整体约 90 秒）
+
+调整领域或检索式：编辑 `radar.mjs` 顶部的 `DOMAINS` 数组即可。
+
 ## 数据落盘（阿里云 MySQL）
 
 每次抓取后，CI 会调用 `scripts/load_db.py` 把数据写入阿里云 RDS（MySQL 8），便于长期趋势分析。
