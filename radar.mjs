@@ -39,6 +39,8 @@ const TOPICS = ["mcp", "agent-skills", "claude-skills", "ai-agents", "llm", "cla
 const DOMAINS = [
   { slug: "growth", zh: "运营 / 增长", kw: "marketing", topic: "marketing" },
   { slug: "design", zh: "产品设计", kw: "design", topic: "ui-design" },
+  // 2026-10-22 新增（方向池登记后评估通过）：视觉/组件/图标方向，与「产品设计」分工——design 偏产品原型，ui 偏界面视觉
+  { slug: "ui", zh: "UI / 界面设计", kw: "ui design", topic: "ui-design" },
   { slug: "pm", zh: "产品经理", kw: "product management", topic: "product-management" },
   { slug: "data", zh: "数据分析", kw: "analytics", topic: "data-analysis" },
   { slug: "content", zh: "内容创作", kw: "writing", topic: "content-management" },
@@ -301,7 +303,7 @@ async function main() {
   const activeWatch = watch.filter((w) => (w.latestRelease || (w.commits && w.commits.length)));
 
   // 领域雷达（串行抓取，约 60 秒；失败不阻断主流程）
-  console.log("· 抓取领域雷达（8 领域 × 3 栏，限流保护中）...");
+  console.log(`· 抓取领域雷达（${DOMAINS.length} 领域 × 3 栏，限流保护中）...`);
   const domains = await fetchDomains().catch((e) => {
     console.warn(`  ! domains: ${e.message}`);
     return [];

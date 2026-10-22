@@ -150,6 +150,15 @@
     "cmlarry/EOS": "企业操作系统，AI 时代的企业级管理系统。",
     "Dragkob/HR-Certification-Data": "从招聘信息中提取真实网络安全认证需求的数据集。",
     "cnlarry/EOS": "企业操作系统：AI 时代企业级管理系统，源自 2008 年成型的闭源企业系统。",
-    "jeremylongshore/tons-of-skills-marketplace": "模型无关的 agent 技能平台，含免 harness 的规范化层与多框架适配器。"
+    "jeremylongshore/tons-of-skills-marketplace": "模型无关的 agent 技能平台，含免 harness 的规范化层与多框架适配器。",
+    "Da1yuqin/StarPaper": "面向 Codex 等 agent 的计算机论文写作与学术配图技能。",
+    "KalarisLabs/research-agent-skills": "把任意 AI agent 变成科研助手：280+ 开源 agent 技能。",
+    "Krishna-Modi12/frontend-design-pro": "面向 AI agent 的机器可执行前端 UI/UX 技能包，含注册表与规范。",
+    "MoizIbnYousaf/marketing-cli": "agent 原生的营销 CLI：76 个技能、6 个调研与复盘 agent、品牌管理。",
+    "appflare/appflare": "给 Cloudflare 账号用的应用商店，可一键安装与更新应用。",
+    "arla6ka/design.how": "来自 design.how 的 agent 技能与设计系统，帮助搭建自己的设计系统。",
+    "aws/tools-for-devops-agent": "AWS DevOps Agent 的开源扩展工具集。",
+    "hcengineering/platform": "Huly：一体化项目管理平台，Linear / Jira 的开源替代。",
+    "ryuxdsgn/design-intelligence": "RYUX：给 AI agent 的设计智能，帮助理解产品与界面设计。"
   }
 }
