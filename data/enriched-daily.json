@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-22",
+  "date": "2026-10-23",
   "mode": "daily",
   "generatedBy": "workbuddy-automation",
   "note": "上榜项目结构化解读。字段：tagline 一句话定位 / value 核心价值 / features 主要功能 / scenarios 应用场景 / inputs 输入建议 / caveats 使用提醒。内容基于仓库公开信息撰写，仅供参考。",
@@ -276,6 +276,146 @@
         "金融预测存在固有不确定性，模型输出不构成投资建议",
         "基础模型能力取决于预训练语料覆盖，建议结合自有数据微调",
         "落地前请核对开源许可证与金融数据合规要求"
+      ]
+    },
+    "php/php-src": {
+      "tagline": "PHP 语言的官方解释器，驱动全球大量 Web 服务端运行。",
+      "value": "作为 PHP 运行时核心，是众多网站与框架（如 Laravel）的底层基石。",
+      "features": [
+        "用 C 实现的高性能 Zend 引擎",
+        "完整的语言规范与标准库",
+        "持续的安全补丁与性能优化",
+        "开放源码，社区驱动的版本迭代"
+      ],
+      "scenarios": [
+        "阅读或修改 PHP 内核源码",
+        "追踪语言特性与底层运行机制",
+        "为 PHP 生态做贡献或进行二次开发"
+      ],
+      "inputs": [
+        "C 语言基础",
+        "对 PHP 语言机制的基本理解"
+      ],
+      "caveats": [
+        "仓库产物是源码，需自行编译才能运行",
+        "体量庞大、门槛高，不适合作为日常应用直接部署",
+        "生产环境通常用官方发布版本而非自行编译"
+      ]
+    },
+    "fastapi/fastapi": {
+      "tagline": "基于类型注解的高性能 Python Web 框架。",
+      "value": "用极少代码即可构建带自动文档的生产级 API，开发效率与运行性能兼得。",
+      "features": [
+        "基于 Python 类型提示的自动请求校验",
+        "内置 OpenAPI / Swagger 交互式文档",
+        "原生 async/await 异步支持",
+        "基于 Starlette 与 Pydantic 构建"
+      ],
+      "scenarios": [
+        "快速搭建后端 REST / JSON API",
+        "机器学习模型的服务化封装",
+        "需要类型安全的中小型服务"
+      ],
+      "inputs": [
+        "Python 3.9+ 与基础异步知识",
+        "通过 pip 安装依赖"
+      ],
+      "caveats": [
+        "本质仍是 Python，超高并发需配合 ASGI 服务器与缓存",
+        "不适合纯静态页面场景",
+        "类型注解是发挥出力的前提"
+      ]
+    },
+    "supabase/supabase": {
+      "tagline": "基于 Postgres 的开源后端开发平台（BaaS）。",
+      "value": "把数据库、鉴权、存储、实时订阅与边缘函数打包，替代自建后端大幅提速。",
+      "features": [
+        "托管 Postgres 数据库",
+        "内置用户鉴权与行级安全（RLS）",
+        "对象存储",
+        "实时数据订阅",
+        "自动生成 REST / GraphQL API"
+      ],
+      "scenarios": [
+        "从零搭建产品后端",
+        "需要快速验证想法的创业项目",
+        "替代 Firebase 的开源方案"
+      ],
+      "inputs": [
+        "一个 Supabase 项目（含专属 Postgres 实例）",
+        "前端或客户端调用 SDK"
+      ],
+      "caveats": [
+        "托管服务按用量计费",
+        "深度定制受平台能力边界限制",
+        "数据库迁移需自行管理与备份"
+      ]
+    },
+    "luongnv89/claude-howto": {
+      "tagline": "以可视化示例讲解 Claude Code 的图文指南。",
+      "value": "从基础概念到高级 agent 用法，用大量可复制模板降低 Claude Code 学习曲线。",
+      "features": [
+        "示例驱动的教学内容",
+        "覆盖基础到高级 agent 编写",
+        "可视化步骤说明",
+        "提供可复制粘贴的模板"
+      ],
+      "scenarios": [
+        "初次上手 Claude Code",
+        "系统掌握 agent 编写方法",
+        "团队内部培训资料"
+      ],
+      "inputs": [
+        "对 Claude Code 的基本兴趣",
+        "浏览器即可阅读"
+      ],
+      "caveats": [
+        "是教学资料而非工具本体",
+        "内容随 Claude Code 版本演进，需对照官方更新"
+      ]
+    },
+    "anthropics/knowledge-work-plugins": {
+      "tagline": "面向知识工作者的开源 Claude 插件仓库。",
+      "value": "提供一组可复用插件，把日常知识工作任务接入 Claude 工作流。",
+      "features": [
+        "开源插件集合",
+        "面向知识工作者场景",
+        "可在 Claude 中加载使用"
+      ],
+      "scenarios": [
+        "将文档 / 研究类工作流接入 Claude",
+        "构建个性化的知识处理插件",
+        "探索 Claude 插件机制"
+      ],
+      "inputs": [
+        "Claude 运行环境",
+        "Python 基础（按具体插件而定）"
+      ],
+      "caveats": [
+        "插件能力取决于仓库内容，需自行评估适配性",
+        "作为示例仓库，生产使用前需审阅代码"
+      ]
+    },
+    "Meloong-Git/PCL": {
+      "tagline": "功能丰富的开源 Minecraft 启动器 Plain Craft Launcher。",
+      "value": "用单一工具管理多个游戏版本、账号与模组，降低 MC 玩家配置成本。",
+      "features": [
+        "多版本与多账号管理",
+        "模组 / 整合包支持",
+        "界面本地化（中文友好）"
+      ],
+      "scenarios": [
+        "日常启动与管理 Minecraft",
+        "管理不同版本与模组组合",
+        "新手玩家一站式配置"
+      ],
+      "inputs": [
+        "Windows 环境（VB.NET 编写）",
+        "Java 运行环境"
+      ],
+      "caveats": [
+        "仅限 Minecraft 启动场景",
+        "跨平台支持有限，主要面向 Windows 设计"
       ]
     }
   }
