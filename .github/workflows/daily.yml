@@ -38,4 +38,16 @@ jobs:
           git config user.email "actions@github.com"
           git add -A
           git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
-          git push
+          # 远程可能在此期间被人工提交推进（会报 cannot lock ref / non-fast-forward），
+          # 先 rebase 再重试；生成物冲突时用远程版本覆盖后继续
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git checkout origin/main -- index.html domains.html cards.html 2>/dev/null || true
+              git add index.html domains.html cards.html 2>/dev/null || true
+              git -c core.editor=true rebase --continue || git rebase --abort
+            fi
+            if git push; then echo "pushed on attempt $i"; exit 0; fi
+            sleep 8
+          done
+          echo "push failed after 5 attempts"; exit 1
