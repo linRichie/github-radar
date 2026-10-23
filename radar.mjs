@@ -168,9 +168,15 @@ function normRepo(r) {
   };
 }
 
-async function searchTopic(topic) {
-  const q = encodeURIComponent(`topic:${topic} pushed:>=${SINCE}`);
-  const data = await gh(`/search/repositories?q=${q}&sort=stars&order=desc&per_page=15`);
+// 生态榜检索，两种口径：
+//   hot   —— topic + 近期有提交，按 star 排序＝「这条赛道谁最强」（基线，但大项目长期霸榜）
+//   fresh —— topic + 近 90 天新建，按 star 排序＝「这条赛道新冒出来的」（每日变化的来源）
+async function searchTopic(topic, kind = "hot") {
+  const q =
+    kind === "fresh"
+      ? `topic:${topic} created:>=${FRESH_SINCE} stars:>30`
+      : `topic:${topic} pushed:>=${SINCE}`;
+  const data = await gh(`/search/repositories?q=${encodeURIComponent(q)}&sort=stars&order=desc&per_page=15`);
   return (data.items || []).map(normRepo);
 }
 
@@ -334,16 +340,39 @@ async function fetchDomains() {
 // ---------- 主流程 ----------
 async function main() {
   console.log(`▶ 模式=${MODE} 窗口=${DAYS}天 自=${SINCE} 热榜周期=${TREND_SINCE}`);
-  const [trending, topicGroups, rising] = await Promise.all([
+  const [trending, topicGroups, rising, topicFreshGroups] = await Promise.all([
     fetchTrending(TREND_SINCE).catch((e) => { console.warn(`  ! trending: ${e.message}`); return []; }),
     Promise.all(TOPICS.map((t) => searchTopic(t).catch((e) => { console.warn(`  ! topic ${t}: ${e.message}`); return []; }))),
     searchRising().catch((e) => { console.warn(`  ! rising: ${e.message}`); return []; }),
+    // 生态新贵（近 90 天新建）——榜单每日变化的来源
+    Promise.all(TOPICS.map((t) => searchTopic(t, "fresh").catch((e) => { console.warn(`  ! topic fresh ${t}: ${e.message}`); return []; }))),
   ]);
 
   // 生态热榜去重（同一仓库可能命中多个 topic），按 star 排序
   const byFull = new Map();
   for (const g of topicGroups) for (const r of g) if (!byFull.has(r.full) || byFull.get(r.full).stars < r.stars) byFull.set(r.full, r);
-  const topicHot = [...byFull.values()].sort((a, b) => b.stars - a.stars).slice(0, IS_WEEKLY ? 20 : 12);
+  const hotList = [...byFull.values()].sort((a, b) => b.stars - a.stars);
+
+  // 新贵去重 + 排序（按 star，因为 Search API 不提供 star 增量）
+  const freshMap = new Map();
+  for (const g of topicFreshGroups) for (const r of g) if (!freshMap.has(r.full) || freshMap.get(r.full).stars < r.stars) freshMap.set(r.full, r);
+  const freshList = [...freshMap.values()].sort((a, b) => b.stars - a.stars);
+
+  // 双轨拼榜：新贵优先占前 6（每天都有新面孔），热门补足剩余位（提供稳定基线）
+  const targetN = IS_WEEKLY ? 20 : 12;
+  const freshQuota = Math.min(IS_WEEKLY ? 8 : 6, freshList.length);
+  const topicHot = [];
+  const hotSeen = new Set();
+  for (const r of freshList.slice(0, freshQuota)) {
+    topicHot.push({ ...r, isNew: true });
+    hotSeen.add(r.full);
+  }
+  for (const r of hotList) {
+    if (topicHot.length >= targetN) break;
+    if (hotSeen.has(r.full)) continue;
+    topicHot.push({ ...r, isNew: false });
+    hotSeen.add(r.full);
+  }
 
   // 高增长排行：按「今日/本周 star 增量」降序
   const growthRank = [...trending].sort((a, b) => b.starsToday - a.starsToday).slice(0, 10);
@@ -472,6 +501,7 @@ const CSS = `
   .cmeta .s{color:#111}
   .cmeta .l{color:#6b6b6b}
   .tag{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;padding:1px 7px;margin-right:8px;letter-spacing:.04em}
+  .tag.new{background:#e30613;font-size:9.5px;padding:1px 5px;letter-spacing:.08em}
   .tag a{color:#fff;text-decoration:none}
   .reltime{color:#6b6b6b;font-size:11.5px}
   .cmsg a{color:#111;text-decoration:none;font-weight:600;border-bottom:1px solid #ddd}
@@ -585,9 +615,10 @@ function rowGrowth(r, i, p) {
 }
 
 function rowTopic(r, i, p) {
+  const badge = r.isNew ? `<span class="tag new">NEW</span> ` : "";
   return `<tr>
       <td class="rk">${i + 1}</td>
-      <td class="repo"><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
+      <td class="repo">${badge}<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
       <td class="desc">${descHtml(r, p, 56)}</td>
       <td class="num">${r.stars.toLocaleString()}</td>
       <td class="lang">${esc(r.lang) || "—"}</td>
@@ -736,7 +767,7 @@ function renderIndex(p) {
     </table>
   </section>
   <section>
-    <h2>${no()}AI / Skills / MCP 生态热榜<span class="en">Ecosystem</span></h2>
+    <h2>${no()}AI / Skills / MCP 生态榜<span class="en">Ecosystem</span><span class="hint">前 6 位＝近 90 天新建的新贵（标 NEW，每日轮换）· 其后为赛道热门基线</span></h2>
     <table>
       <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
       <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
