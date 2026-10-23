@@ -219,6 +219,12 @@
     "streamlit/streamlit": "用 Python 快速构建并分享数据应用的开源框架，大幅降低可视化与 ML 演示门槛。",
     "Kayforkind/reimagine-it": "内容驱动的设计 CLI：输入 HTML，基于来源自身的名词、日期、数字与配色输出独立页面。",
     "rendercv/rendercv": "面向学者与工程师的简历生成工具，以代码方式产出规范、可复现的 PDF 简历。",
-    "AienTech/dossier": "自托管的求职应用，依据你的档案自动撰写定制化简历与求职信，可本地运行 LLM。"
+    "AienTech/dossier": "自托管的求职应用，依据你的档案自动撰写定制化简历与求职信，可本地运行 LLM。",
+    "deepseek-ai/deepseek-harness": "DeepSeek 官方 agent harness：一切皆插件的编码 agent 框架。",
+    "Ebony-Vinyl/dsh-our-free-model": "在 dsh 里安装此插件，免注册、免 API Key 即可使用 DeepSeek V4.1 等模型。",
+    "hypit-ai/hypit": "用 AI agent 克隆爆款视频，不只是脚本，而是完整工作流。",
+    "Gathin23/cleanyourtv": "免 root 把任意 Android / Google TV 改成 Apple TV 风格主页。",
+    "lexmount/moli": "面向 AI agent 的最快无头浏览器，Rust 编写，轻量高并发。",
+    "yetone/magpie": "给 agent 的模型聚合入口：Codex on DeepSeek、Claude Code on Kimi 一键切换。"
   }
 }
