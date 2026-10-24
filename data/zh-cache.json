@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-10-23",
+  "updatedAt": "2026-10-24",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -225,6 +225,31 @@
     "hypit-ai/hypit": "用 AI agent 克隆爆款视频，不只是脚本，而是完整工作流。",
     "Gathin23/cleanyourtv": "免 root 把任意 Android / Google TV 改成 Apple TV 风格主页。",
     "lexmount/moli": "面向 AI agent 的最快无头浏览器，Rust 编写，轻量高并发。",
-    "yetone/magpie": "给 agent 的模型聚合入口：Codex on DeepSeek、Claude Code on Kimi 一键切换。"
+    "yetone/magpie": "给 agent 的模型聚合入口：Codex on DeepSeek、Claude Code on Kimi 一键切换。",
+    "NVIDIA/OpenShell": "NVIDIA 推出的自主 AI agent 安全私有运行时，强调本地隔离与数据不出域。",
+    "Renhuai123/ziwei-doushu": "开源紫微斗数排盘引擎：基于《天纪》体系，含排盘算法、四化系统与古籍数据。",
+    "SnailSploit/Claude-Red": "面向 Claude skills 的 offensive security 技能库，覆盖 SQLi 到 shellcode 等攻击面。",
+    "OpenBMB/VoxCPM": "无分词器的多语种 TTS 模型 VoxCPM2，支持创意声线设计与高保真语音克隆。",
+    "nodejs/node": "Node.js 官方运行时仓库，JavaScript 服务端生态的事实标准基石。",
+    "Snapintosh/Snapintosh": "在 ASUS A16（骁龙 X2 Elite）上启动 macOS 的 EL2 级 Hypervisor 与工具链。",
+    "tunflwgudkyb/cs2-external-esp": "CS2 外部透视（ESP）与自瞄研究项目，读取游戏内存绘制叠加层，仅供安全研究。",
+    "actionow-ai/vvv": "一次构建视频模板、跨多个编码 agent 复用：可编辑 Remotion 模板与 Agent Skill。",
+    "wpfigfszroxn/pubg-external-esp": "PUBG 外部 ESP / 自瞄研究项目，基于只读 DMA 叠加层读取游戏内存，仅供安全研究。",
+    "7API/uncensored-ai-api": "无审查 AI API 聚合网关：一个 Key 调 Claude、GPT、Gemini 等，按 token 计费。",
+    "backtrue/thinkwithblack-skill": "365 个免费 AI 营销技能（繁中/英），覆盖文案、广告预算、CRM 与邮件，适配多 agent。",
+    "alchaincyf/huashu-design": "在 agent 里一句话拿回可交付设计：网页 / App 原型 / PPTX / 动画，含 84 种风格库。",
+    "vueComponent/ant-design-vue": "基于 Ant Design 与 Vue 的企业级 UI 组件库，成熟稳定的前端组件方案。",
+    "Moddingflow/better-design": "面向 AI 编码 agent 的 UI/UX 设计技能：艺术指导、设计令牌、动效与可访问性校验。",
+    "NVIDIA/skills": "NVIDIA 官方 Agent Skills：接入 Claude Code 等 agent，打通物理 AI、机器人、CUDA 与 RAG。",
+    "zhuyansen/new-term-radar": "每日 AI 新词雷达：在关键词工具收录前，从 X、Hugging Face、GitHub 抓取新模型与产品。",
+    "huytieu/COG-second-brain": "自进化第二大脑：35 个 AI 技能、10 个 agent 与 CRM，含闭环验证与 anti-slop 设计技能。",
+    "Kaelio/ktx": "数据分析 agent 的可执行上下文层：让 Claude Code 等准确查询企业分析数据库。",
+    "retentioneering/retentioneering-tools": "可复现、可审计的点击流与事件日志分析工具包，含 MCP server 与 agent 技能。",
+    "zenstory-ai/oh-story-claudecode": "面向 Claude Code 等的中文网文写作技能集：扫榜、拆文、写作、去 AI 味全流程。",
+    "craftcms/cms": "Craft CMS：用 PHP 构建定制化内容体验的开源内容管理系统。",
+    "microweber/microweber": "拖拽式建站与 CMS 系统，内置电商功能，基于 Laravel 与 PHP 构建。",
+    "fossaryhq/catalog": "自托管应用公开目录：收录经审阅的 Docker Compose 配方，便于 homelab 一键部署。",
+    "w8123/EnterpriseAgentFramework": "企业级智能体框架 ReachAI：在安全前提下为 OA、ERP、CRM 等存量系统做智能化改造。",
+    "aureuserp/aureuserp": "免费开源的 ERP 软件，覆盖财务、库存、HR、制造与采购等业务模块。"
   }
 }
