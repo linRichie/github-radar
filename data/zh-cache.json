@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-10-24",
+  "updatedAt": "2026-10-25",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -250,6 +250,25 @@
     "microweber/microweber": "拖拽式建站与 CMS 系统，内置电商功能，基于 Laravel 与 PHP 构建。",
     "fossaryhq/catalog": "自托管应用公开目录：收录经审阅的 Docker Compose 配方，便于 homelab 一键部署。",
     "w8123/EnterpriseAgentFramework": "企业级智能体框架 ReachAI：在安全前提下为 OA、ERP、CRM 等存量系统做智能化改造。",
-    "aureuserp/aureuserp": "免费开源的 ERP 软件，覆盖财务、库存、HR、制造与采购等业务模块。"
+    "aureuserp/aureuserp": "免费开源的 ERP 软件，覆盖财务、库存、HR、制造与采购等业务模块。",
+    "aws/agent-toolkit-for-aws": "AWS 官方维护的 MCP 服务、技能与插件集合，帮助 AI 智能体在 AWS 云上构建应用与基础设施。",
+    "Nutlope/hallmark": "面向 Claude Code、Cursor 与 Codex 的 anti-AI-slop 设计规范技能，纠正 AI 千篇一律的界面输出。",
+    "pbakaus/impeccable": "一套面向 AI 编码工具的设计语言与规范，让生成界面更专业、更贴合真实产品审美。",
+    "pollen-robotics/microduck": "巴掌大的双足鸭子机器人，开源硬件与固件，适合学习足式运动控制与创客演示。",
+    "google-gemini/gemini-cli": "谷歌开源的终端 AI 智能体，将 Gemini 大模型能力直接搬进命令行，支持代码与自动化任务。",
+    "jbiaojerry/ebook-treasure-chest": "汇集帆书、微信读书、京东读书、喜马拉雅等平台海量电子书下载链接，覆盖文学、经管、技术等多品类。",
+    "makecindy/cindy": "开源、开箱即用的 AI Agent，主打『想到就能做到』，无需复杂配置即可自动化完成各类任务。",
+    "JustAResearcher/gpu-unlock-ada": "RTX 4090 与实验性 4070 Ti SUPER 的 GPU 算力解锁源码，固件本地生成，释放被限制的张量性能。",
+    "appariciojunior/video-editor-skills": "教 Claude Code 在 DaVinci Resolve 中做初剪的技能集：字幕、节奏、B roll、配乐与导出（非商用）。",
+    "ivarvong/lantern": "零依赖 TypeScript 工具，生成可分步播放的动画代码讲解，输出 SVG，可在浏览器与 Cloudflare Workers 运行。",
+    "songjianyang/xss-audit": "针对 React、TypeScript 与 JavaScript 项目的静态 XSS 审计技能，内置 14 层检查，提前发现前端注入漏洞。",
+    "mirkobrombin/raven": "一套让桌面应用更易识别窗口与上下文的 Windows 工具，提升自动化与多任务操作的协作体验。",
+    "irinabuht12-oss/marketing-skills": "面向 Claude 的 49 个免费营销技能（Google/Meta 广告、SEO、AI 可见度）并配套 Ryze 广告 MCP 连接器。",
+    "avivsinai/langfuse-mcp": "Langfuse 的 MCP 服务，让 AI 智能体直接查询追踪数据，提升大模型应用的调试与可观测能力。",
+    "dpalfery/kyber-weave": "跨编码智能体的元 harness 框架，支持规划、构建、评审与调优，含技能编排、质量门禁与本地 token 可观测。",
+    "dokku/dokku": "基于 Docker 的自建 PaaS 平台，帮你构建并管理应用全生命周期，是轻量版 Heroku 的开源替代。",
+    "etrebels/claude-code-growth-os": "Claude Code 增长操作系统，将销售、营销、产品与留存整合为统一的营收增长体系（GTM/RevOps）。",
+    "ouxxyy/ouba-classmate": "欧八同学的 AI 技能与求职涨薪工具集：岗位筛选、简历匹配、面试陪练、视频分镜与本地小工具。",
+    "vanshb03/Summer2027-Internships": "汇总 2027 年暑期、秋季与春季技术实习机会，覆盖各大科技公司实习岗位与申请信息。"
   }
 }
