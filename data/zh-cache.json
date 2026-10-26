@@ -294,6 +294,26 @@
     "leaperone/MultiPost-Extension": "一键将内容同步发布到多个社交媒体平台的浏览器扩展，简化跨平台运营。",
     "rampstackco/claude-skills": "覆盖网站全生命周期的 Claude 技能集：品牌、设计、内容、SEO、开发、运维、增长与研究。",
     "coco-research/coco": "把 Claude Code/Cursor/Codex 编排成工程部门的调度层：226 技能、386 命令与持久状态，本地运行。",
-    "akaunting/akaunting": "开源在线会计软件，提供发票、收支、报表等中小企业财务管理功能。"
+    "akaunting/akaunting": "开源在线会计软件，提供发票、收支、报表等中小企业财务管理功能。",
+    "heygen-com/hyperframes": "用 HTML 编写内容并直接渲染为视频，专为 AI 智能体与自动化内容生产设计。",
+    "android/skills": "安卓官方维护的 Agent Skills 技能集，方便在 Android 项目中调用智能体能力。",
+    "akitaonrails/ai-memory": "为编程类智能体命令行工具提供长期记忆，便于跨会话衔接与上下文移交。",
+    "anthropics/claude-plugins-official": "Anthropic 官方维护的高质量 Claude Code 插件目录，集中收录可信扩展。",
+    "multica-ai/andrej-karpathy-skills": "基于 Andrej Karpathy 建议整理的单文件 CLAUDE.md，用于优化 Claude Code 行为。",
+    "pingdotgg/t3code": "T3 全栈技术栈相关的代码模板与示例集合，便于快速搭建现代 Web 应用。",
+    "google/artemis": "将自然语言指令转化为可靠的安卓自动化操作，降低移动端自动化门槛。",
+    "genspark-ai/genoffice": "免费开源的 AI 办公套件，涵盖文档、表格、幻灯片、PDF 与 Markdown/HTML 编辑。",
+    "Snailclimb/JavaGuide": "Java 面试与后端通用指南，覆盖计算机基础、数据库、分布式、高并发与系统设计、AI 应用。",
+    "EthanArbuckle/fairplay-decrypt": "离线解密 FairPlay 加密的 App Store IPA 包，基于独立密钥派生实现。",
+    "xevrion/hatchzip": "免费开源的跨平台压缩包解压工具，支持 Windows、macOS 与 Linux。",
+    "Jakeschincariol/day-trader-skill": "11 个用于日内交易的 Claude 技能，可扫描海量图表、追踪突发新闻并辅助决策。",
+    "oosexgang/hackios-xnu-kernel": "面向 iOS XNU 内核的研究与调试工具集合，聚焦底层内核机制探索。",
+    "openai/php2shell-checker": "OpenAI 出品的 PHP 后门检测工具，用于识别代码中的 PHP-to-shell 安全风险。",
+    "memi-design/memi": "面向智能体 AI 的设计层，提供设计上下文、界面检查与设计一致性校验。",
+    "AIDevGTM/gtm-cofounder": "开源的 GTM（市场进入）联合创始人助手，曾登 Product Hunt 当日榜首。",
+    "victorgassuncao21/piper-morgan-assistant": "面向 Python 的智能产品管理助手 Piper Morgan，辅助需求与产品规划。",
+    "K-Dense-AI/scientific-agent-skills": "将任意 AI 智能体变成 AI 科学家，号称头号科研向 Agent Skills 技能库。",
+    "DevOpsAIguru123/awesome-agentic-devops": "精选并打分的 DevOps、云与 SRE 官方 MCP 服务器与智能体地图。",
+    "Kong/kong": "🦍 开源的 API 与 AI 网关，统一处理流量、安全与多模型路由。"
   }
 }
