@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-10-25",
+  "updatedAt": "2026-10-26",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -269,6 +269,31 @@
     "dokku/dokku": "基于 Docker 的自建 PaaS 平台，帮你构建并管理应用全生命周期，是轻量版 Heroku 的开源替代。",
     "etrebels/claude-code-growth-os": "Claude Code 增长操作系统，将销售、营销、产品与留存整合为统一的营收增长体系（GTM/RevOps）。",
     "ouxxyy/ouba-classmate": "欧八同学的 AI 技能与求职涨薪工具集：岗位筛选、简历匹配、面试陪练、视频分镜与本地小工具。",
-    "vanshb03/Summer2027-Internships": "汇总 2027 年暑期、秋季与春季技术实习机会，覆盖各大科技公司实习岗位与申请信息。"
+    "vanshb03/Summer2027-Internships": "汇总 2027 年暑期、秋季与春季技术实习机会，覆盖各大科技公司实习岗位与申请信息。",
+    "debpalash/VoiceStudio": "开源、完全本地的 ElevenLabs 替代品：支持语音克隆、配音、听写、转录与有声书生成，覆盖 646 种语言。",
+    "TauricResearch/TradingAgents": "基于多智能体大模型的金融交易框架，用 LLM 协作完成市场分析与自动交易决策。",
+    "JetBrains/thinkrail": "轻量级真 IDE，围绕你的工作习惯自我定制，支持在树莓派上 vibe coding 开发。",
+    "coollabsio/coolify": "开源可自托管的 PaaS 平台，在自有服务器上一键部署静态站、数据库与全栈应用，对标 Vercel/Heroku。",
+    "AgriciDaniel/claude-seo": "Claude Code 通用 SEO 技能包：含 26 个子技能与 19 个子智能体，覆盖技术 SEO、E-E-A-T、GEO 与报告。",
+    "LinklyAI/best-skills": "每日更新的 Agent Skills 百强榜，聚合安装量、增长与社媒热度，开放 CSV 数据。",
+    "Gentleman-Programming/gentle-shell": "树莓派原生 AI 开发终端：集成并行编码智能体、实时任务、Git diff 与持久记忆。",
+    "talkstream/ru-text": "面向 AI 智能体的俄文文本质检工具：清理废话、规范排版与文风，按 0–10 评分。",
+    "galiprandi/job-seeker": "用编码智能体自动化求职：提供技能、指南与脚本，代为搜索、投递并追踪职位。",
+    "rddmwmddr/android-ad-cleaner": "关掉国产安卓手机系统里的广告、热搜、资讯推荐和营销推送；不 root、可还原，支持 AI 智能体一键执行。",
+    "mizorewww/gdirect": "用 Rust 编写、基于固定 libaria2 的 Google Drive 直链下载器，绕过限速稳定拉取大文件。",
+    "DenisSergeevitch/ex-ussr-kinship-research": "面向 AI 智能体的寻根技能：查阅前苏联教堂、户籍、军政与镇压档案，按你的语言回复。",
+    "designfuchen/word-atlas": "词光·一词一画点亮雅思：7,298 个雅思词配原创插画、英美音频、例句与 FSRS 复习，免费开源。",
+    "routerhubSI/glm-5.3-abliterated": "经 RouterHub 提供 GLM 5.3 去审查 API：汇集越狱提示、模型对比、SDK 示例与定价评测指南。",
+    "Release-DLSS-5-Swapper/.github": "面向 PC 玩家的图形配置工具，便于为兼容游戏管理与替换 DLSS 5 等渲染组件。",
+    "routerhubSI/uncensored-ai-api": "一键调用 Claude、GPT、Gemini 等无审查模型的 API，兼容 OpenAI/Anthropic，按 token 计费。",
+    "rbl-all-toosl/Roblox-Scripts": "PC 端 Roblox 脚本执行器与各类 Mod 菜单、作弊脚本合集，供桌面端使用。",
+    "wangrongding/tv-fresh": "小米电视(MIUI TV)去广告、清预装、换桌面、装代理与影视仓的 Agent Skill，免 root 可逆，含逆向实录与一键脚本。",
+    "misshexa66/OunceCake": "用于提取 Switch 2 游戏未加密 romFS 与 exeFS 文件的导出工具，便于资源提取与分析。",
+    "xMazaki/unbloat-android-tv": "精简任意 Android TV 的广告与遥测、换极简类 Apple TV 桌面，双击可逆、一键瘦身。",
+    "jouaaaaaa/mcd-self-butler": "基于麦当劳 MCP 的点单参谋：每日推荐、套餐体检、门店比价、团餐配餐与麦险分信用评级。",
+    "leaperone/MultiPost-Extension": "一键将内容同步发布到多个社交媒体平台的浏览器扩展，简化跨平台运营。",
+    "rampstackco/claude-skills": "覆盖网站全生命周期的 Claude 技能集：品牌、设计、内容、SEO、开发、运维、增长与研究。",
+    "coco-research/coco": "把 Claude Code/Cursor/Codex 编排成工程部门的调度层：226 技能、386 命令与持久状态，本地运行。",
+    "akaunting/akaunting": "开源在线会计软件，提供发票、收支、报表等中小企业财务管理功能。"
   }
 }
