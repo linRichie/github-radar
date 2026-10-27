@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T14:36:41+08:00",
+ "generated_at": "2026-10-27T14:43:23+08:00",
  "mode": "daily",
  "window_days": 3,
  "window_start": "2026-10-24",
@@ -8,121 +8,121 @@
  "items": [
   {
    "full": "morluto/rea",
-   "stars": 393147,
+   "stars": 393197,
    "stars_then": 373275,
-   "delta": 19872,
+   "delta": 19922,
    "delta_pct": 5.3,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Gathin23/cleanyourtv",
-   "stars": 39936,
+   "stars": 39953,
    "stars_then": 28000,
-   "delta": 11936,
-   "delta_pct": 42.6,
+   "delta": 11953,
+   "delta_pct": 42.7,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Ebony-Vinyl/dsh-our-free-model",
-   "stars": 45365,
+   "stars": 45387,
    "stars_then": 39167,
-   "delta": 6198,
-   "delta_pct": 15.8,
+   "delta": 6220,
+   "delta_pct": 15.9,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "deepseek-ai/deepseek-harness",
-   "stars": 262935,
+   "stars": 262941,
    "stars_then": 259453,
-   "delta": 3482,
+   "delta": 3488,
    "delta_pct": 1.3,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "yetone/magpie",
-   "stars": 22950,
+   "stars": 22960,
    "stars_then": 20222,
-   "delta": 2728,
+   "delta": 2738,
    "delta_pct": 13.5,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "affaan-m/ECC",
-   "stars": 290077,
+   "stars": 290078,
    "stars_then": 288877,
-   "delta": 1200,
+   "delta": 1201,
    "delta_pct": 0.4,
    "since": "2026-10-26 09:14"
   },
   {
    "full": "firecrawl/firecrawl",
-   "stars": 195776,
+   "stars": 195779,
    "stars_then": 194684,
-   "delta": 1092,
+   "delta": 1095,
    "delta_pct": 0.6,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Graphify-Labs/graphify",
-   "stars": 136354,
+   "stars": 136359,
    "stars_then": 135292,
-   "delta": 1062,
+   "delta": 1067,
    "delta_pct": 0.8,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "NousResearch/hermes-agent",
-   "stars": 257493,
+   "stars": 257499,
    "stars_then": 256532,
-   "delta": 961,
+   "delta": 967,
    "delta_pct": 0.4,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "hypit-ai/hypit",
-   "stars": 25944,
+   "stars": 25945,
    "stars_then": 25117,
-   "delta": 827,
+   "delta": 828,
    "delta_pct": 3.3,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "lexmount/moli",
-   "stars": 20989,
+   "stars": 20992,
    "stars_then": 20320,
-   "delta": 669,
+   "delta": 672,
    "delta_pct": 3.3,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Jakeschincariol/day-trader-skill",
-   "stars": 2127,
+   "stars": 2128,
    "stars_then": 1635,
-   "delta": 492,
-   "delta_pct": 30.1,
+   "delta": 493,
+   "delta_pct": 30.2,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "ollama/ollama",
-   "stars": 184933,
+   "stars": 184935,
    "stars_then": 184492,
-   "delta": 441,
+   "delta": 443,
    "delta_pct": 0.2,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "n8n-io/n8n",
-   "stars": 208709,
+   "stars": 208710,
    "stars_then": 208414,
-   "delta": 295,
+   "delta": 296,
    "delta_pct": 0.1,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "simbasjungles/free-my-tv",
-   "stars": 4896,
+   "stars": 4897,
    "stars_then": 4620,
-   "delta": 276,
+   "delta": 277,
    "delta_pct": 6.0,
    "since": "2026-10-26 09:44"
   },
@@ -144,17 +144,17 @@
   },
   {
    "full": "f/prompts.chat",
-   "stars": 174686,
+   "stars": 174687,
    "stars_then": 174554,
-   "delta": 132,
+   "delta": 133,
    "delta_pct": 0.1,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "open-webui/open-webui",
-   "stars": 156879,
+   "stars": 156881,
    "stars_then": 156754,
-   "delta": 125,
+   "delta": 127,
    "delta_pct": 0.1,
    "since": "2026-10-26 09:44"
   },
@@ -168,9 +168,9 @@
   },
   {
    "full": "Significant-Gravitas/AutoGPT",
-   "stars": 187783,
+   "stars": 187784,
    "stars_then": 187719,
-   "delta": 64,
+   "delta": 65,
    "delta_pct": 0.0,
    "since": "2026-10-24 09:08"
   },
