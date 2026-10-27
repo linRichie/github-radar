@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23111'/%3E%3Ctext x='34' y='45' font-family='Helvetica,Arial,sans-serif' font-size='36' font-weight='900' fill='%23fff' text-anchor='middle'%3ER%3C/text%3E%3Ccircle cx='47' cy='17' r='5' fill='%23E30613'/%3E%3C/svg%3E">
+<title>GitHub 雷达 · 历史回看 · 日报</title>
+</head>
+<body>
+<div class="page">
+  <div class="masthead">
+    <div class="mh-left">
+      <h1>GitHub<br>雷达<em>.</em></h1>
+      <div class="sub">GITHUB RADAR — TRENDING / GROWTH / AI SKILLS &amp; MCP</div>
+    </div>
+    <div class="mh-right">
+      <span class="badge">DAILY 日报</span>
+      <div class="date">2026.10.27</div>
+      <div>北京时间 15:25 更新</div>
+      <a href="https://radar.moniter.top" target="_blank" rel="noopener">https://radar.moniter.top</a>
+    </div>
+  </div>
+  <nav class="nav">
+    <a href="./" class="">首页</a>
+    <a href="./domains.html" class="">领域雷达</a>
+    <a href="./history.html" class="on">历史</a>
+    <a href="./cards.html" class="">上榜项目详解</a>
+    <span class="navwriter">撰稿<b>老王</b> · wlh.richard@gmail.com</span>
+  </nav>
+  
+  <div class="lead"><b>历史回看</b> · 数据源：每日抓取的数据库快照导出（数据库全量保留，此处仅为站点视图）· <b>趋势</b>看项目 star 曲线与排名 · <b>回放</b>看任意一天的完整榜单 · 空缺日断线、不做插值</div>
+  <div class="hswitch">
+    <button class="hbtn on" data-v="trend">趋势查询</button>
+    <button class="hbtn" data-v="replay">日期回放</button>
+  </div>
+  <div class="hpanel" id="pTrend">
+    <div class="sb-row"><input id="hq" type="text" placeholder="搜索项目名（如 browser / career-ops），或直接看下方涨星榜" autocomplete="off"><button id="hgo" type="button">搜索</button></div>
+    <div class="sb-tip" id="htip">加载中…</div>
+    <div id="hlist" class="hlist" style="margin-top:14px"></div>
+    <div id="hdetail"></div>
+  </div>
+  <div class="hpanel" id="pReplay" style="display:none">
+    <div class="sb-row" style="max-width:480px"><select id="hdate" style="flex:1;border:1px solid #111;padding:10px 13px;font-size:13.5px;font-family:inherit;background:#fff;color:#111"></select></div>
+    <div id="hreplay" style="margin-top:16px"></div>
+  </div>
+  <script>
+  (function () {
+    // 本地用 file:// 直接打开时 fetch 会被 CORS 拦截：只跳过数据加载，按钮仍绑定事件
+    var IS_FILE = location.protocol === "file:";
+    var TREND = "./data/history-trend.json";
+    var INDEX = "./data/history/index.json";
+    var DAILY = "./data/history/daily/";
+    var trendData = null, indexData = null, selFull = null;
+
+    function $(id) { return document.getElementById(id); }
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function fmt(n) { return Number(n || 0).toLocaleString(); }
+
+    // 视图切换
+    var btns = document.querySelectorAll(".hbtn");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        var v = b.getAttribute("data-v");
+        Array.prototype.forEach.call(btns, function (x) { x.classList.toggle("on", x === b); });
+        $("pTrend").style.display = v === "trend" ? "" : "none";
+        $("pReplay").style.display = v === "replay" ? "" : "none";
+        if (v === "replay" && !$("hreplay").getAttribute("data-loaded")) initReplay();
+      });
+    });
+
+    // 趋势数据
+    function loadTrend() {
+      fetch(TREND).then(function (r) { return r.json(); }).then(function (d) {
+        trendData = d;
+        $("htip").innerHTML = "共 <b>" + d.count + "</b> 个项目（出现 ≥2 天）· 窗口 " + d.window_days +
+          " 天 · 自 " + esc(d.since) + " · 更新于 " + esc(String(d.updated).slice(11, 16));
+        renderList("");
+      }).catch(function (e) {
+        $("htip").textContent = "趋势数据加载失败：" + e.message;
+        $("hlist").innerHTML = '<div class="hempty">暂无趋势数据（首次导出后可见）</div>';
+      });
+    }
+
+    function renderList(q) {
+      if (!trendData) return;
+      var list = trendData.projects || [];
+      if (q) {
+        var ql = q.toLowerCase();
+        list = list.filter(function (x) {
+          return x.f.toLowerCase().indexOf(ql) >= 0 || (x.d || "").toLowerCase().indexOf(ql) >= 0;
+        });
+      }
+      var top = list.slice(0, 40);
+      if (!top.length) {
+        $("hlist").innerHTML = '<div class="hempty">没有匹配的项目。<br>趋势数据只收录「上榜 ≥2 天」的项目（只出现 1 天的画不出曲线）；' +
+          "这类项目可在「日期回放」里按天查看。</div>";
+        return;
+      }
+      var h = "";
+      top.forEach(function (x) {
+        h += '<div class="hrow' + (x.f === selFull ? " sel" : "") + '" data-f="' + esc(x.f) + '">' +
+          '<span class="hg">' + (x.g >= 0 ? "+" : "") + fmt(x.g) + "★</span>" +
+          '<span class="hf">' + esc(x.f) + "</span>" +
+          '<span class="hd">' + esc(x.d || "暂无简介") + "</span></div>";
+      });
+      $("hlist").innerHTML = h;
+      Array.prototype.forEach.call($("hlist").querySelectorAll(".hrow"), function (el) {
+        el.addEventListener("click", function () { showDetail(el.getAttribute("data-f")); });
+      });
+    }
+
+    function showDetail(full) {
+      selFull = full;
+      Array.prototype.forEach.call(document.querySelectorAll(".hrow"), function (el) {
+        el.classList.toggle("sel", el.getAttribute("data-f") === full);
+      });
+      var x = (trendData.projects || []).filter(function (p) { return p.f === full; })[0];
+      if (!x) return;
+      var gcls = x.g >= 0 ? "pos" : "neg";
+      var secLabel = (x.sec || []).map(function (s) {
+        return s.indexOf("domain:") === 0 ? s.slice(7) + "（领域）" : s;
+      }).join(" / ");
+      var html = '<div class="hdetail">' +
+        '<div class="hdh"><h3>' + esc(x.f) + '</h3><div class="hdsub">' + esc(x.d || "暂无简介") +
+        "<br>上榜 " + x.n + " 天 · " + esc(x.a) + " → " + esc(x.b) + " · 分区：" + esc(secLabel || "—") + "</div></div>" +
+        '<div class="hchart">' + drawChart(x.x) + "</div>" +
+        '<div class="hstats">' +
+        '<div class="hstat"><div class="k">当前 star</div><div class="v">' + fmt(x.s) + "</div></div>" +
+        '<div class="hstat"><div class="k">期间增长</div><div class="v ' + gcls + '">' + (x.g >= 0 ? "+" : "") + fmt(x.g) + "</div></div>" +
+        '<div class="hstat"><div class="k">涨幅</div><div class="v ' + gcls + '">' + (x.p >= 0 ? "+" : "") + x.p + "%</div></div>" +
+        '<div class="hstat"><div class="k">上榜天数</div><div class="v">' + x.n + "</div></div>" +
+        '<div class="hstat"><div class="k">最好排名</div><div class="v">#' + x.br + "</div></div>" +
+        "</div></div>";
+      $("hdetail").innerHTML = html;
+    }
+
+    // SVG 折线：空缺日断线（不插值）
+    function drawChart(series) {
+      var W = 760, H = 200, pL = 56, pR = 14, pT = 18, pB = 30;
+      var dates = (indexData && indexData.dates)
+        ? indexData.dates.map(function (d) { return d.d; }).slice().reverse()
+        : series.map(function (x) { return x.d; });
+      var map = {};
+      series.forEach(function (x) { map[x.d] = x.s; });
+      var vals = series.map(function (x) { return x.s; });
+      var minY = Math.min.apply(null, vals), maxY = Math.max.apply(null, vals);
+      if (minY === maxY) { minY -= 10; maxY += 10; }
+      var pad = (maxY - minY) * 0.12; minY -= pad; maxY += pad;
+      var n = Math.max(dates.length - 1, 1);
+      function px(i) { return pL + (W - pL - pR) * (i / n); }
+      function py(v) { return pT + (H - pT - pB) * (1 - (v - minY) / (maxY - minY)); }
+
+      var segs = [], cur = [];
+      dates.forEach(function (d, i) {
+        if (map[d] != null) { cur.push([i, map[d]]); }
+        else { if (cur.length) { segs.push(cur); cur = []; } }
+      });
+      if (cur.length) segs.push(cur);
+
+      var s = '<svg viewBox="0 0 ' + W + " " + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="star 趋势">';
+      for (var g = 0; g <= 3; g++) {
+        var v = minY + (maxY - minY) * (g / 3);
+        var y = py(v).toFixed(1);
+        s += '<line x1="' + pL + '" y1="' + y + '" x2="' + (W - pR) + '" y2="' + y + '" stroke="#e6e6e6" stroke-width="1"/>';
+        s += '<text x="' + (pL - 8) + '" y="' + (Number(y) + 3.5).toFixed(1) + '" text-anchor="end" font-size="9.5" fill="#767676" font-family="Helvetica,Arial,sans-serif">' + fmt(Math.round(v)) + "</text>";
+      }
+      segs.forEach(function (seg) {
+        if (seg.length > 1) {
+          var pts = seg.map(function (p) { return px(p[0]).toFixed(1) + "," + py(p[1]).toFixed(1); }).join(" ");
+          s += '<polyline points="' + pts + '" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+        }
+        seg.forEach(function (p) {
+          s += '<circle cx="' + px(p[0]).toFixed(1) + '" cy="' + py(p[1]).toFixed(1) + '" r="3" fill="#e30613"/>';
+        });
+      });
+      var marks = dates.length <= 3 ? dates.map(function (d, i) { return i; }) : [0, Math.floor((dates.length - 1) / 2), dates.length - 1];
+      marks.forEach(function (i) {
+        s += '<text x="' + px(i).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="9.5" fill="#767676" font-family="Helvetica,Arial,sans-serif">' + String(dates[i]).slice(5) + "</text>";
+      });
+      s += '<line x1="' + pL + '" y1="' + (H - pB) + '" x2="' + (W - pR) + '" y2="' + (H - pB) + '" stroke="#111" stroke-width="1"/>';
+      return s + "</svg>";
+    }
+
+    // 回放
+    function initReplay() {
+      $("hreplay").setAttribute("data-loaded", "1");
+      var sel = $("hdate");
+      if (!indexData || !indexData.dates.length) {
+        $("hreplay").innerHTML = '<div class="hempty">暂无历史快照</div>';
+        return;
+      }
+      sel.innerHTML = indexData.dates.map(function (x) {
+        return '<option value="' + x.d + '">' + x.d + "（" + x.n + " 条 · " + x.t + "）</option>";
+      }).join("");
+      sel.addEventListener("change", function () { renderReplay(sel.value); });
+      renderReplay(sel.value);
+    }
+
+    function renderReplay(date) {
+      $("hreplay").innerHTML = '<div class="hempty">加载 ' + esc(date) + " …</div>";
+      fetch(DAILY + date + ".json").then(function (r) { return r.json(); }).then(function (d) {
+        var names = { trending: "GitHub 热榜", growth: "高增长排行", topic_hot: "AI / Skills / MCP 生态榜", rising: "新锐项目" };
+        var h = "";
+        ["trending", "growth", "topic_hot", "rising"].forEach(function (k) {
+          var arr = (d.sections && d.sections[k]) || [];
+          if (arr.length) h += '<div class="hrep-sec"><h3>' + names[k] + " · " + arr.length + " 项</h3>" + tbl(arr) + "</div>";
+        });
+        var dk = Object.keys(d.domains || {});
+        if (dk.length) {
+          h += '<div class="hrep-sec"><h3>领域雷达 · ' + dk.length + " 个领域</h3>";
+          var colName = { skills: "Agent Skills", repos: "可用工具", fresh: "新项目" };
+          dk.forEach(function (dom) {
+            var cols = d.domains[dom];
+            h += '<div style="font-size:11px;font-weight:800;margin:10px 0 4px;letter-spacing:.1em">' + esc(String(dom).toUpperCase()) + "</div>";
+            ["skills", "repos", "fresh"].forEach(function (c) {
+              var arr = cols[c] || [];
+              if (arr.length) h += '<div style="font-size:10.5px;color:#666;margin:6px 0 2px">' + colName[c] + "</div>" + tbl(arr);
+            });
+          });
+          h += "</div>";
+        }
+        $("hreplay").innerHTML = h || '<div class="hempty">该日无数据</div>';
+      }).catch(function (e) {
+        $("hreplay").innerHTML = '<div class="hempty">加载失败：' + esc(e.message) + "</div>";
+      });
+    }
+
+    function tbl(arr) {
+      var h = "<table>";
+      arr.forEach(function (x) {
+        h += '<tr><td class="rk">' + x.r + '</td><td class="nm"><a href="https://github.com/' + esc(x.f) +
+          '" target="_blank" rel="noopener">' + esc(x.f) + '</a></td><td class="st">★ ' + fmt(x.s) +
+          '</td><td class="dz">' + esc(x.d || "") + "</td></tr>";
+      });
+      return h + "</table>";
+    }
+
+    if (IS_FILE) {
+      $("htip").textContent = "本地 file:// 打开无法读取 JSON，请用 http(s) 访问（例如 python -m http.server）";
+      $("hlist").innerHTML = '<div class="hempty">趋势数据需通过 http(s) 访问才能加载</div>';
+    } else {
+      fetch(INDEX).then(function (r) { return r.json(); }).then(function (d) {
+        indexData = d;
+        loadTrend();
+      }).catch(function () { loadTrend(); });
+    }
+    $("hgo").addEventListener("click", function () { renderList($("hq").value.trim()); });
+    $("hq").addEventListener("keydown", function (e) { if (e.key === "Enter") renderList($("hq").value.trim()); });
+  })();
+  </script>
+  <footer>
+    <span>数据抓取：2026.10.27 15:25（北京时间）· 来源 GitHub Trending / GitHub API · 检索窗口：最近 2 天内有活跃更新的项目</span>
+    <span class="by">撰稿：<b>老王</b> · <a href="mailto:wlh.richard@gmail.com">wlh.richard@gmail.com</a> · <a href="https://radar.moniter.top" target="_blank" rel="noopener">https://radar.moniter.top ↗</a></span>
+  </footer>
+</div>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e8e8e6;color:#111;font-family:"Helvetica Neue",Helvetica,Arial,"PingFang SC","Noto Sans SC","Source Han Sans SC","Microsoft YaHei",sans-serif;font-size:14px;line-height:1.6;padding:36px 16px}
+  .page{max-width:1080px;margin:0 auto;background:#fff;border:1px solid #111}
+  .masthead{display:flex;justify-content:space-between;align-items:flex-start;padding:30px 36px 24px;border-bottom:3px solid #111}
+  .mh-left h1{font-size:44px;font-weight:900;letter-spacing:-.03em;line-height:1.02}
+  .mh-left h1 em{font-style:normal;color:#e30613}
+  .mh-left .sub{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#555;margin-top:8px;font-weight:600}
+  .mh-right{text-align:right;font-size:12px;line-height:1.8}
+  .mh-right .date{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  .mh-right a{color:#111;font-weight:700}
+  .badge{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:3px 10px;text-transform:uppercase}
+  .nav{display:flex;align-items:stretch;border-bottom:3px solid #111}
+  .nav a{padding:10px 20px;font-size:12.5px;font-weight:800;letter-spacing:.06em;color:#111;text-decoration:none;border-right:1px solid #ddd}
+  .nav a.on{background:#111;color:#fff}
+  .nav a:hover{background:#e30613;color:#fff}
+  .nav .navwriter{margin-left:auto;display:flex;align-items:center;padding:0 20px;font-size:11px;color:#666;letter-spacing:.02em}
+  .nav .navwriter b{color:#111;margin-left:4px}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:3px solid #111}
+  .metric{padding:18px 22px;border-right:1px solid #ddd}
+  .metric:last-child{border-right:none}
+  .metric .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#666;font-weight:700}
+  .metric .v{font-size:36px;font-weight:900;letter-spacing:-.03em;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1}
+  .metric .v em{font-style:normal;font-size:12px;font-weight:700;color:#666;margin-left:4px;letter-spacing:0}
+  .metric.hot .v{color:#e30613}
+  section{padding:24px 36px;border-bottom:1px solid #111}
+  section:last-of-type{border-bottom:3px solid #111}
+  h2{font-size:15px;font-weight:900;letter-spacing:.02em;margin-bottom:14px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  h2 .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+  h2 .en{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  h2 .hint{font-size:11px;color:#6b6b6b;font-weight:400;letter-spacing:0}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#666;font-weight:700;padding:5px 10px 7px;border-bottom:1px solid #111}
+  th.r{text-align:right}
+  td{padding:8px 10px;border-bottom:1px solid #e4e4e4;vertical-align:top}
+  tbody tr:last-child td{border-bottom:none}
+  .rk{font-weight:900;font-size:15px;font-variant-numeric:tabular-nums;width:32px;color:#111}
+  tbody tr:nth-child(-n+3) .rk{color:#e30613}
+  .repo a{color:#111;text-decoration:none;font-weight:700;border-bottom:1px solid #111}
+  .repo a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .dz{display:block;color:#2b2b2b}
+  .de{display:block;color:#6b6b6b;font-size:11.5px;line-height:1.45;margin-top:2px}
+  .num{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .inc{text-align:right;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;color:#e30613}
+  .per{color:#6b6b6b;font-size:11px;font-weight:700}
+  .lang{color:#666;font-size:12px;white-space:nowrap}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #111}
+  .cards a{display:block;padding:16px 18px;text-decoration:none;border-right:1px solid #ddd;border-bottom:1px solid #ddd}
+  .cards a:nth-child(3n){border-right:none}
+  .cards a:nth-last-child(-n+3){border-bottom:none}
+  .cname{color:#111;font-weight:800;font-size:12.5px;word-break:break-all;border-bottom:1px solid #111;display:inline-block}
+  .cdesc{color:#555;font-size:12px;margin:6px 0 8px;line-height:1.55}
+  .cmeta{display:flex;justify-content:space-between;font-size:11.5px;font-weight:700;font-variant-numeric:tabular-nums}
+  .cmeta .s{color:#111}
+  .cmeta .l{color:#6b6b6b}
+  .tag{display:inline-block;background:#111;color:#fff;font-size:11px;font-weight:800;padding:1px 7px;margin-right:8px;letter-spacing:.04em}
+  .tag.new{background:#e30613;font-size:9.5px;padding:1px 5px;letter-spacing:.08em}
+  .tag a{color:#fff;text-decoration:none}
+  .reltime{color:#6b6b6b;font-size:11.5px}
+  .cmsg a{color:#111;text-decoration:none;font-weight:600;border-bottom:1px solid #ddd}
+  .cmsg a:hover{color:#e30613;border-color:#e30613}
+  .muted{color:#767676}
+  .up{color:#e30613;font-weight:800}
+  .empty{text-align:center;color:#6b6b6b;padding:24px}
+  .lead{padding:18px 36px;background:#f6f6f4;border-bottom:1px solid #111;font-size:12.5px;color:#555}
+  .lead b{color:#111}
+  .dgrid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #111}
+  .dcol{padding:14px 16px;border-right:1px solid #ddd}
+  .dcol:last-child{border-right:none}
+  .dcol h3{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#111;font-weight:800;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #111}
+  .ditem{padding:7px 0;border-bottom:1px solid #eee;font-size:12.5px;overflow:hidden}
+  .ditem:last-child{border-bottom:none}
+  .ditem .nm{display:block;font-weight:700;word-break:break-all;line-height:1.4}
+  .ditem .nm a{color:#111;text-decoration:none;border-bottom:1px solid #111}
+  .ditem .nm a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .ditem .st{float:right;margin-left:8px;font-weight:800;color:#6b6b6b;font-variant-numeric:tabular-nums;font-size:11.5px}
+  .mtag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.08em;padding:1px 5px;margin-right:6px;vertical-align:1px}
+  .mtag.dedicated{background:#111;color:#fff}
+  .mtag.related{background:#eee;color:#333;border:1px solid #ccc}
+  .ditem .dz2{display:block;color:#666;font-size:11.5px;margin-top:3px;line-height:1.45}
+  .dq{font-size:10.5px;color:#6b6b6b;margin-top:10px;letter-spacing:.02em;line-height:1.7}
+  .dq code{background:#f4f4f2;padding:1px 5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px}
+  .searchbar{padding:16px 36px;background:#f7f7f5;border-bottom:1px solid #111}
+  .sb-row{display:flex;max-width:820px}
+  .sb-row input{flex:1;border:1px solid #111;border-right:none;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;background:#fff;color:#111}
+  .sb-row input:focus{box-shadow:inset 0 0 0 2px #e30613}
+  .sb-row button{background:#111;color:#fff;border:1px solid #111;padding:10px 22px;font-size:13px;font-weight:800;letter-spacing:.08em;cursor:pointer;font-family:inherit}
+  .sb-row button:hover{background:#e30613;border-color:#e30613}
+  .sb-tip{font-size:11px;color:#6b6b6b;margin-top:8px;line-height:1.65;max-width:820px}
+  .sb-tip b{color:#e30613}
+  .sb-msg{font-size:12.5px;color:#111;margin-top:9px;font-weight:700;line-height:1.6}
+  .sb-msg code{background:#eee;padding:1px 5px;font-size:11px}
+  #dres{margin-top:14px}
+  #dres .dgrid{margin-bottom:10px}
+  .hswitch{display:flex;border-bottom:1px solid #111;background:#fff}
+  .hbtn{flex:0 0 auto;padding:12px 24px;font-size:12px;font-weight:800;letter-spacing:.08em;background:#fff;border:none;border-right:1px solid #111;cursor:pointer;font-family:inherit;color:#6b6b6b}
+  .hbtn.on{background:#111;color:#fff}
+  .hbtn:hover:not(.on){color:#e30613}
+  .hpanel{padding:22px 36px}
+  .hlist{display:grid;grid-template-columns:repeat(2,1fr);border:1px solid #111}
+  .hrow{padding:10px 14px;border-bottom:1px solid #eee;border-right:1px solid #eee;cursor:pointer}
+  .hrow:nth-child(2n){border-right:none}
+  .hrow:hover{background:#f7f7f5}
+  .hrow.sel{background:#111;color:#fff}
+  .hrow .hf{font-weight:800;font-size:12.5px;word-break:break-all;display:block}
+  .hrow .hd{font-size:11.5px;color:#666;margin-top:3px;line-height:1.45}
+  .hrow.sel .hd{color:#ccc}
+  .hrow .hg{float:right;margin-left:8px;font-weight:900;font-size:11.5px;color:#e30613;font-variant-numeric:tabular-nums}
+  .hrow.sel .hg{color:#fff}
+  .hdetail{border:1px solid #111;margin-top:16px}
+  .hdh{padding:14px 18px;border-bottom:1px solid #111;background:#f7f7f5}
+  .hdh h3{font-size:16px;font-weight:900;word-break:break-all}
+  .hdh .hdsub{font-size:11.5px;color:#666;margin-top:3px}
+  .hchart{padding:16px 18px;overflow-x:auto}
+  .hchart svg{display:block;max-width:100%;height:auto}
+  .hstats{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #111}
+  .hstat{padding:11px 14px;border-right:1px solid #ddd}
+  .hstat:last-child{border-right:none}
+  .hstat .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#666;font-weight:700}
+  .hstat .v{font-size:18px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
+  .hstat .v.neg{color:#0a7d3f}
+  .hstat .v.pos{color:#e30613}
+  .hempty{padding:26px;text-align:center;color:#666;font-size:13px}
+  .hrep-sec{margin-bottom:18px}
+  .hrep-sec h3{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #111}
+  .hrep-sec table{width:100%;border-collapse:collapse;font-size:12px}
+  .hrep-sec td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top}
+  .hrep-sec td.rk{width:30px;color:#e30613;font-weight:900}
+  .hrep-sec td.nm{width:34%;font-weight:700;word-break:break-all}
+  .hrep-sec td.nm a{color:#111;text-decoration:none;border-bottom:1px solid #111}
+  .hrep-sec td.nm a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .hrep-sec td.st{width:80px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;color:#111}
+  .hrep-sec td.dz{color:#666;font-size:11.5px;line-height:1.45}
+  .proj{border:1px solid #111;margin-bottom:22px}
+  .proj:last-child{margin-bottom:0}
+  .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
+  .proj-kind{display:flex;align-items:baseline;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+  .proj-kind .no{color:#e30613;font-size:13px;font-weight:900;font-variant-numeric:tabular-nums}
+  .proj-kind .kind{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  .proj-name{font-size:34px;font-weight:900;letter-spacing:-.02em;line-height:1.1;word-break:break-all}
+  .proj-name a{color:#111;text-decoration:none;border-bottom:2px solid #e30613}
+  .proj-name a:hover{background:#e30613;color:#fff}
+  .proj-tagline{font-size:15px;color:#111;margin-top:8px;font-weight:600}
+  .proj-owner{font-size:12px;color:#6b6b6b;margin-top:4px}
+  .proj-owner a{color:#111;font-weight:700}
+  .value{margin:14px 26px 0;border-left:5px solid #e30613;background:#fafafa;padding:12px 16px}
+  .value .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#e30613;font-weight:800;margin-bottom:4px}
+  .value .v{font-size:14px;font-weight:700;color:#111}
+  .proj-grid{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #111}
+  .proj-cell{padding:16px 26px;border-right:1px solid #ddd}
+  .proj-cell:nth-child(2n){border-right:none}
+  .proj-cell:nth-child(-n+2){border-bottom:1px solid #ddd}
+  .proj-cell .k{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#6b6b6b;font-weight:800;margin-bottom:8px}
+  .proj-cell ul{margin:0;padding:0;list-style:none}
+  .proj-cell li{font-size:13px;padding:4px 0 4px 14px;position:relative;color:#2b2b2b;line-height:1.55}
+  .proj-cell li::before{content:"—";position:absolute;left:0;color:#e30613;font-weight:700}
+  .proj-stats{display:grid;grid-template-columns:repeat(3,1fr)}
+  .proj-stat{padding:14px 26px;border-right:1px solid #ddd}
+  .proj-stat:last-child{border-right:none}
+  .proj-stat .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#6b6b6b;font-weight:700}
+  .proj-stat .v{font-size:26px;font-weight:900;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums}
+  .proj-stat.hot .v{color:#e30613}
+  .proj-stat .v em{font-style:normal;font-size:12px;font-weight:700;color:#6b6b6b;margin-left:2px;letter-spacing:0}
+  .proj-foot{padding:8px 26px;font-size:10.5px;color:#6b6b6b;letter-spacing:.04em;border-top:1px solid #111}
+  footer{padding:16px 36px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#666;letter-spacing:.04em;border-top:3px solid #111}
+  footer a{color:#111;font-weight:700}
+  footer .by b{color:#111}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}.dgrid{grid-template-columns:1fr}.dcol{border-right:none;border-bottom:1px solid #ddd}.dcol:last-child{border-bottom:none}}
+</style>
+</body>
+</html>

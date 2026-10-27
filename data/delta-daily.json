@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-27T14:43:23+08:00",
+ "generated_at": "2026-10-27T15:25:49+08:00",
  "mode": "daily",
  "window_days": 3,
  "window_start": "2026-10-24",
@@ -8,185 +8,185 @@
  "items": [
   {
    "full": "morluto/rea",
-   "stars": 393197,
+   "stars": 393400,
    "stars_then": 373275,
-   "delta": 19922,
-   "delta_pct": 5.3,
+   "delta": 20125,
+   "delta_pct": 5.4,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Gathin23/cleanyourtv",
-   "stars": 39953,
+   "stars": 40030,
    "stars_then": 28000,
-   "delta": 11953,
-   "delta_pct": 42.7,
+   "delta": 12030,
+   "delta_pct": 43.0,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Ebony-Vinyl/dsh-our-free-model",
-   "stars": 45387,
+   "stars": 45467,
    "stars_then": 39167,
-   "delta": 6220,
-   "delta_pct": 15.9,
+   "delta": 6300,
+   "delta_pct": 16.1,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "deepseek-ai/deepseek-harness",
-   "stars": 262941,
+   "stars": 262995,
    "stars_then": 259453,
-   "delta": 3488,
-   "delta_pct": 1.3,
+   "delta": 3542,
+   "delta_pct": 1.4,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "yetone/magpie",
-   "stars": 22960,
+   "stars": 23021,
    "stars_then": 20222,
-   "delta": 2738,
-   "delta_pct": 13.5,
+   "delta": 2799,
+   "delta_pct": 13.8,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "affaan-m/ECC",
-   "stars": 290078,
+   "stars": 290104,
    "stars_then": 288877,
-   "delta": 1201,
+   "delta": 1227,
    "delta_pct": 0.4,
    "since": "2026-10-26 09:14"
   },
   {
    "full": "firecrawl/firecrawl",
-   "stars": 195779,
+   "stars": 195790,
    "stars_then": 194684,
-   "delta": 1095,
+   "delta": 1106,
    "delta_pct": 0.6,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Graphify-Labs/graphify",
-   "stars": 136359,
+   "stars": 136393,
    "stars_then": 135292,
-   "delta": 1067,
+   "delta": 1101,
    "delta_pct": 0.8,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "NousResearch/hermes-agent",
-   "stars": 257499,
+   "stars": 257505,
    "stars_then": 256532,
-   "delta": 967,
+   "delta": 973,
    "delta_pct": 0.4,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "hypit-ai/hypit",
-   "stars": 25945,
+   "stars": 25953,
    "stars_then": 25117,
-   "delta": 828,
+   "delta": 836,
    "delta_pct": 3.3,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "lexmount/moli",
-   "stars": 20992,
+   "stars": 21003,
    "stars_then": 20320,
-   "delta": 672,
-   "delta_pct": 3.3,
+   "delta": 683,
+   "delta_pct": 3.4,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "Jakeschincariol/day-trader-skill",
-   "stars": 2128,
+   "stars": 2139,
    "stars_then": 1635,
-   "delta": 493,
-   "delta_pct": 30.2,
+   "delta": 504,
+   "delta_pct": 30.8,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "ollama/ollama",
-   "stars": 184935,
+   "stars": 184937,
    "stars_then": 184492,
-   "delta": 443,
+   "delta": 445,
    "delta_pct": 0.2,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "n8n-io/n8n",
-   "stars": 208710,
+   "stars": 208716,
    "stars_then": 208414,
-   "delta": 296,
+   "delta": 302,
    "delta_pct": 0.1,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "simbasjungles/free-my-tv",
-   "stars": 4897,
+   "stars": 4898,
    "stars_then": 4620,
-   "delta": 277,
+   "delta": 278,
    "delta_pct": 6.0,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "google/artemis",
-   "stars": 15070,
+   "stars": 15076,
    "stars_then": 14805,
-   "delta": 265,
+   "delta": 271,
    "delta_pct": 1.8,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "genspark-ai/genoffice",
-   "stars": 10996,
+   "stars": 11005,
    "stars_then": 10834,
-   "delta": 162,
-   "delta_pct": 1.5,
+   "delta": 171,
+   "delta_pct": 1.6,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "f/prompts.chat",
-   "stars": 174687,
+   "stars": 174691,
    "stars_then": 174554,
-   "delta": 133,
+   "delta": 137,
    "delta_pct": 0.1,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "open-webui/open-webui",
-   "stars": 156881,
+   "stars": 156887,
    "stars_then": 156754,
-   "delta": 127,
+   "delta": 133,
    "delta_pct": 0.1,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "langgenius/dify",
-   "stars": 159654,
+   "stars": 159659,
    "stars_then": 159532,
-   "delta": 122,
+   "delta": 127,
    "delta_pct": 0.1,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "Significant-Gravitas/AutoGPT",
-   "stars": 187784,
+   "stars": 187786,
    "stars_then": 187719,
-   "delta": 65,
+   "delta": 67,
    "delta_pct": 0.0,
    "since": "2026-10-24 09:08"
   },
   {
    "full": "huggingface/transformers",
-   "stars": 168225,
+   "stars": 168226,
    "stars_then": 168162,
-   "delta": 63,
+   "delta": 64,
    "delta_pct": 0.0,
    "since": "2026-10-26 09:44"
   },
   {
    "full": "Snailclimb/JavaGuide",
-   "stars": 159283,
+   "stars": 159285,
    "stars_then": 159250,
-   "delta": 33,
+   "delta": 35,
    "delta_pct": 0.0,
    "since": "2026-10-26 09:44"
   }
