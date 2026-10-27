@@ -311,6 +311,26 @@
     "andriu-kun/-wildrig-multi": "-wildrig-multi：支持 AMD、NVIDIA、Intel 显卡的多算法加密货币挖矿程序。",
     "yaojingang/GEOInflow": "自托管的网页与 AI 爬虫分析工具，面向 GEO（生成式引擎优化），追踪访客、AI 搜索引流、抓取日志与转化。",
     "ZiChuanLan/agent-purge": "一套人格，多套编码 agent：通过本地 Web 控制台批量替换或注入 codex、claude、opencode、grok 等系统提示。",
-    "KohakuBlueleaf/KohakUnlock": "实验性 NVIDIA 算力解锁研究：带保护的 TU102 initramfs 移植、离线测试与 Ampere 复现笔记。"
+    "KohakuBlueleaf/KohakUnlock": "实验性 NVIDIA 算力解锁研究：带保护的 TU102 initramfs 移植、离线测试与 Ampere 复现笔记。",
+    "atbfun/ATBGamePort": "把游戏移植到 Web 平台的工具。",
+    "av/skills": "面向 Claude Code / Codex / OpenCode / Cursor 的 agent 技能：自主编排与协作。",
+    "lesnolie/Tigris": "tvOS 26 风格的 Android TV 启动器：液态玻璃 Dock 与 Top Shelf。",
+    "morganlinton/BeautifulRust": "教 Claude 写出地道、健壮 Rust 代码的 Claude Code 插件。",
+    "nthnclrk/CleanFrame": "三星 The Frame 电视的个人化主页，可直接 fork 改造。",
+    "renjiegod/dyt-ashare-cli": "可复现的中国 A 股市场研究 CLI 与 agent 技能。",
+    "strelov1/freehire": "面向求职者的开源职位搜索引擎。",
+    "Turki-Sh/Foreman": "把编码 agent 变成网站建设「工头」的构建手册。",
+    "ystemsrx/sql-to-ER": "在线把 SQL / DBML 转成美观 ER 图的工具，支持 Agent Skill。",
+    "NVIDIA/flare-local-inference": "(仓库未提供描述) NVIDIA 相关本地推理项目。",
+    "NyxFoundation/nyxis": "(仓库未提供描述)",
+    "unclebob/ub-mode": "(仓库未提供描述)",
+    "VictorTaelin/uniichat": "(仓库未提供描述)",
+    "cs-tool-s/.github": "⚠️ CS2 换肤（skin changer）类仓库，不建议使用。",
+    "val-tools/.github": "⚠️ Valorant 换肤（skin changer）类仓库，不建议使用。",
+    "wpeikxyrjnps/.github": "⚠️ 游戏脚本类仓库，不建议使用。",
+    "free-cracks/Adobe-Acrobat-Pro": "⚠️ 破解软件类仓库，不建议使用。",
+    "pro-tools-workspace/Canva-Pro": "⚠️ 疑似破解软件类仓库，不建议使用。",
+    "kuraeow/ultratears": "⚠️ 非官方《王国之泪》PC 移植（静态重编译），版权风险高。",
+    "oosexgang/hackios-xnu-userland": "⚠️ 破解 iOS 用户态类仓库，不建议使用。"
   }
 }
