@@ -454,6 +454,7 @@ function writePages(payload) {
   writeFileSync(join(ROOT, "index.html"), renderIndex(payload));
   writeFileSync(join(ROOT, "cards.html"), renderCards(payload));
   writeFileSync(join(ROOT, "domains.html"), renderDomains(payload));
+  writeFileSync(join(ROOT, "history.html"), renderHistory(payload));
 }
 
 // 用 MySQL 历史快照算出的「近 N 日 star 增量」重排 03 区：
@@ -619,6 +620,45 @@ const CSS = `
   .sb-msg code{background:#eee;padding:1px 5px;font-size:11px}
   #dres{margin-top:14px}
   #dres .dgrid{margin-bottom:10px}
+  .hswitch{display:flex;border-bottom:1px solid #111;background:#fff}
+  .hbtn{flex:0 0 auto;padding:12px 24px;font-size:12px;font-weight:800;letter-spacing:.08em;background:#fff;border:none;border-right:1px solid #111;cursor:pointer;font-family:inherit;color:#6b6b6b}
+  .hbtn.on{background:#111;color:#fff}
+  .hbtn:hover:not(.on){color:#e30613}
+  .hpanel{padding:22px 36px}
+  .hlist{display:grid;grid-template-columns:repeat(2,1fr);border:1px solid #111}
+  .hrow{padding:10px 14px;border-bottom:1px solid #eee;border-right:1px solid #eee;cursor:pointer}
+  .hrow:nth-child(2n){border-right:none}
+  .hrow:hover{background:#f7f7f5}
+  .hrow.sel{background:#111;color:#fff}
+  .hrow .hf{font-weight:800;font-size:12.5px;word-break:break-all;display:block}
+  .hrow .hd{font-size:11.5px;color:#666;margin-top:3px;line-height:1.45}
+  .hrow.sel .hd{color:#ccc}
+  .hrow .hg{float:right;margin-left:8px;font-weight:900;font-size:11.5px;color:#e30613;font-variant-numeric:tabular-nums}
+  .hrow.sel .hg{color:#fff}
+  .hdetail{border:1px solid #111;margin-top:16px}
+  .hdh{padding:14px 18px;border-bottom:1px solid #111;background:#f7f7f5}
+  .hdh h3{font-size:16px;font-weight:900;word-break:break-all}
+  .hdh .hdsub{font-size:11.5px;color:#666;margin-top:3px}
+  .hchart{padding:16px 18px;overflow-x:auto}
+  .hchart svg{display:block;max-width:100%;height:auto}
+  .hstats{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #111}
+  .hstat{padding:11px 14px;border-right:1px solid #ddd}
+  .hstat:last-child{border-right:none}
+  .hstat .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#666;font-weight:700}
+  .hstat .v{font-size:18px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
+  .hstat .v.neg{color:#0a7d3f}
+  .hstat .v.pos{color:#e30613}
+  .hempty{padding:26px;text-align:center;color:#666;font-size:13px}
+  .hrep-sec{margin-bottom:18px}
+  .hrep-sec h3{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #111}
+  .hrep-sec table{width:100%;border-collapse:collapse;font-size:12px}
+  .hrep-sec td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top}
+  .hrep-sec td.rk{width:30px;color:#e30613;font-weight:900}
+  .hrep-sec td.nm{width:34%;font-weight:700;word-break:break-all}
+  .hrep-sec td.nm a{color:#111;text-decoration:none;border-bottom:1px solid #111}
+  .hrep-sec td.nm a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .hrep-sec td.st{width:80px;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;color:#111}
+  .hrep-sec td.dz{color:#666;font-size:11.5px;line-height:1.45}
   .proj{border:1px solid #111;margin-bottom:22px}
   .proj:last-child{margin-bottom:0}
   .proj-head{padding:22px 26px 18px;border-bottom:1px solid #111}
@@ -805,6 +845,7 @@ function pageShell(p, { title, navActive, metrics, body }) {
   <nav class="nav">
     <a href="./" class="${navActive === "index" ? "on" : ""}">首页</a>
     <a href="./domains.html" class="${navActive === "domains" ? "on" : ""}">领域雷达</a>
+    <a href="./history.html" class="${navActive === "history" ? "on" : ""}">历史</a>
     <a href="./cards.html" class="${navActive === "cards" ? "on" : ""}">上榜项目详解</a>
     <span class="navwriter">撰稿<b>${AUTHOR}</b> · ${AUTHOR_MAIL}</span>
   </nav>
@@ -884,6 +925,241 @@ function descPlain(r, p) {
   if (zh) return esc(cut(zh, 66));
   if (!raw) return "暂无简介";
   return esc(cut(raw, 90));
+}
+
+// 历史回看页：趋势查询（SVG 曲线）+ 日期回放（按需加载分片）
+// 数据由 scripts/export_history.py 生成：data/history-trend.json + data/history/daily/<date>.json + data/history/index.json
+function renderHistory(p) {
+  const body = `<div class="lead"><b>历史回看</b> · 数据源：每日抓取的数据库快照导出（数据库全量保留，此处仅为站点视图）· <b>趋势</b>看项目 star 曲线与排名 · <b>回放</b>看任意一天的完整榜单 · 空缺日断线、不做插值</div>
+  <div class="hswitch">
+    <button class="hbtn on" data-v="trend">趋势查询</button>
+    <button class="hbtn" data-v="replay">日期回放</button>
+  </div>
+  <div class="hpanel" id="pTrend">
+    <div class="sb-row"><input id="hq" type="text" placeholder="搜索项目名（如 browser / career-ops），或直接看下方涨星榜" autocomplete="off"><button id="hgo" type="button">搜索</button></div>
+    <div class="sb-tip" id="htip">加载中…</div>
+    <div id="hlist" class="hlist" style="margin-top:14px"></div>
+    <div id="hdetail"></div>
+  </div>
+  <div class="hpanel" id="pReplay" style="display:none">
+    <div class="sb-row" style="max-width:480px"><select id="hdate" style="flex:1;border:1px solid #111;padding:10px 13px;font-size:13.5px;font-family:inherit;background:#fff;color:#111"></select></div>
+    <div id="hreplay" style="margin-top:16px"></div>
+  </div>
+  <script>
+  (function () {
+    // 本地用 file:// 直接打开时 fetch 会被 CORS 拦截：只跳过数据加载，按钮仍绑定事件
+    var IS_FILE = location.protocol === "file:";
+    var TREND = "./data/history-trend.json";
+    var INDEX = "./data/history/index.json";
+    var DAILY = "./data/history/daily/";
+    var trendData = null, indexData = null, selFull = null;
+
+    function $(id) { return document.getElementById(id); }
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function fmt(n) { return Number(n || 0).toLocaleString(); }
+
+    // 视图切换
+    var btns = document.querySelectorAll(".hbtn");
+    Array.prototype.forEach.call(btns, function (b) {
+      b.addEventListener("click", function () {
+        var v = b.getAttribute("data-v");
+        Array.prototype.forEach.call(btns, function (x) { x.classList.toggle("on", x === b); });
+        $("pTrend").style.display = v === "trend" ? "" : "none";
+        $("pReplay").style.display = v === "replay" ? "" : "none";
+        if (v === "replay" && !$("hreplay").getAttribute("data-loaded")) initReplay();
+      });
+    });
+
+    // 趋势数据
+    function loadTrend() {
+      fetch(TREND).then(function (r) { return r.json(); }).then(function (d) {
+        trendData = d;
+        $("htip").innerHTML = "共 <b>" + d.count + "</b> 个项目（出现 ≥2 天）· 窗口 " + d.window_days +
+          " 天 · 自 " + esc(d.since) + " · 更新于 " + esc(String(d.updated).slice(11, 16));
+        renderList("");
+      }).catch(function (e) {
+        $("htip").textContent = "趋势数据加载失败：" + e.message;
+        $("hlist").innerHTML = '<div class="hempty">暂无趋势数据（首次导出后可见）</div>';
+      });
+    }
+
+    function renderList(q) {
+      if (!trendData) return;
+      var list = trendData.projects || [];
+      if (q) {
+        var ql = q.toLowerCase();
+        list = list.filter(function (x) {
+          return x.f.toLowerCase().indexOf(ql) >= 0 || (x.d || "").toLowerCase().indexOf(ql) >= 0;
+        });
+      }
+      var top = list.slice(0, 40);
+      if (!top.length) {
+        $("hlist").innerHTML = '<div class="hempty">没有匹配的项目。<br>趋势数据只收录「上榜 ≥2 天」的项目（只出现 1 天的画不出曲线）；' +
+          "这类项目可在「日期回放」里按天查看。</div>";
+        return;
+      }
+      var h = "";
+      top.forEach(function (x) {
+        h += '<div class="hrow' + (x.f === selFull ? " sel" : "") + '" data-f="' + esc(x.f) + '">' +
+          '<span class="hg">' + (x.g >= 0 ? "+" : "") + fmt(x.g) + "★</span>" +
+          '<span class="hf">' + esc(x.f) + "</span>" +
+          '<span class="hd">' + esc(x.d || "暂无简介") + "</span></div>";
+      });
+      $("hlist").innerHTML = h;
+      Array.prototype.forEach.call($("hlist").querySelectorAll(".hrow"), function (el) {
+        el.addEventListener("click", function () { showDetail(el.getAttribute("data-f")); });
+      });
+    }
+
+    function showDetail(full) {
+      selFull = full;
+      Array.prototype.forEach.call(document.querySelectorAll(".hrow"), function (el) {
+        el.classList.toggle("sel", el.getAttribute("data-f") === full);
+      });
+      var x = (trendData.projects || []).filter(function (p) { return p.f === full; })[0];
+      if (!x) return;
+      var gcls = x.g >= 0 ? "pos" : "neg";
+      var secLabel = (x.sec || []).map(function (s) {
+        return s.indexOf("domain:") === 0 ? s.slice(7) + "（领域）" : s;
+      }).join(" / ");
+      var html = '<div class="hdetail">' +
+        '<div class="hdh"><h3>' + esc(x.f) + '</h3><div class="hdsub">' + esc(x.d || "暂无简介") +
+        "<br>上榜 " + x.n + " 天 · " + esc(x.a) + " → " + esc(x.b) + " · 分区：" + esc(secLabel || "—") + "</div></div>" +
+        '<div class="hchart">' + drawChart(x.x) + "</div>" +
+        '<div class="hstats">' +
+        '<div class="hstat"><div class="k">当前 star</div><div class="v">' + fmt(x.s) + "</div></div>" +
+        '<div class="hstat"><div class="k">期间增长</div><div class="v ' + gcls + '">' + (x.g >= 0 ? "+" : "") + fmt(x.g) + "</div></div>" +
+        '<div class="hstat"><div class="k">涨幅</div><div class="v ' + gcls + '">' + (x.p >= 0 ? "+" : "") + x.p + "%</div></div>" +
+        '<div class="hstat"><div class="k">上榜天数</div><div class="v">' + x.n + "</div></div>" +
+        '<div class="hstat"><div class="k">最好排名</div><div class="v">#' + x.br + "</div></div>" +
+        "</div></div>";
+      $("hdetail").innerHTML = html;
+    }
+
+    // SVG 折线：空缺日断线（不插值）
+    function drawChart(series) {
+      var W = 760, H = 200, pL = 56, pR = 14, pT = 18, pB = 30;
+      var dates = (indexData && indexData.dates)
+        ? indexData.dates.map(function (d) { return d.d; }).slice().reverse()
+        : series.map(function (x) { return x.d; });
+      var map = {};
+      series.forEach(function (x) { map[x.d] = x.s; });
+      var vals = series.map(function (x) { return x.s; });
+      var minY = Math.min.apply(null, vals), maxY = Math.max.apply(null, vals);
+      if (minY === maxY) { minY -= 10; maxY += 10; }
+      var pad = (maxY - minY) * 0.12; minY -= pad; maxY += pad;
+      var n = Math.max(dates.length - 1, 1);
+      function px(i) { return pL + (W - pL - pR) * (i / n); }
+      function py(v) { return pT + (H - pT - pB) * (1 - (v - minY) / (maxY - minY)); }
+
+      var segs = [], cur = [];
+      dates.forEach(function (d, i) {
+        if (map[d] != null) { cur.push([i, map[d]]); }
+        else { if (cur.length) { segs.push(cur); cur = []; } }
+      });
+      if (cur.length) segs.push(cur);
+
+      var s = '<svg viewBox="0 0 ' + W + " " + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="star 趋势">';
+      for (var g = 0; g <= 3; g++) {
+        var v = minY + (maxY - minY) * (g / 3);
+        var y = py(v).toFixed(1);
+        s += '<line x1="' + pL + '" y1="' + y + '" x2="' + (W - pR) + '" y2="' + y + '" stroke="#e6e6e6" stroke-width="1"/>';
+        s += '<text x="' + (pL - 8) + '" y="' + (Number(y) + 3.5).toFixed(1) + '" text-anchor="end" font-size="9.5" fill="#767676" font-family="Helvetica,Arial,sans-serif">' + fmt(Math.round(v)) + "</text>";
+      }
+      segs.forEach(function (seg) {
+        if (seg.length > 1) {
+          var pts = seg.map(function (p) { return px(p[0]).toFixed(1) + "," + py(p[1]).toFixed(1); }).join(" ");
+          s += '<polyline points="' + pts + '" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+        }
+        seg.forEach(function (p) {
+          s += '<circle cx="' + px(p[0]).toFixed(1) + '" cy="' + py(p[1]).toFixed(1) + '" r="3" fill="#e30613"/>';
+        });
+      });
+      var marks = dates.length <= 3 ? dates.map(function (d, i) { return i; }) : [0, Math.floor((dates.length - 1) / 2), dates.length - 1];
+      marks.forEach(function (i) {
+        s += '<text x="' + px(i).toFixed(1) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="9.5" fill="#767676" font-family="Helvetica,Arial,sans-serif">' + String(dates[i]).slice(5) + "</text>";
+      });
+      s += '<line x1="' + pL + '" y1="' + (H - pB) + '" x2="' + (W - pR) + '" y2="' + (H - pB) + '" stroke="#111" stroke-width="1"/>';
+      return s + "</svg>";
+    }
+
+    // 回放
+    function initReplay() {
+      $("hreplay").setAttribute("data-loaded", "1");
+      var sel = $("hdate");
+      if (!indexData || !indexData.dates.length) {
+        $("hreplay").innerHTML = '<div class="hempty">暂无历史快照</div>';
+        return;
+      }
+      sel.innerHTML = indexData.dates.map(function (x) {
+        return '<option value="' + x.d + '">' + x.d + "（" + x.n + " 条 · " + x.t + "）</option>";
+      }).join("");
+      sel.addEventListener("change", function () { renderReplay(sel.value); });
+      renderReplay(sel.value);
+    }
+
+    function renderReplay(date) {
+      $("hreplay").innerHTML = '<div class="hempty">加载 ' + esc(date) + " …</div>";
+      fetch(DAILY + date + ".json").then(function (r) { return r.json(); }).then(function (d) {
+        var names = { trending: "GitHub 热榜", growth: "高增长排行", topic_hot: "AI / Skills / MCP 生态榜", rising: "新锐项目" };
+        var h = "";
+        ["trending", "growth", "topic_hot", "rising"].forEach(function (k) {
+          var arr = (d.sections && d.sections[k]) || [];
+          if (arr.length) h += '<div class="hrep-sec"><h3>' + names[k] + " · " + arr.length + " 项</h3>" + tbl(arr) + "</div>";
+        });
+        var dk = Object.keys(d.domains || {});
+        if (dk.length) {
+          h += '<div class="hrep-sec"><h3>领域雷达 · ' + dk.length + " 个领域</h3>";
+          var colName = { skills: "Agent Skills", repos: "可用工具", fresh: "新项目" };
+          dk.forEach(function (dom) {
+            var cols = d.domains[dom];
+            h += '<div style="font-size:11px;font-weight:800;margin:10px 0 4px;letter-spacing:.1em">' + esc(String(dom).toUpperCase()) + "</div>";
+            ["skills", "repos", "fresh"].forEach(function (c) {
+              var arr = cols[c] || [];
+              if (arr.length) h += '<div style="font-size:10.5px;color:#666;margin:6px 0 2px">' + colName[c] + "</div>" + tbl(arr);
+            });
+          });
+          h += "</div>";
+        }
+        $("hreplay").innerHTML = h || '<div class="hempty">该日无数据</div>';
+      }).catch(function (e) {
+        $("hreplay").innerHTML = '<div class="hempty">加载失败：' + esc(e.message) + "</div>";
+      });
+    }
+
+    function tbl(arr) {
+      var h = "<table>";
+      arr.forEach(function (x) {
+        h += '<tr><td class="rk">' + x.r + '</td><td class="nm"><a href="https://github.com/' + esc(x.f) +
+          '" target="_blank" rel="noopener">' + esc(x.f) + '</a></td><td class="st">★ ' + fmt(x.s) +
+          '</td><td class="dz">' + esc(x.d || "") + "</td></tr>";
+      });
+      return h + "</table>";
+    }
+
+    if (IS_FILE) {
+      $("htip").textContent = "本地 file:// 打开无法读取 JSON，请用 http(s) 访问（例如 python -m http.server）";
+      $("hlist").innerHTML = '<div class="hempty">趋势数据需通过 http(s) 访问才能加载</div>';
+    } else {
+      fetch(INDEX).then(function (r) { return r.json(); }).then(function (d) {
+        indexData = d;
+        loadTrend();
+      }).catch(function () { loadTrend(); });
+    }
+    $("hgo").addEventListener("click", function () { renderList($("hq").value.trim()); });
+    $("hq").addEventListener("keydown", function (e) { if (e.key === "Enter") renderList($("hq").value.trim()); });
+  })();
+  <\/script>`;
+
+  return pageShell(p, {
+    title: `GitHub 雷达 · 历史回看 · ${p.mode === "weekly" ? "周报" : "日报"}`,
+    navActive: "history",
+    body,
+  });
 }
 
 // 领域雷达页：8 个领域 × 三栏（Agent Skills / 可用工具 / 新项目）
@@ -1047,7 +1323,7 @@ function renderCards(p) {
 
 // 仅当以 `node radar.mjs` 直接运行时执行；被 import 时仅导出函数（便于单测）
 const isSelf = process.argv[1] && process.argv[1].replace(/^.*\//, "") === "radar.mjs";
-export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, applyDelta, renderOnly, main };
+export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, renderHistory, applyDelta, renderOnly, main };
 
 if (isSelf) {
   if (process.argv.includes("--render-only")) {
