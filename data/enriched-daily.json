@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-26",
+  "date": "2026-10-27",
   "mode": "daily",
   "generatedBy": "workbuddy-automation",
   "note": "上榜项目结构化解读。字段：tagline 一句话定位 / value 核心价值 / features 主要功能 / scenarios 应用场景 / inputs 输入建议 / caveats 使用提醒。内容基于仓库公开信息撰写，仅供参考。",
@@ -808,6 +808,136 @@
         "实时数据扩展需自备 API 配额",
         "自动建议需人工复核，避免误改线上配置",
         "GEO/AEO 属新范式，效果需持续验证"
+      ]
+    },
+    "affaan-m/ECC": {
+      "tagline": "面向 Claude Code / Codex / Cursor 等编码 agent 的「性能优化中枢」，把技能、本能、记忆、安全与研究优先开发拧成一套体系。",
+      "value": "把散落的 agent 能力（技能编排、记忆、安全、研究优先开发）统一成可优化的 harness，提升编码 agent 的产出质量与稳定性。",
+      "features": [
+        "技能（Skills）编排与管理",
+        "本能（instincts）与记忆（memory）机制",
+        "安全（security）防护层",
+        "研究优先（research-first）开发范式",
+        "兼容 Claude Code、Codex、Opencode、Cursor 等多端"
+      ],
+      "scenarios": [
+        "构建或优化自有编码 agent 工作流",
+        "为多款编码工具统一能力底座",
+        "提升 agent 长任务中的记忆与安全性"
+      ],
+      "inputs": [
+        "明确要优化的 agent 类型（Claude Code/Codex 等）",
+        "既有的技能与提示词清单",
+        "对安全与记忆的优先级诉求"
+      ],
+      "caveats": [
+        "偏底层 harness 框架，需一定工程投入接入",
+        "文档与生态成熟度以仓库实际状态为准",
+        "多端兼容以各工具最新 API 为准"
+      ]
+    },
+    "NVIDIA/SkillSpector": {
+      "tagline": "在装前给 AI agent 技能做「安全体检」：自动揪出漏洞、恶意模式、提示注入、数据外泄与供应链风险。",
+      "value": "把技能安全左移——安装前即拦截风险，覆盖 Claude Code、Codex、MCP 技能，降低 agent 被投毒或被利用的概率。",
+      "features": [
+        "漏洞与恶意模式检测",
+        "提示注入（prompt injection）识别",
+        "数据外泄（data exfiltration）扫描",
+        "供应链风险检查",
+        "覆盖 Claude Code、Codex、MCP 技能"
+      ],
+      "scenarios": [
+        "安装社区 agent 技能前的安检",
+        "企业内 agent 技能准入审查",
+        "MCP server / 技能市场风险评估"
+      ],
+      "inputs": [
+        "待检测的技能目录或文件",
+        "目标运行环境（Claude Code / Codex / MCP）",
+        "可接受的风险阈值"
+      ],
+      "caveats": [
+        "静态扫描难以覆盖运行时动态行为",
+        "结果需结合人工研判，非 100% 误报免疫",
+        "以官方最新规则库为准"
+      ]
+    },
+    "nightly-labs/openbot": {
+      "tagline": "本地优先的桌面工作台：让 Codex / Claude / Grok 等 AI 队友常驻，各带独立工作区、任务队列与浏览器控制。",
+      "value": "把多个编码 agent 收拢到同一桌面空间，支持文件共享、任务排队与 agent 间协作，减少在终端与网页间来回切换。",
+      "features": [
+        "本地优先的持久化 AI 队友",
+        "每个 agent 独立工作区",
+        "任务队列（task queue）",
+        "文件共享与浏览器控制",
+        "agent 间（agent-to-agent）协作"
+      ],
+      "scenarios": [
+        "同时调度多个编码 agent 并行干活",
+        "需要持久上下文的本地 AI 工作台",
+        "多 agent 协作完成复杂任务"
+      ],
+      "inputs": [
+        "要接入的 agent 类型（Codex / Claude / Grok）",
+        "本地项目目录与文件访问授权",
+        "任务清单或协作流程"
+      ],
+      "caveats": [
+        "本地优先意味着资源与隐私依赖本机",
+        "多 agent 协作的权限边界需自行把控",
+        "以仓库当前功能为准，先小范围试用"
+      ]
+    },
+    "Panniantong/Agent-Reach": {
+      "tagline": "一个 CLI 让 AI agent 拥有「全网眼睛」：免费读取与搜索 Twitter、Reddit、YouTube、GitHub、B站、小红书。",
+      "value": "无需逐个对接平台 API 与付费密钥，一个命令行即可给 agent 注入实时联网检索能力，覆盖中英文主流平台。",
+      "features": [
+        "Twitter / Reddit / YouTube 检索",
+        "GitHub 代码与仓库搜索",
+        "B站、小红书等中文平台读取",
+        "单一 CLI 接入，零 API 费用",
+        "面向 AI agent 的联网能力"
+      ],
+      "scenarios": [
+        "给编码 agent 加装实时资讯检索",
+        "跨平台舆情 / 内容调研",
+        "中文社区（B站、小红书）数据获取"
+      ],
+      "inputs": [
+        "要查询的平台与关键词",
+        "目标 agent 的调用入口",
+        "希望返回的结构化字段"
+      ],
+      "caveats": [
+        "「零 API 费用」依赖平台反爬与可用性，可能波动",
+        "实时性受第三方平台限制",
+        "大规模抓取请关注各平台使用条款"
+      ]
+    },
+    "multica-ai/andrej-karpathy-skills": {
+      "tagline": "一份 CLAUDE.md：把 Karpathy 对 LLM 编程陷阱的观察沉淀为 Claude Code 的行为守则。",
+      "value": "用专家视角的工程准则约束 Claude Code，规避常见 LLM 编码误区，提升生成代码的稳健与可维护性。",
+      "features": [
+        "单文件 CLAUDE.md 即装即用",
+        "源自 Karpathy 的 LLM 编码陷阱观察",
+        "面向 Claude Code 行为优化",
+        "聚焦编码规范与常见误区",
+        "轻量、可随项目复制"
+      ],
+      "scenarios": [
+        "新项目快速设定 Claude Code 行为基线",
+        "团队统一 AI 编码规范",
+        "规避 LLM 常见编程错误"
+      ],
+      "inputs": [
+        "项目技术栈与约定（可选）",
+        "希望强化的编码准则",
+        "Claude Code 的工作目录"
+      ],
+      "caveats": [
+        "基于公开观察提炼，需结合项目实际校验",
+        "非银弹，复杂工程仍需人工 review",
+        "以仓库最新版本为准"
       ]
     }
   }
