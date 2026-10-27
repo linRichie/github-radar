@@ -36,6 +36,18 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_DB: ${{ secrets.MYSQL_DB }}
         run: python scripts/load_db.py --mode daily
+      - name: compute star deltas & re-render
+        # 落库之后才能算增量：读历史快照得「近 3 日 star 增长」，再用它重排 03 区
+        continue-on-error: true
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+        run: |
+          python scripts/delta_rank.py --mode daily --days 3
+          node radar.mjs --mode daily --render-only
       - name: commit
         run: |
           git config user.name "github-radar"

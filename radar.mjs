@@ -394,6 +394,11 @@ async function main() {
     trending,
     growthRank,
     topicHot,
+    // 03 区候选池（新贵在前、热门在后，去重保留 isNew 标记，最多 80 个）
+    // 供 scripts/delta_rank.py 算完涨星增量后重排
+    topicPool: [...freshList.map((r) => ({ ...r, isNew: true })), ...hotList.map((r) => ({ ...r, isNew: false }))]
+      .filter((r, i, a) => a.findIndex((x) => x.full === r.full) === i)
+      .slice(0, 80),
     rising,
     // 「生态 watch 动态」已按用户要求下线（2026-10-22）：不再抓取、不再渲染
     watch: [],
@@ -405,10 +410,26 @@ async function main() {
   writeFileSync(join(ROOT, "data", `${MODE}-${TODAY}.json`), JSON.stringify(payload, null, 2));
   writeFileSync(join(ROOT, "data", `${MODE}-latest.json`), JSON.stringify(payload, null, 2));
 
-  // 上榜项目结构化解读（由 WorkBuddy 定时任务生成并提交；仅当日数据才会渲染成卡片）
+  loadExtras(payload);
+  writePages(payload);
+  console.log(`✔ 中文简介缓存 ${Object.keys(payload.zh || {}).length} 条`);
+  console.log(
+    payload.enriched
+      ? `✔ 已注入 ${Object.keys(payload.enriched.projects || {}).length} 个上榜项目解读（cards.html）`
+      : "· 无当日解读数据，cards.html 为空态",
+  );
+
+  console.log(`✔ 热榜 ${trending.length} | 生态热榜 ${topicHot.length} | 新锐 ${rising.length}`);
+  console.log("—— 高增长 Top5 ——");
+  growthRank.slice(0, 5).forEach((r, i) => console.log(`  ${i + 1}. ${r.full} +${r.starsToday.toLocaleString()}★/${r.starsPeriod} · ${r.desc.slice(0, 50)}`));
+  return payload;
+}
+
+// 加载辅助数据：当日结构化解读 + 中文简介缓存
+function loadExtras(payload) {
   let enriched = null;
   try {
-    const ep = join(ROOT, "data", `enriched-${MODE}.json`);
+    const ep = join(ROOT, "data", `enriched-${payload.mode}.json`);
     if (existsSync(ep)) {
       const e = JSON.parse(readFileSync(ep, "utf8"));
       if (e.date === TODAY) enriched = e;
@@ -418,7 +439,6 @@ async function main() {
   }
   payload.enriched = enriched;
 
-  // 中文简介缓存（跨天累积，不按日过期；由 WorkBuddy 定时任务维护）
   let zh = {};
   try {
     const zp = join(ROOT, "data", "zh-cache.json");
@@ -427,17 +447,77 @@ async function main() {
     console.warn(`  ! zh-cache: ${err.message}`);
   }
   payload.zh = zh;
+  return payload;
+}
 
+function writePages(payload) {
   writeFileSync(join(ROOT, "index.html"), renderIndex(payload));
   writeFileSync(join(ROOT, "cards.html"), renderCards(payload));
   writeFileSync(join(ROOT, "domains.html"), renderDomains(payload));
-  console.log(`✔ 中文简介缓存 ${Object.keys(zh).length} 条`);
-  console.log(enriched ? `✔ 已注入 ${Object.keys(enriched.projects || {}).length} 个上榜项目解读（cards.html）` : "· 无当日解读数据，cards.html 为空态");
+}
 
-  console.log(`✔ 热榜 ${trending.length} | 生态热榜 ${topicHot.length} | 新锐 ${rising.length}`);
-  console.log("—— 高增长 Top5 ——");
-  growthRank.slice(0, 5).forEach((r, i) => console.log(`  ${i + 1}. ${r.full} +${r.starsToday.toLocaleString()}★/${r.starsPeriod} · ${r.desc.slice(0, 50)}`));
-  return payload;
+// 用 MySQL 历史快照算出的「近 N 日 star 增量」重排 03 区：
+//   前 6 位 = 涨星最快（真正的新兴项目）→ 其余按总 star 补位（热度基线）
+function applyDelta(payload) {
+  const dp = join(ROOT, "data", `delta-${payload.mode}.json`);
+  if (!existsSync(dp)) return false;
+  let delta;
+  try {
+    delta = JSON.parse(readFileSync(dp, "utf8"));
+  } catch {
+    return false;
+  }
+  const map = new Map((delta.items || []).map((x) => [x.full, x]));
+  const pool = payload.topicPool || payload.topicHot || [];
+  const marked = pool.map((r) => {
+    const d = map.get(r.full);
+    return d && typeof d.delta === "number" ? { ...r, delta: d.delta, deltaPct: d.delta_pct } : { ...r, delta: null };
+  });
+  const risingRank = marked.filter((r) => r.delta !== null && r.delta > 0).sort((a, b) => b.delta - a.delta);
+  const base = marked.filter((r) => !(r.delta !== null && r.delta > 0)).sort((a, b) => b.stars - a.stars);
+  const targetN = payload.mode === "weekly" ? 20 : 12;
+  const topN = Math.min(6, risingRank.length);
+  const out = [];
+  const seen = new Set();
+  for (const r of risingRank.slice(0, topN)) {
+    out.push(r);
+    seen.add(r.full);
+  }
+  for (const r of base) {
+    if (out.length >= targetN) break;
+    if (seen.has(r.full)) continue;
+    out.push(r);
+    seen.add(r.full);
+  }
+  payload.topicHot = out;
+  payload.deltaInfo = { window_days: delta.window_days || 3, matched: map.size, ranked: risingRank.length };
+  return true;
+}
+
+// --render-only：跳过抓取，用 latest.json + delta-<mode>.json 重渲染三页
+function renderOnly() {
+  const lp = join(ROOT, "data", `${MODE}-latest.json`);
+  if (!existsSync(lp)) {
+    console.error(`✘ 缺少 ${MODE}-latest.json，无法 render-only`);
+    process.exit(1);
+  }
+  const payload = JSON.parse(readFileSync(lp, "utf8"));
+  const ok = applyDelta(payload);
+  // 把重排结果写回 latest.json（剔除 zh/enriched 大字段，保持文件精简），
+  // 这样榜单顺序与 delta 可追溯，重复 render-only 也幂等
+  const slim = { ...payload };
+  delete slim.zh;
+  delete slim.enriched;
+  writeFileSync(lp, JSON.stringify(slim, null, 2));
+  loadExtras(payload);
+  writePages(payload);
+  console.log(
+    `✔ [render-only] 三页已重渲染${
+      ok
+        ? `（涨星窗口 ${payload.deltaInfo.window_days} 天 · ${payload.deltaInfo.matched} 个候选有历史基准 · ${payload.deltaInfo.ranked} 个在涨）`
+        : "（无 delta 数据，保持原排序）"
+    }`,
+  );
 }
 
 // ---------- 渲染（双页：index.html 首页 + cards.html 上榜项目详解）----------
@@ -507,6 +587,7 @@ const CSS = `
   .cmsg a{color:#111;text-decoration:none;font-weight:600;border-bottom:1px solid #ddd}
   .cmsg a:hover{color:#e30613;border-color:#e30613}
   .muted{color:#767676}
+  .up{color:#e30613;font-weight:800}
   .empty{text-align:center;color:#6b6b6b;padding:24px}
   .lead{padding:18px 36px;background:#f6f6f4;border-bottom:1px solid #111;font-size:12.5px;color:#555}
   .lead b{color:#111}
@@ -616,11 +697,17 @@ function rowGrowth(r, i, p) {
 
 function rowTopic(r, i, p) {
   const badge = r.isNew ? `<span class="tag new">NEW</span> ` : "";
+  const days = p.deltaInfo ? p.deltaInfo.window_days : 3;
+  const dl =
+    typeof r.delta === "number"
+      ? `<span class="up">+${r.delta.toLocaleString()}</span>`
+      : `<span class="muted">—</span>`;
   return `<tr>
       <td class="rk">${i + 1}</td>
       <td class="repo">${badge}<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.full)}</a></td>
-      <td class="desc">${descHtml(r, p, 56)}</td>
+      <td class="desc">${descHtml(r, p, 52)}</td>
       <td class="num">${r.stars.toLocaleString()}</td>
+      <td class="num">${dl}</td>
       <td class="lang">${esc(r.lang) || "—"}</td>
     </tr>`;
 }
@@ -767,10 +854,14 @@ function renderIndex(p) {
     </table>
   </section>
   <section>
-    <h2>${no()}AI / Skills / MCP 生态榜<span class="en">Ecosystem</span><span class="hint">前 6 位＝近 90 天新建的新贵（标 NEW，每日轮换）· 其后为赛道热门基线</span></h2>
+    <h2>${no()}AI / Skills / MCP 生态榜<span class="en">Ecosystem</span><span class="hint">${
+      p.deltaInfo
+        ? `前 6 位＝近 ${p.deltaInfo.window_days} 日涨星最快（数据来自历史快照对比）· 其后为热度基线`
+        : "前 6 位＝近 90 天新建的新贵（标 NEW，每日轮换）· 其后为赛道热门基线"
+    }</span></h2>
     <table>
-      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th>语言</th></tr></thead>
-      <tbody>${topicRows || `<tr><td colspan="5" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
+      <thead><tr><th>#</th><th>仓库</th><th>简介</th><th class="r">star</th><th class="r">${p.deltaInfo ? p.deltaInfo.window_days + "日涨星" : "涨星"}</th><th>语言</th></tr></thead>
+      <tbody>${topicRows || `<tr><td colspan="6" class="empty">本周期未检索到符合条件的项目</td></tr>`}</tbody>
     </table>
   </section>
   <section>
@@ -956,8 +1047,20 @@ function renderCards(p) {
 
 // 仅当以 `node radar.mjs` 直接运行时执行；被 import 时仅导出函数（便于单测）
 const isSelf = process.argv[1] && process.argv[1].replace(/^.*\//, "") === "radar.mjs";
-export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, main };
+export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, applyDelta, renderOnly, main };
 
 if (isSelf) {
-  main().catch((e) => { console.error("FATAL", e); process.exit(1); });
+  if (process.argv.includes("--render-only")) {
+    try {
+      renderOnly();
+    } catch (e) {
+      console.error("FATAL", e);
+      process.exit(1);
+    }
+  } else {
+    main().catch((e) => {
+      console.error("FATAL", e);
+      process.exit(1);
+    });
+  }
 }
