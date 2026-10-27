@@ -1,7 +1,8 @@
 name: radar-weekly
 on:
   schedule:
-    - cron: "0 0 * * 1"   # 北京时间 周一 08:00
+    # UTC 周日 16:00 = 北京时间周一 00:00（同样为避开 schedule 4~5 小时延迟，见 daily.yml 注释）
+    - cron: "0 16 * * 0"
   workflow_dispatch:
 permissions:
   contents: write

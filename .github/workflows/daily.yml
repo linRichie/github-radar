@@ -1,7 +1,11 @@
 name: radar-daily
 on:
   schedule:
-    - cron: "0 0 * * *"   # 北京时间 08:00 每日
+    # UTC 16:00 = 北京时间次日 00:00。
+    # 实测 GitHub 免费 runner 的 schedule 会延迟 4~5 小时（配 08:00 时实际 12:1x~12:4x 才跑），
+    # 因此把触发点提前到凌晨，延迟后落在 02:00~05:00 完成；09:00 的 WorkBuddy 兜底检查时会
+    # 发现数据已是当天、不再重复触发，从而消除"一天跑两次"。
+    - cron: "0 16 * * *"
   workflow_dispatch:
 permissions:
   contents: write
