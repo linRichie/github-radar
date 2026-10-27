@@ -331,6 +331,8 @@
     "free-cracks/Adobe-Acrobat-Pro": "⚠️ 破解软件类仓库，不建议使用。",
     "pro-tools-workspace/Canva-Pro": "⚠️ 疑似破解软件类仓库，不建议使用。",
     "kuraeow/ultratears": "⚠️ 非官方《王国之泪》PC 移植（静态重编译），版权风险高。",
-    "oosexgang/hackios-xnu-userland": "⚠️ 破解 iOS 用户态类仓库，不建议使用。"
+    "oosexgang/hackios-xnu-userland": "⚠️ 破解 iOS 用户态类仓库，不建议使用。",
+    "browser-use/browser-use": "给 AI agent 用的开源 Python 浏览器自动化库，另有 Browser Use Cloud。",
+    "tangency-labs/solidcraft": "纯 Rust 编写的开源参数化 3D CAD 应用。"
   }
 }

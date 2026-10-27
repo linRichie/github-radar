@@ -23,17 +23,8 @@ jobs:
         run: node radar.mjs --mode weekly
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: save to aliyun mysql
-        continue-on-error: true
-        env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
-        run: python scripts/load_db.py --mode weekly
       - name: compute star deltas & re-render
-        # 周报用 7 天窗口算涨星，再用它重排 03 区
+        # 周报用 7 天窗口算涨星；先重排再落库，保证重排后新进榜的项目也入库
         continue-on-error: true
         env:
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -44,6 +35,15 @@ jobs:
         run: |
           python scripts/delta_rank.py --mode weekly --days 7
           node radar.mjs --mode weekly --render-only
+      - name: save to aliyun mysql
+        continue-on-error: true
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+        run: python scripts/load_db.py --mode weekly
       - name: commit
         run: |
           git config user.name "github-radar"

@@ -26,18 +26,9 @@ jobs:
         run: node radar.mjs --mode daily
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: save to aliyun mysql
-        # 落库失败不阻断页面发布；凭据全部来自仓库 Secrets，不入代码
-        continue-on-error: true
-        env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
-        run: python scripts/load_db.py --mode daily
       - name: compute star deltas & re-render
-        # 落库之后才能算增量：读历史快照得「近 3 日 star 增长」，再用它重排 03 区
+        # 顺序关键：delta 只用「今天之前」的历史快照，所以可以放在落库之前；
+        # 先重排再落库，才能保证最终榜单上的项目（含重排后新进榜的）全部入库
         continue-on-error: true
         env:
           MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
@@ -48,6 +39,16 @@ jobs:
         run: |
           python scripts/delta_rank.py --mode daily --days 3
           node radar.mjs --mode daily --render-only
+      - name: save to aliyun mysql
+        # 落库失败不阻断页面发布；凭据全部来自仓库 Secrets，不入代码
+        continue-on-error: true
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+        run: python scripts/load_db.py --mode daily
       - name: commit
         run: |
           git config user.name "github-radar"
