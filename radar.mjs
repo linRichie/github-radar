@@ -635,19 +635,41 @@ const CSS = `
   .hrow.sel .hd{color:#ccc}
   .hrow .hg{float:right;margin-left:8px;font-weight:900;font-size:11.5px;color:#e30613;font-variant-numeric:tabular-nums}
   .hrow.sel .hg{color:#fff}
-  .hdetail{border:1px solid #111;margin-top:16px}
-  .hdh{padding:14px 18px;border-bottom:1px solid #111;background:#f7f7f5}
-  .hdh h3{font-size:16px;font-weight:900;word-break:break-all}
-  .hdh .hdsub{font-size:11.5px;color:#666;margin-top:3px}
-  .hchart{padding:16px 18px;overflow-x:auto}
-  .hchart svg{display:block;max-width:100%;height:auto}
+  /* 毛玻璃遮罩 + 居中弹窗（边框仍为 1px 实黑、直角，避免软化） */
+  .overlay{position:fixed;inset:0;background:rgba(17,17,17,.30);backdrop-filter:blur(7px) saturate(125%);-webkit-backdrop-filter:blur(7px) saturate(125%);z-index:90;opacity:0;pointer-events:none;transition:opacity .22s ease}
+  .overlay.show{opacity:1;pointer-events:auto}
+  .modalwrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:100;pointer-events:none}
+  .modalcard{width:min(820px,100%);max-height:88vh;overflow:auto;background:rgba(255,255,255,.90);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border:1px solid #111;box-shadow:0 28px 70px rgba(17,17,17,.22),7px 7px 0 rgba(17,17,17,.07);opacity:0;transform:translateY(10px) scale(.985);transition:opacity .22s ease,transform .26s cubic-bezier(.22,.61,.36,1);pointer-events:none}
+  .modalcard.show{opacity:1;transform:none;pointer-events:auto}
+  .dh{position:sticky;top:0;background:rgba(247,247,245,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #111;padding:14px 20px;display:flex;align-items:flex-start;gap:12px}
+  .dh .txt{flex:1;min-width:0}
+  .dh h3{font-size:16px;font-weight:900;word-break:break-all;letter-spacing:-.01em}
+  .dh .hdsub{font-size:11.5px;color:#555;margin-top:3px;line-height:1.5}
+  .dh .hdsub b{color:#111}
+  .xbtn{flex:0 0 auto;width:30px;height:30px;background:#111;color:#fff;border:1px solid #111;font-size:15px;font-weight:800;line-height:1;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center}
+  .xbtn:hover{background:#e30613;border-color:#e30613}
+  .hchart{padding:16px 20px 6px;overflow-x:auto}
+  .hchart svg{display:block;width:100%;height:auto}
   .hstats{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid #111}
-  .hstat{padding:11px 14px;border-right:1px solid #ddd}
+  .hstat{padding:11px 12px;border-right:1px solid #ddd}
   .hstat:last-child{border-right:none}
-  .hstat .k{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#666;font-weight:700}
-  .hstat .v{font-size:18px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
+  .hstat .k{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#666;font-weight:700;white-space:nowrap}
+  .hstat .v{font-size:17px;font-weight:900;font-variant-numeric:tabular-nums;margin-top:2px}
   .hstat .v.neg{color:#0a7d3f}
   .hstat .v.pos{color:#e30613}
+  .dtable{padding:14px 20px 4px;border-top:1px solid #111}
+  .dtable .dth{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#666;margin-bottom:6px}
+  .dtable table{width:100%;border-collapse:collapse;font-size:12px}
+  .dtable tr.th td{font-size:10px;color:#888;font-weight:700;letter-spacing:.06em;border-bottom:1px solid #111;padding:4px}
+  .dtable td{padding:6px 4px;border-bottom:1px solid #eee;font-variant-numeric:tabular-nums}
+  .dtable td:first-child{width:62px;font-weight:700;color:#333}
+  .dtable td.num{text-align:right;font-weight:800}
+  .dtable td.pos{color:#e30613}
+  .dtable td.neg{color:#0a7d3f}
+  .dfooter{padding:12px 20px 18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-top:1px solid #eee;margin-top:2px}
+  .dfooter a{display:inline-block;background:#111;color:#fff;padding:8px 16px;font-size:12px;font-weight:800;letter-spacing:.04em;text-decoration:none}
+  .dfooter a:hover{background:#e30613}
+  .dfooter .muted{font-size:11px;color:#6b6b6b}
   .hempty{padding:26px;text-align:center;color:#666;font-size:13px}
   .hrep-sec{margin-bottom:18px}
   .hrep-sec h3{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #111}
@@ -693,7 +715,7 @@ const CSS = `
   footer{padding:16px 36px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#666;letter-spacing:.04em;border-top:3px solid #111}
   footer a{color:#111;font-weight:700}
   footer .by b{color:#111}
-  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}.dgrid{grid-template-columns:1fr}.dcol{border-right:none;border-bottom:1px solid #ddd}.dcol:last-child{border-bottom:none}}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}.dgrid{grid-template-columns:1fr}.dcol{border-right:none;border-bottom:1px solid #ddd}.dcol:last-child{border-bottom:none}.hlist{grid-template-columns:1fr}.hrow{border-right:none}.hbtn{padding:10px 15px;font-size:11.5px}.hpanel{padding:16px 18px}.modalwrap{padding:12px}.modalcard{max-height:94vh}.hstats{grid-template-columns:repeat(2,1fr)}.hstat{border-bottom:1px solid #ddd}.hstat:nth-child(2n){border-right:none}}
 `;
 
 function cut(s, n) {
@@ -930,7 +952,7 @@ function descPlain(r, p) {
 // 历史回看页：趋势查询（SVG 曲线）+ 日期回放（按需加载分片）
 // 数据由 scripts/export_history.py 生成：data/history-trend.json + data/history/daily/<date>.json + data/history/index.json
 function renderHistory(p) {
-  const body = `<div class="lead"><b>历史回看</b> · 数据源：每日抓取的数据库快照导出（数据库全量保留，此处仅为站点视图）· <b>趋势</b>看项目 star 曲线与排名 · <b>回放</b>看任意一天的完整榜单 · 空缺日断线、不做插值</div>
+  const body = `<div class="lead"><b>历史回看</b> · 数据源：每日抓取的数据库快照导出（数据库全量保留，此处仅为站点视图）· <b>趋势</b>：点任意项目在弹窗中看曲线与每日记录 · <b>回放</b>看任意一天的完整榜单 · 空缺日断线、不做插值</div>
   <div class="hswitch">
     <button class="hbtn on" data-v="trend">趋势查询</button>
     <button class="hbtn" data-v="replay">日期回放</button>
@@ -939,12 +961,13 @@ function renderHistory(p) {
     <div class="sb-row"><input id="hq" type="text" placeholder="搜索项目名（如 browser / career-ops），或直接看下方涨星榜" autocomplete="off"><button id="hgo" type="button">搜索</button></div>
     <div class="sb-tip" id="htip">加载中…</div>
     <div id="hlist" class="hlist" style="margin-top:14px"></div>
-    <div id="hdetail"></div>
   </div>
   <div class="hpanel" id="pReplay" style="display:none">
     <div class="sb-row" style="max-width:480px"><select id="hdate" style="flex:1;border:1px solid #111;padding:10px 13px;font-size:13.5px;font-family:inherit;background:#fff;color:#111"></select></div>
     <div id="hreplay" style="margin-top:16px"></div>
   </div>
+  <div class="overlay" id="ov"></div>
+  <div class="modalwrap"><div class="modalcard" id="mc"></div></div>
   <script>
   (function () {
     // 本地用 file:// 直接打开时 fetch 会被 CORS 拦截：只跳过数据加载，按钮仍绑定事件
@@ -1015,20 +1038,36 @@ function renderHistory(p) {
       });
     }
 
+    // 每日记录：每天 star + 日增 + 排名（空缺日不列）
+    function dailyTable(series) {
+      var rows = "", prev = null;
+      series.forEach(function (x) {
+        var delta = prev == null ? "—" : (x.s - prev >= 0 ? "+" : "") + fmt(x.s - prev);
+        var cls = prev == null ? "" : x.s - prev < 0 ? "neg" : "pos";
+        rows += "<tr><td>" + esc(String(x.d).slice(5)) + '</td><td class="num">' + fmt(x.s) +
+          '</td><td class="num ' + cls + '">' + delta + '</td><td class="num">#' + x.r + "</td></tr>";
+        prev = x.s;
+      });
+      return '<div class="dtable"><div class="dth">每日记录</div><table>' +
+        '<tr class="th"><td>日期</td><td class="num">star</td><td class="num">日增</td><td class="num">排名</td></tr>' +
+        rows + "</table></div>";
+    }
+
     function showDetail(full) {
+      var x = (trendData.projects || []).filter(function (p) { return p.f === full; })[0];
+      if (!x) return;
       selFull = full;
       Array.prototype.forEach.call(document.querySelectorAll(".hrow"), function (el) {
         el.classList.toggle("sel", el.getAttribute("data-f") === full);
       });
-      var x = (trendData.projects || []).filter(function (p) { return p.f === full; })[0];
-      if (!x) return;
       var gcls = x.g >= 0 ? "pos" : "neg";
       var secLabel = (x.sec || []).map(function (s) {
         return s.indexOf("domain:") === 0 ? s.slice(7) + "（领域）" : s;
       }).join(" / ");
-      var html = '<div class="hdetail">' +
-        '<div class="hdh"><h3>' + esc(x.f) + '</h3><div class="hdsub">' + esc(x.d || "暂无简介") +
-        "<br>上榜 " + x.n + " 天 · " + esc(x.a) + " → " + esc(x.b) + " · 分区：" + esc(secLabel || "—") + "</div></div>" +
+      $("mc").innerHTML =
+        '<div class="dh"><div class="txt"><h3>' + esc(x.f) + '</h3><div class="hdsub">' + esc(x.d || "暂无简介") +
+        "<br>上榜 <b>" + x.n + "</b> 天 · " + esc(x.a) + " → " + esc(x.b) + " · 分区：" + esc(secLabel || "—") +
+        '</div></div><button class="xbtn" type="button" id="hclose" aria-label="关闭">✕</button></div>' +
         '<div class="hchart">' + drawChart(x.x) + "</div>" +
         '<div class="hstats">' +
         '<div class="hstat"><div class="k">当前 star</div><div class="v">' + fmt(x.s) + "</div></div>" +
@@ -1036,8 +1075,21 @@ function renderHistory(p) {
         '<div class="hstat"><div class="k">涨幅</div><div class="v ' + gcls + '">' + (x.p >= 0 ? "+" : "") + x.p + "%</div></div>" +
         '<div class="hstat"><div class="k">上榜天数</div><div class="v">' + x.n + "</div></div>" +
         '<div class="hstat"><div class="k">最好排名</div><div class="v">#' + x.br + "</div></div>" +
-        "</div></div>";
-      $("hdetail").innerHTML = html;
+        "</div>" +
+        dailyTable(x.x) +
+        '<div class="dfooter"><a href="https://github.com/' + esc(x.f) + '" target="_blank" rel="noopener">在 GitHub 打开 →</a>' +
+        '<span class="muted">数据来自每日快照 · 空缺日不做插值</span></div>';
+      $("ov").classList.add("show");
+      $("mc").classList.add("show");
+      document.body.style.overflow = "hidden";
+      var cb = $("hclose");
+      if (cb) cb.addEventListener("click", closePanel);
+    }
+
+    function closePanel() {
+      $("ov").classList.remove("show");
+      $("mc").classList.remove("show");
+      document.body.style.overflow = "";
     }
 
     // SVG 折线：空缺日断线（不插值）
@@ -1152,6 +1204,9 @@ function renderHistory(p) {
     }
     $("hgo").addEventListener("click", function () { renderList($("hq").value.trim()); });
     $("hq").addEventListener("keydown", function (e) { if (e.key === "Enter") renderList($("hq").value.trim()); });
+    // 弹窗关闭：点遮罩或按 Esc
+    $("ov").addEventListener("click", closePanel);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closePanel(); });
   })();
   <\/script>`;
 
