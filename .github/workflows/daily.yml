@@ -49,6 +49,17 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_DB: ${{ secrets.MYSQL_DB }}
         run: python scripts/load_db.py --mode daily
+      - name: export history for site
+        # 导出站点用的历史视图：回放分片（永久）+ 趋势文件（90 天窗口）+ 日期索引
+        # 只读 DB、不删除任何数据（数据库仍全量保留）
+        continue-on-error: true
+        env:
+          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
+          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+        run: python scripts/export_history.py --days 90
       - name: commit
         run: |
           git config user.name "github-radar"
