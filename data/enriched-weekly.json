@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-26",
+  "date": "2026-10-28",
   "mode": "weekly",
   "generatedBy": "workbuddy-automation",
   "note": "周报上榜项目解读：trending 与 growthRank Top10 去重；当日已有日报解读的复用，其余由 AI 补全六字段。",
@@ -261,6 +261,56 @@
       "caveats": [
         "建议结合实际项目做针对性裁剪",
         "不同模型对指令的响应可能有差异"
+      ]
+    },
+    "AgriciDaniel/claude-seo": {
+      "tagline": "面向 Claude Code 的通用 SEO 技能包：26 个子技能 + 19 个子 agent，覆盖技术 SEO、GEO/AEO 与 Agent 就绪度。",
+      "value": "把零散的 SEO 实操沉淀成可复用技能，让 Claude 直接产出符合搜索与 AI 抓取规范的内容与报告。",
+      "features": [
+        "26 个子技能 + 19 个子 agent，覆盖技术 SEO、E-E-A-T、schema、GEO/AEO",
+        "Agent 就绪度：Lighthouse Agentic Browsing、WebMCP、llms.txt",
+        "覆盖外链、本地 SEO、电商、国际 SEO 与 Google API",
+        "9 个可选扩展接入实时 SEO 数据；支持 PDF/Excel 报告"
+      ],
+      "scenarios": [
+        "用 Claude 做站点技术 SEO 体检与整改",
+        "为内容做 GEO/AEO 与 AI 抓取就绪优化",
+        "批量生成 SEO 报告与关键词分析"
+      ],
+      "inputs": [
+        "站点地址或待分析内容",
+        "关注的 SEO 维度（技术 / 内容 / 外链 / 本地）",
+        "可选：Google API 凭据与实时数据扩展"
+      ],
+      "caveats": [
+        "子技能数量多，建议按需启用避免上下文膨胀",
+        "SEO 结论需结合人工判断，勿盲从自动化建议",
+        "实时数据扩展依赖外部 API 配额"
+      ]
+    },
+    "TauricResearch/TradingAgents": {
+      "tagline": "基于多 agent 的 LLM 金融交易框架，把研究、决策、风控拆成协作角色。",
+      "value": "用多 agent 模拟一个交易团队，让研究、操盘与风控分工协作，降低单点决策偏差。",
+      "features": [
+        "多 agent 协作：研究员、交易员、风控等角色分工",
+        "LLM 驱动：基于大模型的推理与决策",
+        "面向金融市场：股票等品种的自动化交易流程",
+        "框架化设计：便于替换模型与策略组件"
+      ],
+      "scenarios": [
+        "用多 agent 做股票研究的自动化",
+        "搭建实验性量化交易工作流",
+        "教学或原型验证多 agent 协作"
+      ],
+      "inputs": [
+        "行情与基本面数据源",
+        "可选模型与策略配置",
+        "回测或实盘运行环境"
+      ],
+      "caveats": [
+        "实盘交易有资金风险，须严格风控与小规模验证",
+        "LLM 决策存在不确定性，不宜直接全仓跟随",
+        "数据质量与延迟会显著影响结果"
       ]
     }
   }

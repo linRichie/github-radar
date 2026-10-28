@@ -347,6 +347,18 @@
     "martinkeith700/ruyiJS": "用真实微型 AI 无头浏览器从 Python 驱动任意网站，绕过反爬取数据。",
     "Motionsites-AI/claude-skill": "免费 Claude 技能：让 Claude 生成获奖级电影感落地页。by MotionSites。",
     "stormydayy/halo-overlay": "轻量开源 AI 实时对话浮层，听看并给出回应建议。",
-    "deepopen-com/deepopen-3d-webs": "图像驱动的三维场景生成系统：按相机轨迹生成可预览可追溯的场景结果。"
+    "deepopen-com/deepopen-3d-webs": "图像驱动的三维场景生成系统：按相机轨迹生成可预览可追溯的场景结果。",
+    "akitaonrails/ai-memory": "为 agent 编码 CLI 提供长期记忆方案，便于在不同编码工具间交接上下文与历史。",
+    "Human-Agent-Society/reef": "面向持续自我进化的 agent 的基础设施，支持 agent 不断迭代优化自身能力。",
+    "Ryze-AI-Adgent/open-seo-mcp-skills": "免费的 SEO MCP 服务与开源 SEO/GEO 技能，支持关键词研究、排名追踪等 Claude 能力。",
+    "XiaoDuoYa/codex-with-chatgpt": "让 ChatGPT 负责规划思考、Codex 负责执行编码，二者协作完成开发任务。",
+    "CopilotKit/OpenBot": "开源 AI 同事框架，每个 agent 拥有独立电脑环境：浏览器、文件与工具。",
+    "bojieli/ai-infra-book": "《深入理解 AI Infra：量化分析与系统设计》（李博杰 著）开源书稿：从硬件约束和模型架构出发，量化推导 LLM 推理与训练系统设计。含全书正文、PDF、配套计算工具与实验。",
+    "yjh051108/dsh-routing-suite": "运行时注入器与路由标准套件，先装注入器再接路由器，用于请求分流与治理。",
+    "monid-ai/monid": "面向 agent 工具的 OpenRouter 网关，统一接入与调度各类工具服务。",
+    "xevrion/hatchzip": "跨平台开源解压工具，支持 Windows/macOS/Linux 免费解包各类归档文件。",
+    "t3dotgg/tstack": "作者日常使用的 agent 技能集，兼容 Claude Code 与 Codex 编码工具。",
+    "lyramakesmusic/neuron-explorer": "面向 Qwen3.5-4B 的神经元探针，以前馈干预方式探查并调控每个 MLP 神经元。",
+    "DLSS-5-Swaper-New/.github": "Windows 专用小工具，方便玩家一键切换 DLSS 版本以优化游戏画质与帧率。"
   }
 }
