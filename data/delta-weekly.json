@@ -1,0 +1,242 @@
+{
+ "generated_at": "2026-10-28T12:03:35+08:00",
+ "mode": "weekly",
+ "window_days": 7,
+ "window_start": "2026-10-21",
+ "candidates": 80,
+ "matched": 29,
+ "items": [
+  {
+   "full": "morluto/rea",
+   "stars": 398112,
+   "stars_then": 350615,
+   "delta": 47497,
+   "delta_pct": 13.5,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "Gathin23/cleanyourtv",
+   "stars": 42154,
+   "stars_then": 24594,
+   "delta": 17560,
+   "delta_pct": 71.4,
+   "since": "2026-10-23 11:20"
+  },
+  {
+   "full": "Ebony-Vinyl/dsh-our-free-model",
+   "stars": 47131,
+   "stars_then": 37085,
+   "delta": 10046,
+   "delta_pct": 27.1,
+   "since": "2026-10-23 11:20"
+  },
+  {
+   "full": "Graphify-Labs/graphify",
+   "stars": 137096,
+   "stars_then": 130583,
+   "delta": 6513,
+   "delta_pct": 5.0,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "affaan-m/ECC",
+   "stars": 291014,
+   "stars_then": 285048,
+   "delta": 5966,
+   "delta_pct": 2.1,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "deepseek-ai/deepseek-harness",
+   "stars": 263903,
+   "stars_then": 258351,
+   "delta": 5552,
+   "delta_pct": 2.1,
+   "since": "2026-10-23 11:20"
+  },
+  {
+   "full": "yetone/magpie",
+   "stars": 23887,
+   "stars_then": 19642,
+   "delta": 4245,
+   "delta_pct": 21.6,
+   "since": "2026-10-23 11:20"
+  },
+  {
+   "full": "simbasjungles/free-my-tv",
+   "stars": 5078,
+   "stars_then": 2049,
+   "delta": 3029,
+   "delta_pct": 147.8,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "TauricResearch/TradingAgents",
+   "stars": 117416,
+   "stars_then": 114628,
+   "delta": 2788,
+   "delta_pct": 2.4,
+   "since": "2026-10-26 09:14"
+  },
+  {
+   "full": "firecrawl/firecrawl",
+   "stars": 196129,
+   "stars_then": 193559,
+   "delta": 2570,
+   "delta_pct": 1.3,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "NousResearch/hermes-agent",
+   "stars": 257798,
+   "stars_then": 255663,
+   "delta": 2135,
+   "delta_pct": 0.8,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "Jakeschincariol/day-trader-skill",
+   "stars": 2363,
+   "stars_then": 241,
+   "delta": 2122,
+   "delta_pct": 880.5,
+   "since": "2026-10-22 10:22"
+  },
+  {
+   "full": "farion1231/cc-switch",
+   "stars": 149463,
+   "stars_then": 147684,
+   "delta": 1779,
+   "delta_pct": 1.2,
+   "since": "2026-10-23 09:15"
+  },
+  {
+   "full": "f/prompts.chat",
+   "stars": 174841,
+   "stars_then": 173749,
+   "delta": 1092,
+   "delta_pct": 0.6,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "lexmount/moli",
+   "stars": 21212,
+   "stars_then": 20147,
+   "delta": 1065,
+   "delta_pct": 5.3,
+   "since": "2026-10-23 11:20"
+  },
+  {
+   "full": "ollama/ollama",
+   "stars": 185045,
+   "stars_then": 184106,
+   "delta": 939,
+   "delta_pct": 0.5,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "open-webui/open-webui",
+   "stars": 156992,
+   "stars_then": 156317,
+   "delta": 675,
+   "delta_pct": 0.4,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "langgenius/dify",
+   "stars": 159755,
+   "stars_then": 159090,
+   "delta": 665,
+   "delta_pct": 0.4,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "n8n-io/n8n",
+   "stars": 208822,
+   "stars_then": 208174,
+   "delta": 648,
+   "delta_pct": 0.3,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "nextlevelbuilder/ui-ux-pro-max-skill",
+   "stars": 141652,
+   "stars_then": 141084,
+   "delta": 568,
+   "delta_pct": 0.4,
+   "since": "2026-10-27 14:43"
+  },
+  {
+   "full": "google/artemis",
+   "stars": 15257,
+   "stars_then": 14805,
+   "delta": 452,
+   "delta_pct": 3.1,
+   "since": "2026-10-26 09:44"
+  },
+  {
+   "full": "tangency-labs/solidcraft",
+   "stars": 11311,
+   "stars_then": 10876,
+   "delta": 435,
+   "delta_pct": 4.0,
+   "since": "2026-10-27 14:43"
+  },
+  {
+   "full": "langchain-ai/langchain",
+   "stars": 148584,
+   "stars_then": 148176,
+   "delta": 408,
+   "delta_pct": 0.3,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "huggingface/transformers",
+   "stars": 168263,
+   "stars_then": 167931,
+   "delta": 332,
+   "delta_pct": 0.2,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "harry0703/MoneyPrinterTurbo",
+   "stars": 135896,
+   "stars_then": 135572,
+   "delta": 324,
+   "delta_pct": 0.2,
+   "since": "2026-10-27 14:43"
+  },
+  {
+   "full": "genspark-ai/genoffice",
+   "stars": 11127,
+   "stars_then": 10834,
+   "delta": 293,
+   "delta_pct": 2.7,
+   "since": "2026-10-26 09:44"
+  },
+  {
+   "full": "Significant-Gravitas/AutoGPT",
+   "stars": 187794,
+   "stars_then": 187688,
+   "delta": 106,
+   "delta_pct": 0.1,
+   "since": "2026-10-21 14:25"
+  },
+  {
+   "full": "browser-use/browser-use",
+   "stars": 119327,
+   "stars_then": 119246,
+   "delta": 81,
+   "delta_pct": 0.1,
+   "since": "2026-10-27 14:43"
+  },
+  {
+   "full": "Snailclimb/JavaGuide",
+   "stars": 159306,
+   "stars_then": 159250,
+   "delta": 56,
+   "delta_pct": 0.0,
+   "since": "2026-10-26 09:44"
+  }
+ ]
+}
