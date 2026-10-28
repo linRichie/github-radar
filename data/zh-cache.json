@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-10-27",
+  "updatedAt": "2026-10-28",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -333,6 +333,20 @@
     "kuraeow/ultratears": "⚠️ 非官方《王国之泪》PC 移植（静态重编译），版权风险高。",
     "oosexgang/hackios-xnu-userland": "⚠️ 破解 iOS 用户态类仓库，不建议使用。",
     "browser-use/browser-use": "给 AI agent 用的开源 Python 浏览器自动化库，另有 Browser Use Cloud。",
-    "tangency-labs/solidcraft": "纯 Rust 编写的开源参数化 3D CAD 应用。"
+    "tangency-labs/solidcraft": "纯 Rust 编写的开源参数化 3D CAD 应用。",
+    "obra/superpowers": "一套面向智能体的技能框架与软件开发方法论，已在实战中验证有效。",
+    "HKUDS/DeepTutor": "港大推出的终身个性化 AI 辅导系统，可长期陪伴式因材施教。",
+    "togg53192-cmd/jailbreaks": "作者个人整理的各类大模型越狱提示词合集仓库。",
+    "umutyesildal/berlin-job-search": "面向柏林及德国的 AI 求职教练：搜职位、审签证薪资、写简历练面试。",
+    "FareedKhan-dev/kimi-k3-in-c": "用纯 C99 在单 CPU、8.24GB 内存上跑通 2.78 万亿参数 Kimi K3 推理。",
+    "rehan-remade/universal-modder": "让 Claude Code 对各类 PC 游戏进行侦察、逆向与改装的技能工具集。",
+    "KKKKhazix/AIHOT": "一个自己找热点、自己写日报的网站框架。把信源和精选标准换成你的，它就是你的行业热点站。",
+    "lemomo-ai/lemo-opuscar": "一套用代码做片的风格工具箱：59 种现成风格，也能做出你自己的。",
+    "deeplethe/utopia": "全球首个开源企业级世界模型，用于构建与推演复杂业务世界状态。",
+    "jev-chat/jev-chat-jarvis": "聊天辅助决策工具：先看懂对方再回复，发不发由你。",
+    "martinkeith700/ruyiJS": "用真实微型 AI 无头浏览器从 Python 驱动任意网站，绕过反爬取数据。",
+    "Motionsites-AI/claude-skill": "免费 Claude 技能：让 Claude 生成获奖级电影感落地页。by MotionSites。",
+    "stormydayy/halo-overlay": "轻量开源 AI 实时对话浮层，听看并给出回应建议。",
+    "deepopen-com/deepopen-3d-webs": "图像驱动的三维场景生成系统：按相机轨迹生成可预览可追溯的场景结果。"
   }
 }
