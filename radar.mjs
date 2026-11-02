@@ -455,6 +455,7 @@ function writePages(payload) {
   writeFileSync(join(ROOT, "cards.html"), renderCards(payload));
   writeFileSync(join(ROOT, "domains.html"), renderDomains(payload));
   writeFileSync(join(ROOT, "history.html"), renderHistory(payload));
+  writeFileSync(join(ROOT, "search.html"), renderSearch(payload));
 }
 
 // 用 MySQL 历史快照算出的「近 N 日 star 增量」重排 03 区：
@@ -670,6 +671,46 @@ const CSS = `
   .dfooter a{display:inline-block;background:#111;color:#fff;padding:8px 16px;font-size:12px;font-weight:800;letter-spacing:.04em;text-decoration:none}
   .dfooter a:hover{background:#e30613}
   .dfooter .muted{font-size:11px;color:#6b6b6b}
+  /* 搜索页 */
+  .sbox{padding:22px 36px;border-bottom:1px solid #111}
+  .smain{display:flex;max-width:920px}
+  .smain input{flex:1;min-width:0;border:1px solid #111;border-right:none;padding:13px 15px;font-size:14px;font-family:inherit;outline:none}
+  .smain input:focus{background:#fffdf6}
+  .smain button{background:#111;color:#fff;border:1px solid #111;padding:13px 26px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.06em;white-space:nowrap}
+  .smain button:hover:not(:disabled){background:#e30613;border-color:#e30613}
+  .smain button:disabled{background:#999;border-color:#999;cursor:not-allowed}
+  .sfilters{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+  .sfilters label{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#666}
+  .sfilters select,.sfilters input{border:1px solid #ccc;padding:6px 9px;font-size:12px;font-family:inherit;background:#fff;color:#111;outline:none}
+  .sfilters select:focus,.sfilters input:focus{border-color:#111}
+  .syntax{font-size:11.5px;color:#666;margin-top:11px;line-height:1.85}
+  .syntax code{background:#f2f2f0;padding:1px 5px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:#111;border:1px solid #e2e2e0;white-space:nowrap}
+  .syntax a{color:#111;border-bottom:1px solid #111;text-decoration:none;font-weight:700}
+  .spill{padding:11px 36px;background:#fafafa;border-bottom:1px solid #111;font-size:11.5px;color:#555;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  .spill b{color:#111}
+  .spill .warn{color:#e30613;font-weight:800}
+  .srow{padding:14px 36px;border-bottom:1px solid #eee;display:grid;grid-template-columns:1fr 180px;gap:18px}
+  .srow:hover{background:#fafaf8}
+  .srow .l{min-width:0}
+  .srow .nm{font-size:14px;font-weight:800;word-break:break-all;line-height:1.4}
+  .srow .nm a{color:#111;text-decoration:none;border-bottom:1px solid #111}
+  .srow .nm a:hover{background:#e30613;color:#fff;border-color:#e30613}
+  .srow .dz{font-size:12.5px;color:#4a4a4a;margin-top:6px;line-height:1.55}
+  .srow .dz .en{display:block;font-size:11px;color:#8b8b8b;margin-top:2px}
+  .srow .tp{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px}
+  .srow .tp span{font-size:10px;border:1px solid #ddd;padding:1px 6px;color:#666}
+  .srow .r{text-align:right;font-variant-numeric:tabular-nums}
+  .srow .r .st{font-size:15px;font-weight:900}
+  .srow .r .mt{font-size:11px;color:#666;margin-top:4px}
+  .srow .r .lg{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.08em;border:1px solid #111;padding:1px 6px;margin-top:7px;text-transform:uppercase}
+  .track{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:#111;color:#fff;font-size:10.5px;font-weight:800;padding:3px 9px;cursor:pointer;letter-spacing:.02em;border:none;font-family:inherit}
+  .track:hover{background:#e30613}
+  .sempty{padding:44px 36px;text-align:center;color:#666;font-size:13px;line-height:1.9}
+  .spage{display:flex;justify-content:center;align-items:center;padding:22px 36px;border-top:1px solid #111;gap:0}
+  .spage button{background:#fff;border:1px solid #111;padding:9px 16px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;margin-right:-1px}
+  .spage button:hover:not(:disabled){background:#111;color:#fff}
+  .spage button:disabled{color:#bbb;border-color:#ddd;cursor:not-allowed}
+  .spage .pg{padding:9px 16px;border:1px solid #111;margin-right:-1px;font-size:12px;font-weight:800;background:#111;color:#fff}
   .hempty{padding:26px;text-align:center;color:#666;font-size:13px}
   .hrep-sec{margin-bottom:18px}
   .hrep-sec h3{font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #111}
@@ -715,7 +756,7 @@ const CSS = `
   footer{padding:16px 36px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#666;letter-spacing:.04em;border-top:3px solid #111}
   footer a{color:#111;font-weight:700}
   footer .by b{color:#111}
-  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}.dgrid{grid-template-columns:1fr}.dcol{border-right:none;border-bottom:1px solid #ddd}.dcol:last-child{border-bottom:none}.hlist{grid-template-columns:1fr}.hrow{border-right:none}.hbtn{padding:10px 15px;font-size:11.5px}.hpanel{padding:16px 18px}.modalwrap{padding:12px}.modalcard{max-height:94vh}.hstats{grid-template-columns:repeat(2,1fr)}.hstat{border-bottom:1px solid #ddd}.hstat:nth-child(2n){border-right:none}}
+  @media(max-width:760px){.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.cards a{border-right:none}.mh-left h1{font-size:32px}.masthead{flex-direction:column;gap:14px}.mh-right{text-align:left}.desc,.lang{display:none}table{display:block;overflow-x:auto}.repo a{word-break:break-all}.proj-grid{grid-template-columns:1fr}.proj-cell{border-right:none;border-bottom:1px solid #ddd}.proj-cell:last-child{border-bottom:none}.proj-name{font-size:26px}.proj-head,.proj-cell,.proj-stat{padding-left:18px;padding-right:18px}.value{margin-left:18px;margin-right:18px}.proj-stats{grid-template-columns:1fr}.proj-stat{border-right:none;border-bottom:1px solid #ddd}.proj-stat:last-child{border-bottom:none}.nav .navwriter{display:none}.nav a{padding:10px 14px;font-size:12px}.dgrid{grid-template-columns:1fr}.dcol{border-right:none;border-bottom:1px solid #ddd}.dcol:last-child{border-bottom:none}.hlist{grid-template-columns:1fr}.hrow{border-right:none}.hbtn{padding:10px 15px;font-size:11.5px}.hpanel{padding:16px 18px}.modalwrap{padding:12px}.modalcard{max-height:94vh}.hstats{grid-template-columns:repeat(2,1fr)}.hstat{border-bottom:1px solid #ddd}.hstat:nth-child(2n){border-right:none}.sbox{padding:16px 18px}.smain{flex-direction:column}.smain input{border-right:1px solid #111;border-bottom:none}.smain button{padding:11px}.srow{grid-template-columns:1fr;padding:14px 18px;gap:8px}.srow .r{text-align:left;display:flex;flex-wrap:wrap;gap:12px;align-items:baseline}.srow .r .mt,.srow .r .lg{margin-top:0}.syntax{font-size:11px;line-height:1.9}.spill{padding:10px 18px;gap:10px}}
 `;
 
 function cut(s, n) {
@@ -867,6 +908,7 @@ function pageShell(p, { title, navActive, metrics, body }) {
   <nav class="nav">
     <a href="./" class="${navActive === "index" ? "on" : ""}">首页</a>
     <a href="./domains.html" class="${navActive === "domains" ? "on" : ""}">领域雷达</a>
+    <a href="./search.html" class="${navActive === "search" ? "on" : ""}">搜索</a>
     <a href="./history.html" class="${navActive === "history" ? "on" : ""}">历史</a>
     <a href="./cards.html" class="${navActive === "cards" ? "on" : ""}">上榜项目详解</a>
     <span class="navwriter">撰稿<b>${AUTHOR}</b> · ${AUTHOR_MAIL}</span>
@@ -997,6 +1039,12 @@ function renderHistory(p) {
       });
     });
 
+    // 搜索页跳转过来时带 ?p=owner/repo，数据加载完自动打开该项目的弹窗
+    var PENDING = (function () {
+      var m = location.search.match(/[?&]p=([^&]+)/);
+      return m ? decodeURIComponent(m[1]) : null;
+    })();
+
     // 趋势数据
     function loadTrend() {
       fetch(TREND).then(function (r) { return r.json(); }).then(function (d) {
@@ -1004,6 +1052,16 @@ function renderHistory(p) {
         $("htip").innerHTML = "共 <b>" + d.count + "</b> 个项目（出现 ≥2 天）· 窗口 " + d.window_days +
           " 天 · 自 " + esc(d.since) + " · 更新于 " + esc(String(d.updated).slice(11, 16));
         renderList("");
+        if (PENDING) {
+          var full = PENDING;
+          PENDING = null;
+          var hit = (trendData.projects || []).some(function (x) { return x.f === full; });
+          if (hit) { showDetail(full); }
+          else {
+            $("htip").innerHTML += ' · <b style="color:#e30613">' + esc(full) +
+              "</b> 未进入趋势数据（可能只上榜 1 天），可在「日期回放」查看";
+          }
+        }
       }).catch(function (e) {
         $("htip").textContent = "趋势数据加载失败：" + e.message;
         $("hlist").innerHTML = '<div class="hempty">暂无趋势数据（首次导出后可见）</div>';
@@ -1217,6 +1275,210 @@ function renderHistory(p) {
   });
 }
 
+// 搜索页：直连 GitHub 官方 Search API（单请求 / sessionStorage 缓存 / 站内数据联动）
+function renderSearch(p) {
+  const body = `<div class="lead"><b>仓库搜索</b> · 直连 GitHub 官方搜索 API · 支持全部限定符 · 匿名限流 <b>10 次/分钟</b>（相同查询 5 分钟内走缓存不消耗配额）· 站内追踪过的项目会标出历史表现</div>
+  <div class="sbox">
+    <div class="smain">
+      <input id="sq" type="text" placeholder="如 rust cli · language:go stars:>5000 · topic:mcp pushed:>2026-10-01" autocomplete="off" spellcheck="false">
+      <button id="sgo" type="button">搜索</button>
+    </div>
+    <div class="sfilters">
+      <label for="slang">语言</label>
+      <input id="slang" list="slangs" placeholder="任意" style="width:110px">
+      <datalist id="slangs">
+        <option>Python</option><option>TypeScript</option><option>JavaScript</option><option>Go</option>
+        <option>Rust</option><option>Java</option><option>C++</option><option>C</option><option>Shell</option>
+        <option>PHP</option><option>Ruby</option><option>Swift</option><option>Kotlin</option><option>Vue</option>
+        <option>Jupyter Notebook</option><option>HTML</option><option>CSS</option><option>Zig</option>
+      </datalist>
+      <label for="sstar">star</label>
+      <select id="sstar">
+        <option value="">不限</option><option value="100">&gt; 100</option><option value="1000">&gt; 1,000</option>
+        <option value="5000">&gt; 5,000</option><option value="10000">&gt; 10,000</option>
+      </select>
+      <label for="spush">更新</label>
+      <select id="spush">
+        <option value="">不限</option><option value="7">近 7 天</option><option value="30">近 30 天</option><option value="90">近 90 天</option>
+      </select>
+      <label for="ssort">排序</label>
+      <select id="ssort">
+        <option value="best">最佳匹配</option><option value="stars">star 最多</option><option value="updated">最近更新</option>
+      </select>
+    </div>
+    <div class="syntax">限定符可直接写进输入框、空格表示 AND：<code>in:name</code> <code>in:description</code> <code>in:readme</code> · <code>stars:&gt;=1000</code> · <code>forks:&gt;100</code> · <code>created:&gt;2026-01-01</code> · <code>pushed:&gt;2026-10-01</code> · <code>language:Rust</code> · <code>topic:mcp</code> · <code>license:mit</code> · <code>user:torvalds</code> · <code>org:vercel</code> · <code>size:&gt;1000</code> · <a href="https://docs.github.com/search-github/searching-on-github/searching-for-repositories" target="_blank" rel="noopener">官方语法文档 →</a></div>
+  </div>
+  <div class="spill" id="spl">输入关键词或官方查询式，回车搜索 · 每页 30 条</div>
+  <div id="sres"></div>
+  <div id="spage"></div>
+  <script>
+  (function () {
+    // 本地 file:// 打开时无法调用 GitHub API（CORS），只拦请求、按钮照常绑定事件
+    var IS_FILE = location.protocol === "file:";
+    var API = "https://api.github.com/search/repositories";
+    var zh = {}, tracked = {};
+    var state = { page: 1, q: "", total: 0, sort: "best", busy: false };
+
+    function $(id) { return document.getElementById(id); }
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function fmt(n) { return Number(n || 0).toLocaleString(); }
+    function daysAgo(n) { return new Date(Date.now() - n * 864e5).toISOString().slice(0, 10); }
+    function ago(iso) {
+      if (!iso) return "—";
+      var d = Math.floor((Date.now() - new Date(iso).getTime()) / 864e5);
+      if (d <= 0) return "今天更新";
+      if (d === 1) return "昨天更新";
+      if (d < 30) return d + " 天前更新";
+      if (d < 365) return Math.floor(d / 30) + " 个月前更新";
+      return Math.floor(d / 365) + " 年前更新";
+    }
+
+    // 站内数据（不阻塞搜索；file:// 下跳过，避免 CORS 报错）
+    if (!IS_FILE) {
+      fetch("./data/tracked-index.json").then(function (r) { return r.json(); })
+        .then(function (d) { tracked = d.items || {}; }).catch(function () {});
+      fetch("./data/zh-cache.json").then(function (r) { return r.json(); })
+        .then(function (d) { zh = d.zh || {}; }).catch(function () {});
+    }
+
+    function buildQ() {
+      var raw = $("sq").value.trim();
+      if (!raw) return "";
+      var parts = [raw];
+      var lang = $("slang").value.trim();
+      if (lang) parts.push("language:" + lang);
+      var st = $("sstar").value;
+      if (st) parts.push("stars:>=" + st);
+      var pu = $("spush").value;
+      if (pu) parts.push("pushed:>" + daysAgo(pu));
+      return parts.join(" ");
+    }
+
+    function doSearch(page) {
+      if (IS_FILE) {
+        $("spl").innerHTML = '<span class="warn">本地 file:// 打开无法调用 GitHub API</span> · 请用 http(s) 访问（如 python -m http.server）';
+        return;
+      }
+      var q = buildQ();
+      if (!q) { $("spl").innerHTML = '<span class="warn">请先输入搜索词</span>'; return; }
+      state.page = page || 1;
+      state.q = q;
+      state.sort = $("ssort").value;
+      var url = API + "?q=" + encodeURIComponent(q) + "&per_page=30&page=" + state.page;
+      if (state.sort !== "best") url += "&sort=" + state.sort + "&order=desc";
+
+      var ck = "radar-srch:" + url;
+      try {
+        var hit = sessionStorage.getItem(ck);
+        if (hit) { applyResult(JSON.parse(hit), true); return; }
+      } catch (e) {}
+
+      $("sgo").disabled = true;
+      $("sgo").textContent = "搜索中…";
+      $("spl").innerHTML = "正在请求 GitHub…";
+
+      fetch(url, { headers: { Accept: "application/vnd.github+json" } }).then(function (r) {
+        var rem = r.headers.get("X-RateLimit-Remaining");
+        var reset = r.headers.get("X-RateLimit-Reset");
+        if (r.status === 403 || r.status === 429) {
+          var wait = reset ? Math.max(0, Math.ceil((Number(reset) * 1000 - Date.now()) / 1000)) : 60;
+          throw new Error("RATE||" + wait);
+        }
+        if (!r.ok) throw new Error("GitHub API " + r.status);
+        return r.json().then(function (d) { d.__rem = rem; return d; });
+      }).then(function (d) {
+        try { sessionStorage.setItem(ck, JSON.stringify(d)); } catch (e) {}
+        applyResult(d, false);
+      }).catch(function (e) {
+        var m = e.message || "";
+        if (m.indexOf("RATE||") === 0) {
+          $("spl").innerHTML = '<span class="warn">触发 GitHub 匿名限流（10 次/分钟）</span> · 请等 <b>' + m.split("||")[1] + ' 秒</b> 后重试';
+        } else {
+          $("spl").innerHTML = '<span class="warn">搜索失败</span> · ' + esc(m);
+        }
+        $("sres").innerHTML = "";
+        $("spage").innerHTML = "";
+      }).then(function () {
+        $("sgo").disabled = false;
+        $("sgo").textContent = "搜索";
+      });
+    }
+
+    function applyResult(data, fromCache) {
+      var items = data.items || [];
+      state.total = data.total_count || 0;
+      var rem = data.__rem;
+      var rateTxt = (rem === null || rem === undefined) ? ""
+        : ' · 剩余配额 <b>' + rem + '</b>/10' + (fromCache ? ' · <span style="color:#0a7d3f;font-weight:800">缓存命中</span>' : '');
+      $("spl").innerHTML = '「<b>' + esc(state.q) + '</b>」找到 <b>' + fmt(state.total) +
+        '</b> 个仓库 · 第 ' + state.page + ' 页 · 显示 ' + items.length + ' 条' + rateTxt;
+
+      if (!items.length) {
+        $("sres").innerHTML = '<div class="sempty">没有匹配的仓库。<br>试试放宽限定符（<code>stars:</code> / <code>pushed:</code> 过严会归零）。</div>';
+        $("spage").innerHTML = "";
+        return;
+      }
+      $("sres").innerHTML = items.map(row).join("");
+      Array.prototype.forEach.call(document.querySelectorAll(".track"), function (b) {
+        b.addEventListener("click", function () {
+          location.href = "./history.html?p=" + encodeURIComponent(b.getAttribute("data-f"));
+        });
+      });
+      renderPager();
+    }
+
+    function row(r) {
+      var full = r.full_name, t = tracked[full], zhTxt = zh[full] || "";
+      var desc = zhTxt
+        ? '<div class="dz">' + esc(zhTxt) + (r.description ? '<span class="en">' + esc(String(r.description).slice(0, 140)) + "</span>" : "") + "</div>"
+        : (r.description ? '<div class="dz">' + esc(String(r.description).slice(0, 200)) + "</div>" : "");
+      var tp = (r.topics || []).slice(0, 6).map(function (x) { return "<span>" + esc(x) + "</span>"; }).join("");
+      var tk = t ? '<button class="track" type="button" data-f="' + esc(full) + '">本站追踪 · ' + t[0] + " 天上榜 · " +
+        (t[1] >= 0 ? "+" : "") + fmt(t[1]) + "★ →</button>" : "";
+      return '<div class="srow"><div class="l"><div class="nm"><a href="' + esc(r.html_url) +
+        '" target="_blank" rel="noopener">' + esc(full) + "</a></div>" + desc + tk +
+        (tp ? '<div class="tp">' + tp + "</div>" : "") + '</div><div class="r"><div class="st">★ ' + fmt(r.stargazers_count) +
+        '</div><div class="mt">' + fmt(r.forks_count) + " forks · " + ago(r.pushed_at) + "</div>" +
+        (r.language ? '<div class="lg">' + esc(r.language) + "</div>" : "") + "</div></div>";
+    }
+
+    function renderPager() {
+      var maxPage = Math.min(Math.ceil(state.total / 30), 34);
+      if (maxPage <= 1) { $("spage").innerHTML = ""; return; }
+      $("spage").innerHTML =
+        '<button type="button" id="sprev"' + (state.page <= 1 ? " disabled" : "") + ">← 上一页</button>" +
+        '<span class="pg">' + state.page + " / " + maxPage + "</span>" +
+        '<button type="button" id="snext"' + (state.page >= maxPage ? " disabled" : "") + ">下一页 →</button>";
+      var pv = $("sprev"), nx = $("snext");
+      if (pv) pv.addEventListener("click", function () { if (state.page > 1) { doSearch(state.page - 1); window.scrollTo({ top: 0, behavior: "smooth" }); } });
+      if (nx) nx.addEventListener("click", function () { if (state.page < maxPage) { doSearch(state.page + 1); window.scrollTo({ top: 0, behavior: "smooth" }); } });
+    }
+
+    if (IS_FILE) {
+      $("spl").innerHTML = '<span class="warn">本地 file:// 打开无法调用 GitHub API</span> · 请用 http(s) 访问后搜索';
+    }
+
+    $("sgo").addEventListener("click", function () { doSearch(1); });
+    $("sq").addEventListener("keydown", function (e) { if (e.key === "Enter") doSearch(1); });
+    $("ssort").addEventListener("change", function () { if (state.q) doSearch(1); });
+
+    // 支持 ?q= 直接搜索（可分享链接）；用 split/join 处理 + 号，避免模板字符串吞掉正则里的反斜杠
+    var m = location.search.match(/[?&]q=([^&]+)/);
+    if (m) { $("sq").value = decodeURIComponent(m[1]).split("+").join(" "); doSearch(1); }
+  })();
+  <\/script>`;
+
+  return pageShell(p, {
+    title: `GitHub 雷达 · 仓库搜索 · ${p.mode === "weekly" ? "周报" : "日报"}`,
+    navActive: "search",
+    body,
+  });
+}
+
 // 领域雷达页：8 个领域 × 三栏（Agent Skills / 可用工具 / 新项目）
 function renderDomains(p) {
   const domains = p.domains || [];
@@ -1378,7 +1640,7 @@ function renderCards(p) {
 
 // 仅当以 `node radar.mjs` 直接运行时执行；被 import 时仅导出函数（便于单测）
 const isSelf = process.argv[1] && process.argv[1].replace(/^.*\//, "") === "radar.mjs";
-export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, renderHistory, applyDelta, renderOnly, main };
+export { parseTrending, fetchTrending, renderIndex, renderCards, renderDomains, renderHistory, renderSearch, applyDelta, renderOnly, main };
 
 if (isSelf) {
   if (process.argv.includes("--render-only")) {

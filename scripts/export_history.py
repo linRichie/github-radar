@@ -207,6 +207,16 @@ def main():
             {"updated": datetime.now(BJ).isoformat(timespec="seconds"), "dates": index_dates},
         )
 
+        # ---------- 4) 站内追踪索引（供 search.html 联动，精简到约 15KB）----------
+        tracked = {
+            "updated": datetime.now(BJ).isoformat(timespec="seconds"),
+            "window_days": args.days,
+            "count": len(projects),
+            # full_name → [上榜天数, 期间增长, 当前star]
+            "items": {p["f"]: [p["n"], p["g"], p["s"]] for p in projects},
+        }
+        dump(os.path.join(ROOT, "data", "tracked-index.json"), tracked)
+
         print(f"✔ 历史导出完成：回放 {written} 天（{daily_dir}）| 趋势 {len(projects)} 个项目（≥2 天）")
         if projects:
             print("   趋势 Top3：" + " · ".join(f"{p['f']} {p['g']:+d}★" for p in projects[:3]))
