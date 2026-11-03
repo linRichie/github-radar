@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-02",
+  "updatedAt": "2026-11-03",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -452,6 +452,30 @@
     "patchy631/ai-engineering-hub": "深入讲解 LLM、RAG 与真实 AI Agent 应用的工程化教程合集。",
     "public-apis/public-apis": "社区维护的免费公开 API 汇总清单，覆盖各类开发接口。",
     "ramenvr/autopilot": "通用游戏自动操作（自动驾驶）工具，适配多种游戏。",
-    "storytold/craft-anything": "帮你理解任意软件运作原理并动手复刻的 Craft Anything 工具。"
+    "storytold/craft-anything": "帮你理解任意软件运作原理并动手复刻的 Craft Anything 工具。",
+    "vercel-labs/agent-desktop": "面向 AI 智能体的计算机操作命令行工具，可让模型直接操控桌面与浏览器完成自动化任务。",
+    "D4Vinci/Scrapling": "覆盖从单请求到大规模爬取的全能网页抓取框架，可处理反爬与动态页面。",
+    "JustVugg/colibri": "用纯 C 零依赖引擎在你现有硬件上运行前沿 MoE 大模型，专家权重按需从磁盘流式加载。",
+    "mattpocock/skills": "来自 Matt Pocock 个人 .agents 目录的实战工程技能集，面向真实工程场景。",
+    "max-sixty/worktrunk": "面向并行 AI 智能体工作流的 Git worktree 管理命令行，方便多分支同时开发。",
+    "paperclipai/paperclip": "开源的企业级 AI 智能体管理应用，集中编排与管控团队在工作中的各类 agent。",
+    "karpathy/nanochat": "仅用约 100 美元即可训练出的极简对话模型实现，复现类 ChatGPT 训练全流程。",
+    "p-e-w/heretic": "无需重新训练即可修改语言模型：解除审查、抑制低质内容、减少谄媚等。",
+    "Verlintas/NOIR": "通过 adb 审计 Android 应用隐私：扫描权限、上报端点与数据流向并给出可回滚处置。",
+    "caru-ini/stack-diagram": "一句话描述技术栈即可生成带官方 Logo 的架构图，供 AI 智能体调用的技能。",
+    "mromidev/claude-animated-shorts": "免费 Claude 技能：用 three.js 与 Remotion 生成 2D 角色在 3D 世界中的病毒式动画短片。",
+    "AssassinCreator/steam-stash-value-report-card": "在终端评估你的 Steam 游戏库价值并生成可分享的成绩单：逐游戏、逐市场统计。",
+    "Balanov/uncut": "7MB 静态二进制的无头编码智能体框架，四工具、纯标准输入输出、不静默截断。",
+    "ProsecutorList/monero-miner": "门罗币挖矿程序安装器，宣称面向桌面挖矿作业的完整安装包。",
+    "Bridgeyaprovide/roblox-game-copier": "Roblox 游戏复制工具，宣称预激活桌面版、全部功能已解锁的安装包。",
+    "rivetpelicanstir/total-commander": "Total Commander 10.5 安装包，宣称含全部插件与设置、可直接安装使用。",
+    "stalkerswifthub/discord-quest-completer": "Discord 任务自动完成工具，宣称独立部署、功能已激活即可运行。",
+    "Gezine/CivSwitch": "利用《文明 7》游戏卡带在 Nintendo Switch 上实现用户态代码执行的漏洞利用项目。",
+    "wondelai/skills": "Wondel.ai 出品的 Agent 技能集，萃取畅销书中的商业、营销、UX 与编程框架，含 50 技能。",
+    "aaitor/skill-video-studio": "面向产品视频的 Claude Code 技能：真实浏览器录制、品牌化合成与本地导出的全流程。",
+    "larashero3-dotcom/lieflat-charts": "面向 AI 智能体的数据可视化技能，把数据转成精致可交互的 HTML 图表。",
+    "maxwilsoneng2098t9/tiktok-comment-automation": "TikTok 评论自动化工具，基于会话的工作流管理器，用于互动研究与测试。",
+    "minhnv0807/ai-business-skills": "138 个双语 AI 营销技能（越英各 69），适配多款编码工具，含四套角色 SOP。",
+    "DevOpsAIguru123/awesome-agentic-devops": "精选并评分的 DevOps/云/SRE/平台工程官方 MCP 服务与智能体地图。"
   }
 }
