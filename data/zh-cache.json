@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-03",
+  "updatedAt": "2026-11-04",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -476,6 +476,20 @@
     "larashero3-dotcom/lieflat-charts": "面向 AI 智能体的数据可视化技能，把数据转成精致可交互的 HTML 图表。",
     "maxwilsoneng2098t9/tiktok-comment-automation": "TikTok 评论自动化工具，基于会话的工作流管理器，用于互动研究与测试。",
     "minhnv0807/ai-business-skills": "138 个双语 AI 营销技能（越英各 69），适配多款编码工具，含四套角色 SOP。",
-    "DevOpsAIguru123/awesome-agentic-devops": "精选并评分的 DevOps/云/SRE/平台工程官方 MCP 服务与智能体地图。"
+    "DevOpsAIguru123/awesome-agentic-devops": "精选并评分的 DevOps/云/SRE/平台工程官方 MCP 服务与智能体地图。",
+    "floci-io/floci": "轻量免费的 AWS 本地模拟器替代方案，用于在本地仿真云原生服务以便开发测试。",
+    "Usagi-org/ai-goofish-monitor": "基于 Playwright 与 AI 的闲鱼商品实时监控分析系统，带功能完善的后台管理 UI。",
+    "wquguru/cicada": "macOS 上的实时字幕、同声传译与 AI 会议纪要工具，支持任意会议与直播。",
+    "Balanov/shim": "零依赖的本地优先 AI 编排器，支持任意模型、MCP 与 Agent Skills，自然语言 CLI。",
+    "wideeyededi/uncensored-nsfw-ai-video-api": "面向成人的 AI 视频生成 API，支持文生/图生视频、异步任务与积分计费。",
+    "Nucleusanwish/microsoft-office": "Microsoft Office 2026 独立安装包，宣称内置预激活与全组件一键运行。",
+    "Codeonshovel/microsoft-365": "Microsoft 365 桌面工具配置与完整安装器，宣称开箱即用的专业版部署方案。",
+    "sleepy-zone/char-db-cn": "二次元角色换装素材库中文版，涵盖发型、服装、姿势与组装资源。",
+    "mhfed/vn-law-check": "面向 Claude Code 等 AI 编码工具的越南网站合规审计技能，覆盖多项新法规。",
+    "mylea1/phongent": "基于 Mika 的 iOS/Android 多设备 AI Agent 主控端与安卓执行端。",
+    "justrach/nanolight": "macOS 上的 ⌘Space 启动器，集成应用启动、计算、Google 建议与 Grok/X。",
+    "ShoreEvokerHeat/fl-studio": "FL Studio 2026 完整安装包，宣称独立可用的专业音频制作环境。",
+    "kostja94/bricks": "面向 AI Agent 的组件层，提供实现感知契约以构建项目原生界面组件。",
+    "loveFirefly-26710/Fireflux": "Firefly 主题 Astro 博客的 Windows 桌面客户端，可视化编辑内容与相册并管理 git。"
   }
 }

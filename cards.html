@@ -30,7 +30,7 @@
     <span class="navwriter">撰稿<b>老王</b> · wlh.richard@gmail.com</span>
   </nav>
   
-  <div class="lead"><b>今日上榜项目详解</b> · 共 62 个项目 · 覆盖今日热榜与高增长排行 Top 10 · 解读由 AI 基于公开信息生成，仅供参考</div>
+  <div class="lead"><b>今日上榜项目详解</b> · 共 66 个项目 · 覆盖今日热榜与高增长排行 Top 10 · 解读由 AI 基于公开信息生成，仅供参考</div>
   <section>
     <h2><span class="no">01</span>项目卡片<span class="en">Project Cards</span></h2>
     
@@ -78,7 +78,28 @@
     </div>
     <div class="proj">
       <div class="proj-head">
-        <div class="proj-kind"><span class="no">03</span><span class="kind">今日热榜第 4 · TRENDING · C</span></div>
+        <div class="proj-kind"><span class="no">03</span><span class="kind">今日热榜第 3 · TRENDING · RUST</span></div>
+        <div class="proj-name"><a href="https://github.com/max-sixty/worktrunk" target="_blank" rel="noopener">max-sixty/worktrunk</a></div>
+        <div class="proj-tagline">面向并行 AI Agent 工作流的 Git worktree 管理 CLI，让多个 agent 各占独立分支同时开发。</div>
+        <div class="proj-owner"><a href="https://github.com/max-sixty" target="_blank" rel="noopener">max-sixty</a> / worktrunk</div>
+      </div>
+      <div class="value"><div class="k">核心价值</div><div class="v">把单一仓库拆成多个隔离 worktree，使多个编码 agent 并行干活而不互相踩踏。</div></div>
+      <div class="proj-grid">
+        <div class="proj-cell"><div class="k">主要功能</div><ul><li>Git worktree 一键创建与清理，避免分支切换冲突</li><li>为并行 AI agent 任务分配独立工作目录</li><li>轻量 Rust 实现，启动快、无运行时依赖</li><li>与常见 agent 编排流程衔接，每个任务一个 trunk</li></ul></div>
+        <div class="proj-cell"><div class="k">应用场景</div><ul><li>多 agent 同时修改同一仓库的不同功能</li><li>本地并行运行多个独立重构或补丁任务</li><li>CI 前在隔离树中预演改动</li></ul></div>
+        <div class="proj-cell"><div class="k">输入建议</div><ul><li>一个已初始化的 Git 仓库</li><li>待并行执行的任务清单或 agent 指令</li><li>足够的磁盘空间存放多个 worktree</li></ul></div>
+        <div class="proj-cell"><div class="k">使用提醒</div><ul><li>worktree 共享同一 .git，误删需谨慎</li><li>并行改动仍需人工合并，解决跨 worktree 的冲突</li></ul></div>
+      </div>
+      <div class="proj-stats">
+        <div class="proj-stat"><div class="k">总 Star</div><div class="v">10,429</div></div>
+        <div class="proj-stat hot"><div class="k">今日新增</div><div class="v">+437</div></div>
+        <div class="proj-stat hot"><div class="k">获星增幅</div><div class="v">+4.4<em>%</em></div></div>
+      </div>
+      <div class="proj-foot">解读由 AI 基于公开信息生成，仅供参考 · 增幅=期内新增÷期初累计获星，非净增</div>
+    </div>
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-kind"><span class="no">04</span><span class="kind">今日热榜第 4 · TRENDING · C</span></div>
         <div class="proj-name"><a href="https://github.com/JustVugg/colibri" target="_blank" rel="noopener">JustVugg/colibri</a></div>
         <div class="proj-tagline">纯 C 零依赖引擎，在你现有硬件上跑前沿 MoE 大模型</div>
         <div class="proj-owner"><a href="https://github.com/JustVugg" target="_blank" rel="noopener">JustVugg</a> / colibri</div>
@@ -99,7 +120,7 @@
     </div>
     <div class="proj">
       <div class="proj-head">
-        <div class="proj-kind"><span class="no">04</span><span class="kind">今日热榜第 5 · TRENDING · SHELL</span></div>
+        <div class="proj-kind"><span class="no">05</span><span class="kind">今日热榜第 5 · TRENDING · SHELL</span></div>
         <div class="proj-name"><a href="https://github.com/mattpocock/skills" target="_blank" rel="noopener">mattpocock/skills</a></div>
         <div class="proj-tagline">来自实战工程师 .agents 目录的技能合集</div>
         <div class="proj-owner"><a href="https://github.com/mattpocock" target="_blank" rel="noopener">mattpocock</a> / skills</div>
@@ -120,7 +141,70 @@
     </div>
     <div class="proj">
       <div class="proj-head">
-        <div class="proj-kind"><span class="no">05</span><span class="kind">今日热榜第 10 · TRENDING · RUST</span></div>
+        <div class="proj-kind"><span class="no">06</span><span class="kind">今日热榜第 6 · TRENDING · PYTHON</span></div>
+        <div class="proj-name"><a href="https://github.com/p-e-w/heretic" target="_blank" rel="noopener">p-e-w/heretic</a></div>
+        <div class="proj-tagline">无需训练的 LLM 修改工具：移除审查、抑制低质内容、减少谄媚等，直接改写模型输出倾向。</div>
+        <div class="proj-owner"><a href="https://github.com/p-e-w" target="_blank" rel="noopener">p-e-w</a> / heretic</div>
+      </div>
+      <div class="value"><div class="k">核心价值</div><div class="v">不重训模型即可在本地调整语言模型行为，适合研究偏好控制与内容风格实验。</div></div>
+      <div class="proj-grid">
+        <div class="proj-cell"><div class="k">主要功能</div><ul><li>训练无关：直接对模型权重或激活做定向修改，无需微调或额外训练</li><li>移除审查：关闭模型内置的内容过滤与自我审查机制</li><li>抑制 slop：降低套话、模板化、低信息量输出</li><li>减少谄媚：削弱无理由附和用户的倾向</li></ul></div>
+        <div class="proj-cell"><div class="k">应用场景</div><ul><li>本地运行开源模型时自定义内容策略</li><li>研究模型行为可解释性与偏好偏移</li><li>构建不带过度安全护栏的评测与实验环境</li></ul></div>
+        <div class="proj-cell"><div class="k">输入建议</div><ul><li>一个本地可加载的开源语言模型（权重文件或推理后端）</li><li>指定的修改配方/目标（如关闭某类审查）</li><li>足够的磁盘与显存以加载并改写模型</li></ul></div>
+        <div class="proj-cell"><div class="k">使用提醒</div><ul><li>移除审查后的模型可能产生有害或违规输出，需自行承担合规责任</li><li>修改会改变模型原厂对齐行为，不建议直接用于生产面向用户</li><li>仅适用于可本地访问权重的开源模型，不作用于闭源 API</li></ul></div>
+      </div>
+      <div class="proj-stats">
+        <div class="proj-stat"><div class="k">总 Star</div><div class="v">38,705</div></div>
+        <div class="proj-stat hot"><div class="k">今日新增</div><div class="v">+699</div></div>
+        <div class="proj-stat hot"><div class="k">获星增幅</div><div class="v">+1.8<em>%</em></div></div>
+      </div>
+      <div class="proj-foot">解读由 AI 基于公开信息生成，仅供参考 · 增幅=期内新增÷期初累计获星，非净增</div>
+    </div>
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-kind"><span class="no">07</span><span class="kind">今日热榜第 8 · TRENDING · JAVA</span></div>
+        <div class="proj-name"><a href="https://github.com/floci-io/floci" target="_blank" rel="noopener">floci-io/floci</a></div>
+        <div class="proj-tagline">轻量免费的 AWS 本地模拟器替代方案，在本地仿真云原生服务以便开发测试。</div>
+        <div class="proj-owner"><a href="https://github.com/floci-io" target="_blank" rel="noopener">floci-io</a> / floci</div>
+      </div>
+      <div class="value"><div class="k">核心价值</div><div class="v">无需真实 AWS 账号与费用，即可在本地模拟云资源，加速开发与联调。</div></div>
+      <div class="proj-grid">
+        <div class="proj-cell"><div class="k">主要功能</div><ul><li>本地仿真 AWS 常见服务，作为官方 LocalStack 类方案的替代</li><li>轻量、免费，启动与资源占用小</li><li>便于离线开发与集成测试</li><li>面向云原生工作流的本地桩服务</li></ul></div>
+        <div class="proj-cell"><div class="k">应用场景</div><ul><li>本地开发与调试依赖 AWS 服务的应用</li><li>CI 中运行无外部依赖的集成测试</li><li>离线或无网络环境下的云原生原型验证</li></ul></div>
+        <div class="proj-cell"><div class="k">输入建议</div><ul><li>待模拟的 AWS 服务与资源定义</li><li>本地 Java 运行环境</li><li>应用的 AWS SDK 端点配置指向本地</li></ul></div>
+        <div class="proj-cell"><div class="k">使用提醒</div><ul><li>仿真不等于真实 AWS，行为与边缘 case 可能有差异</li><li>覆盖的服务范围以项目实现为准，未必包含全部 AWS API</li><li>生产部署仍应使用真实云环境验证</li></ul></div>
+      </div>
+      <div class="proj-stats">
+        <div class="proj-stat"><div class="k">总 Star</div><div class="v">28,642</div></div>
+        <div class="proj-stat hot"><div class="k">今日新增</div><div class="v">+679</div></div>
+        <div class="proj-stat hot"><div class="k">获星增幅</div><div class="v">+2.4<em>%</em></div></div>
+      </div>
+      <div class="proj-foot">解读由 AI 基于公开信息生成，仅供参考 · 增幅=期内新增÷期初累计获星，非净增</div>
+    </div>
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-kind"><span class="no">08</span><span class="kind">今日热榜第 9 · TRENDING · PYTHON</span></div>
+        <div class="proj-name"><a href="https://github.com/Usagi-org/ai-goofish-monitor" target="_blank" rel="noopener">Usagi-org/ai-goofish-monitor</a></div>
+        <div class="proj-tagline">基于 Playwright 与 AI 的闲鱼商品实时监控分析系统，带后台管理 UI，帮你从海量商品中淘到心仪好物。</div>
+        <div class="proj-owner"><a href="https://github.com/Usagi-org" target="_blank" rel="noopener">Usagi-org</a> / ai-goofish-monitor</div>
+      </div>
+      <div class="value"><div class="k">核心价值</div><div class="v">把闲鱼的手动刷货变成自动化监控加智能筛选，省时且不错过低价或稀缺商品。</div></div>
+      <div class="proj-grid">
+        <div class="proj-cell"><div class="k">主要功能</div><ul><li>多任务实时与定时监控闲鱼商品及价格变动</li><li>基于 AI 的智能分析，过滤噪声并标记目标商品</li><li>功能完善的后台管理 UI，可视化配置与查看</li><li>支持关键词、价格区间等多维度筛选</li></ul></div>
+        <div class="proj-cell"><div class="k">应用场景</div><ul><li>二手捡漏党监控特定品类低价商品</li><li>商家批量盯盘与价格趋势分析</li><li>个人卖家跟踪同类商品定价</li></ul></div>
+        <div class="proj-cell"><div class="k">输入建议</div><ul><li>闲鱼搜索关键词与目标筛选条件</li><li>监控频率与通知方式配置</li><li>可访问闲鱼网页的运行环境（Playwright 浏览器）</li></ul></div>
+        <div class="proj-cell"><div class="k">使用提醒</div><ul><li>依赖闲鱼网页结构，平台改版可能失效</li><li>高频抓取有被限流或封号风险，需控制节奏</li><li>仅供参考，交易决策与风险自负</li></ul></div>
+      </div>
+      <div class="proj-stats">
+        <div class="proj-stat"><div class="k">总 Star</div><div class="v">16,321</div></div>
+        <div class="proj-stat hot"><div class="k">今日新增</div><div class="v">+204</div></div>
+        <div class="proj-stat hot"><div class="k">获星增幅</div><div class="v">+1.3<em>%</em></div></div>
+      </div>
+      <div class="proj-foot">解读由 AI 基于公开信息生成，仅供参考 · 增幅=期内新增÷期初累计获星，非净增</div>
+    </div>
+    <div class="proj">
+      <div class="proj-head">
+        <div class="proj-kind"><span class="no">09</span><span class="kind">今日热榜第 10 · TRENDING · RUST</span></div>
         <div class="proj-name"><a href="https://github.com/anomalyco/hex" target="_blank" rel="noopener">anomalyco/hex</a></div>
         <div class="proj-tagline">跨平台本地语音听写工具，离线把语音转成文字，支持 Mac/Windows/Linux。</div>
         <div class="proj-owner"><a href="https://github.com/anomalyco" target="_blank" rel="noopener">anomalyco</a> / hex</div>
@@ -141,7 +225,7 @@
     </div>
     <div class="proj">
       <div class="proj-head">
-        <div class="proj-kind"><span class="no">06</span><span class="kind">高增长第 2 · GROWTH · PYTHON</span></div>
+        <div class="proj-kind"><span class="no">10</span><span class="kind">高增长第 2 · GROWTH · PYTHON</span></div>
         <div class="proj-name"><a href="https://github.com/D4Vinci/Scrapling" target="_blank" rel="noopener">D4Vinci/Scrapling</a></div>
         <div class="proj-tagline">从单请求到全站爬取一站搞定的网页抓取框架</div>
         <div class="proj-owner"><a href="https://github.com/D4Vinci" target="_blank" rel="noopener">D4Vinci</a> / Scrapling</div>
@@ -162,7 +246,7 @@
     </div>
     <div class="proj">
       <div class="proj-head">
-        <div class="proj-kind"><span class="no">07</span><span class="kind">高增长第 3 · GROWTH · SHELL</span></div>
+        <div class="proj-kind"><span class="no">11</span><span class="kind">高增长第 3 · GROWTH · SHELL</span></div>
         <div class="proj-name"><a href="https://github.com/Donchitos/Claude-Code-Game-Studios" target="_blank" rel="noopener">Donchitos/Claude-Code-Game-Studios</a></div>
         <div class="proj-tagline">把 Claude Code 改造成完整游戏开发工作室：49 个 AI 智能体 + 72 个工作流技能，复刻真实工作室层级。</div>
         <div class="proj-owner"><a href="https://github.com/Donchitos" target="_blank" rel="noopener">Donchitos</a> / Claude-Code-Game-Studios</div>
@@ -183,7 +267,7 @@
     </div>
     <div class="proj">
       <div class="proj-head">
-        <div class="proj-kind"><span class="no">08</span><span class="kind">高增长第 9 · GROWTH · PYTHON</span></div>
+        <div class="proj-kind"><span class="no">12</span><span class="kind">高增长第 9 · GROWTH · PYTHON</span></div>
         <div class="proj-name"><a href="https://github.com/shiyu-coder/Kronos" target="_blank" rel="noopener">shiyu-coder/Kronos</a></div>
         <div class="proj-tagline">面向金融市场语言训练的基础模型：专攻金融领域的术语、行情与研报文本理解。</div>
         <div class="proj-owner"><a href="https://github.com/shiyu-coder" target="_blank" rel="noopener">shiyu-coder</a> / Kronos</div>
