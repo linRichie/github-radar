@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-06",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -519,6 +519,19 @@
     "garrytan/gstack": "复刻 Garry Tan 的 Claude Code 配置：23 个专司 CEO/设计/工程等角色的智能体工具。",
     "MichaelCade/90DaysOfDevOps": "面向社区的 90 天 DevOps 系统化学习路线图，覆盖原则、流程与工具实践。",
     "Thysrael/Horizon": "用 AI 构建你专属的新闻雷达，每日自动生成中英文简报。",
-    "scenario-labs/skills": "让任意 AI 智能体产出可用的图像/视频/音频/3D，并统一品牌与角色一致性的技能集。"
+    "scenario-labs/skills": "让任意 AI 智能体产出可用的图像/视频/音频/3D，并统一品牌与角色一致性的技能集。",
+    "lz4/lz4": "极速无损压缩算法，以极高的压缩与解压速度著称，常用于实时管道、日志与存储场景。",
+    "google/skills": "面向 Google 产品与技术的智能体技能集，让 AI Agent 直接调用 Google 生态能力。",
+    "vercel-labs/agent-browser": "为 AI 智能体打造的浏览器自动化命令行，可编程驱动网页操作与数据采集。",
+    "ConardLi/garden-skills": "ConardLi 开源的 Agent 技能集合，覆盖网页设计、知识检索与图像生成等场景。",
+    "microsoft/VibeVoice": "微软开源的前沿语音 AI，聚焦高质量语音合成与音频生成能力。",
+    "AtomIllusionistDwell/watson-username-footprint-finder": "免费人物检索桌面工具，跨 3100+ 公开页面按昵称/邮箱/电话聚合生成可读报告。",
+    "TagPhaseArcade/tiktok-uploader": "TikTok 自动上传工具，支持批量处理、定时发布与标签管理，本地会话鉴权、跨平台开源。",
+    "dragonwolfshovel/youtube-uploader": "YouTube 自动上传工具，支持批量处理、缩略图与定时发布，基于官方 API v3，隐私优先开源。",
+    "MythicHokageRepel/steam-inventory-value-desktop": "Steam 库存估价桌面应用，实时地板价、真实成交均价、各平台回款与分享卡片，免登录便携。",
+    "sarpstar/cinecode": "用代码拍电影：AI 编程 Agent 写脚本、用代码逐帧构建画面并设计音效，直接交付 MP4。",
+    "Wallbycontact/java-mod-rust-port-tool": "输入 Fabric/NeoForge 模组 jar，工具为 Horizon 生成 Rust 侧代码并标注未完部分于报告。",
+    "Volmarg/personal-management-system": "用于集中管理个人数据的 Web 应用，整合笔记、日程与资料于一体的自托管平台。",
+    "feder-cr/Jobs_Applier_AI_Agent": "AI 网页智能体，自动代你投递简历申请工作，后台运行无需人工值守。"
   }
 }

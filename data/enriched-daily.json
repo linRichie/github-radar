@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-05",
+  "date": "2026-11-06",
   "mode": "daily",
   "generatedBy": "workbuddy-automation",
   "note": "上榜项目结构化解读。字段：tagline 一句话定位 / value 核心价值 / features 主要功能 / scenarios 应用场景 / inputs 输入建议 / caveats 使用提醒。内容基于仓库公开信息撰写，仅供参考。",
@@ -1706,6 +1706,95 @@
       ],
       "date": "2026-11-05",
       "mode": "daily"
+    },
+    "lz4/lz4": {
+      "tagline": "极致速度的极速无损压缩算法库，解压速度远超同类。",
+      "value": "在压缩比与速度间极致偏重速度，适合实时管道、日志与存储场景，降低 I/O 瓶颈。",
+      "features": [
+        "极高压缩/解压吞吐，解压速度可超内存带宽",
+        "块级与帧格式（LZ4F）支持流式处理",
+        "多语言绑定（C/Python/Java/Go 等）",
+        "提供 LZ4 HC 高压缩比变体"
+      ],
+      "scenarios": [
+        "日志与遥测数据的实时压缩传输",
+        "数据库与存储引擎的块压缩",
+        "游戏与多媒体资源的快速打包"
+      ],
+      "inputs": [
+        "任意二进制或文本数据流",
+        "可配置压缩级别与块大小"
+      ],
+      "caveats": [
+        "默认档压缩比低于 zstd/deflate，追求体积应选 HC 或 zstd",
+        "需自管帧头与校验以确保跨端兼容"
+      ]
+    },
+    "google/skills": {
+      "tagline": "面向 Google 产品与技术的智能体技能包，让 Agent 直接调用 Google 生态。",
+      "value": "把分散的 Google 产品能力封装为可复用技能，降低 Agent 接入门槛。",
+      "features": [
+        "覆盖 Google 旗下产品与技术的技能定义",
+        "以 Prompt/工具形式供 Agent 调用",
+        "开源、可二次扩展"
+      ],
+      "scenarios": [
+        "让 AI Agent 操作 Google 服务完成自动化任务",
+        "在企业工作流中集成 Google 产品能力"
+      ],
+      "inputs": [
+        "Google 账号授权与对应 API 凭据",
+        "自然语言任务描述"
+      ],
+      "caveats": [
+        "具体覆盖产品随仓库演进，需核对当前技能清单",
+        "调用依赖 Google API 配额与权限范围"
+      ]
+    },
+    "vercel-labs/agent-browser": {
+      "tagline": "为 AI 智能体打造的浏览器自动化命令行工具。",
+      "value": "用确定性 CLI 把网页操作交给 Agent，便于脚本化驱动与可观测。",
+      "features": [
+        "命令行驱动浏览器导航、点击与表单填写",
+        "面向 Agent 的结构化输出与可组合命令",
+        "Rust 实现，性能与稳定性较好"
+      ],
+      "scenarios": [
+        "Agent 自动完成网页采集与表单提交",
+        "端到端网页流程的自动化测试",
+        "无头环境下的数据抓取"
+      ],
+      "inputs": [
+        "目标 URL 与操作指令（脚本/提示）",
+        "可选的登录态或 Cookie"
+      ],
+      "caveats": [
+        "复杂反爬站点可能需额外代理/验证码处理",
+        "自动化操作需遵守目标站点服务条款"
+      ]
+    },
+    "scenario-labs/skills": {
+      "tagline": "让 AI Agent 产出可量产的图像/视频/音频/3D，并维持角色与品牌一致性。",
+      "value": "在 Agent 与专业工具（Blender/Maya/Unity 等）间架桥，先定价再生成，控制成本。",
+      "features": [
+        "按任务挑选合适模型并预算成本",
+        "经 Scenario MCP 保持角色与品牌一致性",
+        "联动 Blender、Maya、ZBrush、Unreal、Unity 的专家团队技能",
+        "覆盖图像、视频、音频、3D 多模态产出"
+      ],
+      "scenarios": [
+        "游戏与影视资产的规模化内容生产",
+        "品牌物料的一致性生成与迭代",
+        "创意团队把 AI 生成接入专业 DCC 管线"
+      ],
+      "inputs": [
+        "创意需求描述与参考素材",
+        "Scenario 账号与 MCP 连接配置"
+      ],
+      "caveats": [
+        "依赖外部模型与 Scenario 服务，存在调用成本",
+        "商用需确认模型与素材的版权授权范围"
+      ]
     }
   }
 }
