@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-06",
+  "date": "2026-11-07",
   "mode": "daily",
   "generatedBy": "workbuddy-automation",
   "note": "上榜项目结构化解读。字段：tagline 一句话定位 / value 核心价值 / features 主要功能 / scenarios 应用场景 / inputs 输入建议 / caveats 使用提醒。内容基于仓库公开信息撰写，仅供参考。",
@@ -1794,6 +1794,273 @@
       "caveats": [
         "依赖外部模型与 Scenario 服务，存在调用成本",
         "商用需确认模型与素材的版权授权范围"
+      ]
+    },
+    "zed-industries/zed": {
+      "tagline": "Rust 打造的高性能多人实时协作代码编辑器，由 Atom 与 Tree-sitter 作者出品。",
+      "value": "把编辑器响应速度做到极致，本地与远程协作零延迟，适合大仓库与结对编程。",
+      "features": [
+        "GPUI 原生渲染，启动与输入延迟极低",
+        "多人光标实时协同编辑",
+        "内置 AI 面板（可接 Claude/GPT）",
+        "Tree-sitter 精准语法高亮与增量解析",
+        "任务、诊断、终端一体化"
+      ],
+      "scenarios": [
+        "大代码库的日常开发",
+        "远程结对编程与代码评审",
+        "需要本地极速响应的工作流",
+        "AI 辅助编码"
+      ],
+      "inputs": [
+        "本地或远程代码仓库",
+        "可配置的 AI/LLM 接口密钥",
+        "语言服务器（LSP）"
+      ],
+      "caveats": [
+        "生态与插件规模仍小于 VS Code",
+        "部分高级功能需登录 Zed 账号",
+        "团队协作需对方也使用 Zed"
+      ]
+    },
+    "rails/rails": {
+      "tagline": "Ruby 全栈 Web 框架，约定优于配置，开发效率极高。",
+      "value": "用最少的样板代码快速交付完整 Web 应用，从路由、ORM 到视图一条龙。",
+      "features": [
+        "Active Record ORM 与数据库迁移",
+        "RESTful 路由与控制器",
+        "内置 Asset Pipeline 与视图模板",
+        "scaffold 生成器快速搭建",
+        "强大的测试体系与 gem 生态"
+      ],
+      "scenarios": [
+        "初创产品的 MVP 快速验证",
+        "内容/电商/后台类 Web 应用",
+        "API 服务与全栈站点",
+        "内部工具开发"
+      ],
+      "inputs": [
+        "Ruby 运行环境",
+        "数据库（PostgreSQL/MySQL/SQLite）",
+        "Gemfile 依赖清单"
+      ],
+      "caveats": [
+        "运行时性能弱于编译型栈，需靠缓存补足",
+        "大型项目抽象层多、新人需熟悉约定",
+        "大版本升级偶有破坏性变更"
+      ]
+    },
+    "mpv-player/mpv": {
+      "tagline": "轻量、跨平台、可脚本化的命令行媒体播放器。",
+      "value": "极简核心加强大脚本能力，画质与性能兼顾，适合嵌入与二次开发。",
+      "features": [
+        "基于 FFmpeg 解码，格式覆盖广",
+        "Lua/JS 脚本扩展",
+        "精简无多余 UI、资源占用低",
+        "高质量视频输出与色彩管理",
+        "IPC 与命令行深度控制"
+      ],
+      "scenarios": [
+        "命令行/无桌面环境播放",
+        "视频脚本化与自动化处理",
+        "作为播放后端嵌入其他应用",
+        "高性能本地观影"
+      ],
+      "inputs": [
+        "本地或网络音视频文件/流",
+        "可选 Lua 脚本与配置文件"
+      ],
+      "caveats": [
+        "默认无图形界面，上手需命令行",
+        "GUI 需第三方前端（如 Celluloid）",
+        "硬件解码依赖平台与驱动支持"
+      ]
+    },
+    "rust-lang/rust": {
+      "tagline": "注重内存安全与并发安全的系统级编程语言。",
+      "value": "编译期保证内存与数据竞争安全，无需 GC，兼具 C/C++ 级性能与现代开发体验。",
+      "features": [
+        "所有权与借用检查杜绝悬垂指针",
+        "零成本抽象",
+        "强大的 cargo 包管理与构建",
+        "无畏并发（Fearless Concurrency）",
+        "丰富的模式匹配与 trait 系统"
+      ],
+      "scenarios": [
+        "操作系统、浏览器引擎等底层软件",
+        "高性能服务端/网络程序",
+        "嵌入式与 WASM",
+        "需要安全并发的系统"
+      ],
+      "inputs": [
+        "Rust 工具链（rustup/cargo）",
+        "Cargo.toml 依赖清单"
+      ],
+      "caveats": [
+        "所有权模型学习曲线陡",
+        "编译时间与二进制体积偏大",
+        "部分库生态成熟度不及 C/C++"
+      ]
+    },
+    "react/react": {
+      "tagline": "用于构建 Web 与原生用户界面的声明式 JavaScript 库。",
+      "value": "组件化与虚拟 DOM 让 UI 开发可组合、可维护，跨 Web/移动多端复用。",
+      "features": [
+        "组件化与 JSX 语法",
+        "虚拟 DOM 高效更新",
+        "Hooks 管理状态与副作用",
+        "React Native 复用至移动端",
+        "庞大社区与生态"
+      ],
+      "scenarios": [
+        "单页 Web 应用",
+        "复杂交互式前端",
+        "跨端（Web/iOS/Android）产品",
+        "组件库与设计系统"
+      ],
+      "inputs": [
+        "Node 构建环境",
+        "npm/yarn/pnpm 依赖",
+        "组件 props 与状态"
+      ],
+      "caveats": [
+        "仅视图层，路由/状态需额外选型",
+        "频繁 API 演进需持续跟进",
+        "大型应用需谨慎管理重渲染"
+      ]
+    },
+    "angular/angular": {
+      "tagline": "Google 主导的企业级前端框架，TypeScript 优先。",
+      "value": "开箱即用的完整方案（路由、表单、HTTP、DI），适合大型团队协作的长期项目。",
+      "features": [
+        "TypeScript 强类型",
+        "依赖注入（DI）架构",
+        "RxJS 响应式编程",
+        "内置路由、表单与 HTTP 模块",
+        "Angular CLI 工程化"
+      ],
+      "scenarios": [
+        "大型企业级 Web 应用",
+        "多人长期维护的项目",
+        "需要强约定的团队",
+        "复杂表单与数据驱动界面"
+      ],
+      "inputs": [
+        "Node 与 Angular CLI",
+        "TypeScript 源码",
+        "模块/组件依赖"
+      ],
+      "caveats": [
+        "概念与体积较重，入门门槛高",
+        "版本迭代快、升级成本不低",
+        "灵活度低于轻量库，定制需遵循框架"
+      ]
+    },
+    "symfony/symfony": {
+      "tagline": "成熟的 PHP 企业级 Web 框架，组件化设计。",
+      "value": "提供可复用组件与全栈框架，支撑大量高并发生产系统，稳定可靠。",
+      "features": [
+        "可独立使用的组件库（HttpKernel、Routing 等）",
+        "依赖注入与服务容器",
+        "Twig 模板引擎",
+        "Doctrine ORM 集成",
+        "强大的安全与表单组件"
+      ],
+      "scenarios": [
+        "企业级 Web 应用与 API",
+        "高并发生产系统",
+        "需要长期维护的 PHP 项目",
+        "微服务与中台"
+      ],
+      "inputs": [
+        "PHP 运行环境",
+        "Composer 依赖",
+        "数据库配置"
+      ],
+      "caveats": [
+        "全功能框架较重，简单项目偏冗余",
+        "学习曲线与概念较多",
+        "旧版本安全维护需及时跟进"
+      ]
+    },
+    "prometheus/prometheus": {
+      "tagline": "云原生监控系统与时序数据库，Kubernetes 生态标配。",
+      "value": "拉取式指标采集 + PromQL 多维查询，天然契合动态容器环境的监控告警。",
+      "features": [
+        "Pull 模型采集指标",
+        "PromQL 强大的时序查询",
+        "多维标签数据模型",
+        "内置告警规则与 Alertmanager",
+        "服务发现适配容器编排"
+      ],
+      "scenarios": [
+        "K8s/容器集群监控",
+        "微服务指标采集与告警",
+        "时序数据可视化（配 Grafana）",
+        "SLO/可用性追踪"
+      ],
+      "inputs": [
+        "暴露 /metrics 的监控目标",
+        "Prometheus 配置（job/scrape）",
+        "告警与看板规则"
+      ],
+      "caveats": [
+        "Pull 模型对短时任务不友好（需 Pushgateway）",
+        "长期存储需外接（Thanos/Mimir）",
+        "高基数标签会显著膨胀资源"
+      ]
+    },
+    "microsoft/vscode": {
+      "tagline": "微软开源的轻量跨平台代码编辑器，插件生态庞大。",
+      "value": "开箱即用的编辑体验加海量扩展市场，内置终端、调试与 AI 辅助，几乎覆盖所有语言。",
+      "features": [
+        "丰富的扩展市场",
+        "内置 Git、终端与调试器",
+        "IntelliSense 智能补全",
+        "Remote-SSH/容器远程开发",
+        "GitHub Copilot 等 AI 集成"
+      ],
+      "scenarios": [
+        "日常多语言编码",
+        "远程/容器开发",
+        "轻量 IDE 替代",
+        "团队协作的通用编辑器"
+      ],
+      "inputs": [
+        "本地或远程工作区",
+        "扩展插件与设置",
+        "可选 AI 服务密钥"
+      ],
+      "caveats": [
+        "Electron 实现，超大项目内存占用偏高",
+        "深度功能依赖第三方扩展质量",
+        "部分高级 IDE 能力需插件补足"
+      ]
+    },
+    "astral-sh/ruff": {
+      "tagline": "Rust 编写的极速 Python 代码检查与格式化工具。",
+      "value": "单二进制替代 flake8/black/isort 等多款工具，速度提升一到两个数量级。",
+      "features": [
+        "数百条内置 lint 规则",
+        "兼容 black 的格式化",
+        "单文件缓存与并行执行",
+        "可配置的自动修复（--fix）",
+        "极快启动与运行速度"
+      ],
+      "scenarios": [
+        "Python 项目静态检查",
+        "代码格式化统一风格",
+        "CI 中快速质量门禁",
+        "大型仓库批量重构"
+      ],
+      "inputs": [
+        "Python 源码与 pyproject.toml 配置",
+        "可选规则集与忽略项"
+      ],
+      "caveats": [
+        "部分规则与老工具存在细微差异",
+        "极端定制场景不如插件化 linter 灵活",
+        "仍在快速演进，偶有规则变动"
       ]
     }
   }

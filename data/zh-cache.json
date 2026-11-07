@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-06",
+  "updatedAt": "2026-11-07",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -532,6 +532,29 @@
     "sarpstar/cinecode": "用代码拍电影：AI 编程 Agent 写脚本、用代码逐帧构建画面并设计音效，直接交付 MP4。",
     "Wallbycontact/java-mod-rust-port-tool": "输入 Fabric/NeoForge 模组 jar，工具为 Horizon 生成 Rust 侧代码并标注未完部分于报告。",
     "Volmarg/personal-management-system": "用于集中管理个人数据的 Web 应用，整合笔记、日程与资料于一体的自托管平台。",
-    "feder-cr/Jobs_Applier_AI_Agent": "AI 网页智能体，自动代你投递简历申请工作，后台运行无需人工值守。"
+    "feder-cr/Jobs_Applier_AI_Agent": "AI 网页智能体，自动代你投递简历申请工作，后台运行无需人工值守。",
+    "HerdBuilderEstimate/roblox-studio-mcp": "Roblox Studio 的 MCP 服务，让 Claude、Cursor 等 AI 助手读取对象树、改脚本并安全跑联调测试。",
+    "Lowbetweentrim/crypto-portfolio-tracker": "自托管、隐私优先的加密货币资产追踪器，CSV 导入交易、实时统计盈亏，本地运行不依赖云端。",
+    "PulverizeLink/roblox-performance-tool": "Windows 平台轻量 Roblox 性能优化工具，提升帧率、消除卡顿与输入延迟，离线且开源。",
+    "WoYun520/pixel-gif-sticker-pack": "Codex 技能：根据角色参考图批量生成并校验动态 GIF 表情包。",
+    "angular/angular": "Google 出品的前端框架，用 TypeScript 构建高可维护的 Web 应用。",
+    "antvis/AVA": "蚂蚁 AntV 出品的 AI 原生可视化分析框架，面向智能体做数据探索与图表生成。",
+    "astral-sh/ruff": "用 Rust 写的极速 Python 代码检查与格式化工具，一站式替代 flake8/black。",
+    "etcd-io/etcd": "分布式可靠的键值存储，为 Kubernetes 等系统保存关键配置与元数据。",
+    "livliv-dev/player": "网页端轻量 2.5D 角色播放器，支持口型同步与摄像头面部追踪，可做 Vtuber。",
+    "majorminorlabs/hermes-voice": "通过 Home Assistant Assist 用语音与 Hermes Agent 智能体对话的桥接项目。",
+    "microsoft/vscode": "微软开源的轻量跨平台代码编辑器，插件生态庞大、内置 AI 辅助。",
+    "mpv-player/mpv": "轻量强大的命令行媒体播放器，跨平台、可脚本化，画质与性能俱佳。",
+    "naderelewa/Product-to-Prod": "面向 Claude Code 等 AI 代理的产品管理技能：带证据标注的 PRD、需求、RICE 排序与发布验证。",
+    "nushell/nushell": "用 Rust 写的现代化 shell，以结构化数据管道替代传统文本流，跨平台。",
+    "openssl/openssl": "应用广泛的 TLS/SSL 与通用加密库，支撑互联网绝大部分安全通信。",
+    "phaseboulderfetter/discord-quest-completer": "自动完成 Discord 任务活动的开源工具，支持 5 类任务、内置面板与隐私保护。",
+    "prometheus/prometheus": "云原生监控与时序数据库，拉取指标、PromQL 查询，K8s 生态标配。",
+    "rails/rails": "Ruby 语言的 Web 全栈框架，约定优于配置，以开发效率著称。",
+    "react/react": "用于构建 Web 与原生用户界面的 JavaScript 库，组件化与声明式渲染。",
+    "rust-lang/rust": "注重内存安全与性能的系统编程语言，无需垃圾回收，广泛用于底层与并发。",
+    "smokeeaasd/flawless-ui-ux": "给编程智能体的 UI/UX 技能，产出独特且好用的界面，规避千篇一律的套路。",
+    "symfony/symfony": "成熟的 PHP Web 框架，组件化、企业级，支撑大量高并发生产系统。",
+    "zed-industries/zed": "由 Atom 与 Tree-sitter 作者打造的高性能多人协作代码编辑器，Rust 编写极速流畅。"
   }
 }
