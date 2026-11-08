@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-07",
+  "updatedAt": "2026-11-08",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -555,6 +555,20 @@
     "rust-lang/rust": "注重内存安全与性能的系统编程语言，无需垃圾回收，广泛用于底层与并发。",
     "smokeeaasd/flawless-ui-ux": "给编程智能体的 UI/UX 技能，产出独特且好用的界面，规避千篇一律的套路。",
     "symfony/symfony": "成熟的 PHP Web 框架，组件化、企业级，支撑大量高并发生产系统。",
-    "zed-industries/zed": "由 Atom 与 Tree-sitter 作者打造的高性能多人协作代码编辑器，Rust 编写极速流畅。"
+    "zed-industries/zed": "由 Atom 与 Tree-sitter 作者打造的高性能多人协作代码编辑器，Rust 编写极速流畅。",
+    "meta/astryx": "开源设计系统，可全面定制且支持 AI 智能体调用，适配自动化 UI 生成与接入。",
+    "sherlock-project/sherlock": "按用户名跨社交网络批量检索账号，一键定位同一用户在多平台的公开主页。",
+    "tailwindlabs/tailwindcss": "实用优先的 CSS 框架，以原子类快速搭建界面，大幅提升前端开发效率。",
+    "mbillow/localthings": "在本地局域网用 Home Assistant 控制三星家电，无需云端账号，断网也能用。",
+    "ranxianglei/billion-context": "超长会话上下文压缩插件，支持月级连续对话，仅 100k 窗口即可省约 5 倍 token。",
+    "dsx-ai-factory/nvke": "面向裸金属 GPU 集群的 Kubernetes 管理平面，简化 AI 算力调度与部署。",
+    "NotRexed/Hookshot": "将《塞尔达传说：时之笛》Switch 2 重制版原生重编译，可在新主机流畅运行。",
+    "voyager-so/vork": "面向 AI 智能体的无界面 3D 与特效引擎，目前为研究预览版本。",
+    "sostenesfreitas/ocarina-recomp": "在 Windows 原生运行《时之笛》，无需模拟器，用自己的游戏拷贝本地构建。",
+    "WoYun520/gif-factory": "GIF 工厂：按风格生成像素风、人物宠物、粘土吉祥物、光栅卡与动态海报的 GIF 技能。",
+    "JosssphZhou/poki": "本地 MCP 服务让 AI 智能体操控真实 iPhone，免越狱、无需额外硬件。",
+    "riyadhHDA/wichforks": "NS2 模拟器分支选型指南，覆盖构建、游戏、显卡、安卓与社区实测反馈。",
+    "ParthJadhav/app-store-screenshots": "用 AI 端到端生成应用商店截图，从文案到排版一站式产出上架素材。",
+    "engenheirodevideo/get-brolls": "智能体素材收集技能，按脚本描述检索视频图片并整理成故事板供审阅。"
   }
 }
