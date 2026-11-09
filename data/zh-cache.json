@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-08",
+  "updatedAt": "2026-11-09",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -569,6 +569,27 @@
     "JosssphZhou/poki": "本地 MCP 服务让 AI 智能体操控真实 iPhone，免越狱、无需额外硬件。",
     "riyadhHDA/wichforks": "NS2 模拟器分支选型指南，覆盖构建、游戏、显卡、安卓与社区实测反馈。",
     "ParthJadhav/app-store-screenshots": "用 AI 端到端生成应用商店截图，从文案到排版一站式产出上架素材。",
-    "engenheirodevideo/get-brolls": "智能体素材收集技能，按脚本描述检索视频图片并整理成故事板供审阅。"
+    "engenheirodevideo/get-brolls": "智能体素材收集技能，按脚本描述检索视频图片并整理成故事板供审阅。",
+    "anthropics/claude-quickstarts": "一组帮助开发者快速上手、用 Claude API 构建可部署应用的示例项目合集。",
+    "google-deepmind/mujoco": "通用物理仿真器，支持多关节接触动力学，适用于机器人控制与强化学习研究。",
+    "indranilbanerjee/digital-marketing-pro": "开源 AI 数字营销操作系统，覆盖策略、SEO/GEO、付费投放、内容、CRM 与数据分析。",
+    "rizqinrr/viserys-agent": "面向 AI 编程代理的工程工作流工具包，支持需求访谈、任务拆解与定制设计。",
+    "dend/awesome-product-management": "精选产品经理与项目管理者学习成长的优质资源合集（awesome 列表）。",
+    "gradio-app/gradio": "用纯 Python 快速构建并分享机器学习应用的开源 Web UI 框架。",
+    "Light0305/Light-Science": "科研工作流技能包，串联文献、实验、作图、写作、记忆与项目协同。",
+    "Th0rgal/satmux": "通过 BBR 多路复用与 TLS 优化加速高延迟 GEO 机载 Wi-Fi，零依赖。",
+    "lxe/phoneuse": "在 Linux 电脑上查看并操控未改 iPhone（AirPlay 镜像+Bluetooth 键鼠），含代理 CLI。",
+    "PaladinSmash84/aida-64-extreme": "Aida 64 Extreme AI 提示工程工具箱，预配置本地隔离环境的 LLM 训练部署环境。",
+    "PresidentThaw/capcut-for-windows": "剪映 Windows 2026 预配置环境，面向专业视频剪辑、录屏与特效（VFX）。",
+    "WayBuilderDeliver/windows-optimizer": "Windows Optimizer 2026 自动化部署流水线，为企业桌面预配置优化环境。",
+    "updatesealeradicate/start11": "Start11 2023 预配置环境，面向专业工作站的桌面工具部署。",
+    "Soundplomystery/landr-plugin-bundle": "Landr 插件包 2026 预配置环境，支持离线资源、本地工作站无缝部署。",
+    "PaladinDiscriminate/adobe-substance-3d": "Adobe Substance 3D 创意套件 2026 预配置环境，提供安全离线数字资产部署。",
+    "OnyxAmbassador/actual-multiplie-monitors": "Actual Multiple Monitors 2026 多屏管理工具预配置环境，工作站桌面增效。",
+    "PlaneDiverRevitalize/avid-media-composer": "Avid Media Composer 2026 预配置生产环境，专业影视剪辑工具配置。",
+    "SmartAntRecover/instagram-liker-bot": "Instagram 自动点赞机器人 2026 预配置环境，桌面工具自动化配置。",
+    "OhmUrchinSee/abbyy-finereader-pdf": "ABBYY FineReader PDF 18.5 自动化部署流水线，高效桌面 OCR 工具配置。",
+    "VertexCoppersmith/total-commander": "Total Commander 10.5 自动化部署流水线，本地隔离环境的文件管理器配置。",
+    "shoregladiatormesh/ifunbox": "iFunbox 2023 预配置环境，iOS 设备管理工具的无缝配置与部署。"
   }
 }

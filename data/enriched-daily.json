@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-08",
+  "date": "2026-11-09",
   "mode": "daily",
   "generatedBy": "workbuddy-automation",
   "note": "上榜项目结构化解读。字段：tagline 一句话定位 / value 核心价值 / features 主要功能 / scenarios 应用场景 / inputs 输入建议 / caveats 使用提醒。内容基于仓库公开信息撰写，仅供参考。",
@@ -2133,6 +2133,103 @@
         "仅检索公开信息，切勿用于骚扰或非法用途",
         "结果可能因站点改版而失效",
         "高频请求可能触发目标站点风控"
+      ]
+    },
+    "dsx-ai-factory/nvke": {
+      "tagline": "NVIDIA Kubernetes 引擎（NVKE），面向裸金属 GPU 集群的管理平面。",
+      "value": "简化裸金属上 GPU Kubernetes 的部署与运维，统一纳管 AI 算力资源。",
+      "features": [
+        "裸金属 GPU 节点的 Kubernetes 纳管",
+        "GPU 资源的调度与生命周期管理",
+        "面向 AI 训练/推理集群的管理平面"
+      ],
+      "scenarios": [
+        "自建 GPU 集群的统一调度",
+        "AI 训练平台的算力底座",
+        "企业级裸金属 Kubernetes 部署"
+      ],
+      "inputs": [
+        "一批裸金属 GPU 服务器",
+        "对 Kubernetes 与 NVIDIA 驱动的基本了解",
+        "集群网络与存储规划"
+      ],
+      "caveats": [
+        "项目较新（星星数有限），生产前需充分验证",
+        "依赖 NVIDIA 驱动与 Kubernetes 生态",
+        "官方文档与社区规模仍在成长"
+      ]
+    },
+    "anthropics/claude-quickstarts": {
+      "tagline": "一组帮助开发者用 Claude API 快速构建可部署应用的示例项目合集。",
+      "value": "降低 Claude API 上手门槛，提供可直接运行的参考实现，加速产品原型。",
+      "features": [
+        "多场景的 Claude API 接入示例",
+        "可部署的应用骨架与代码",
+        "面向开发者的快速上手模板"
+      ],
+      "scenarios": [
+        "基于 Claude API 的新项目冷启动",
+        "学习 Claude API 最佳实践",
+        "内部工具/原型快速搭建"
+      ],
+      "inputs": [
+        "Anthropic API Key",
+        "基础的 Python 开发环境",
+        "明确的业务场景需求"
+      ],
+      "caveats": [
+        "示例需结合自身业务逻辑改造",
+        "调用模型会产生 API 费用",
+        "关注官方 API 版本与配额限制"
+      ]
+    },
+    "google-deepmind/mujoco": {
+      "tagline": "通用物理仿真器，支持多关节接触动力学，适用于机器人与强化学习。",
+      "value": "高精度、可扩展的物理仿真，是机器人控制与 RL 研究的事实标准之一。",
+      "features": [
+        "多关节带接触动力学仿真",
+        "通用刚体物理引擎",
+        "可嵌入的 C++ 库与 Python 绑定"
+      ],
+      "scenarios": [
+        "机器人运动控制仿真",
+        "强化学习环境与策略训练",
+        "机械系统动力学研究"
+      ],
+      "inputs": [
+        "待仿真的刚体模型（MJCF/URDF）",
+        "C++ 或 Python 开发环境",
+        "仿真目标与参数设定"
+      ],
+      "caveats": [
+        "学习曲线偏陡，需理解物理建模概念",
+        "复杂场景对算力有一定要求",
+        "商业用途需注意许可条款"
+      ]
+    },
+    "ranxianglei/billion-context": {
+      "tagline": "月级超长会话的上下文压缩插件，小窗口（100K 上下文即够）省下约 5 倍 token。",
+      "value": "让长周期单会话保持可控成本，兼顾长记忆与低 token 消耗。",
+      "features": [
+        "月级超长会话的上下文压缩",
+        "小上下文窗口即可承载长记忆",
+        "约 5 倍 token 节省",
+        "作为插件嵌入现有 agent 会话"
+      ],
+      "scenarios": [
+        "月级持续运行的 AI agent 会话",
+        "长文档/长代码库连续协作",
+        "需跨多轮保留上下文的对话系统"
+      ],
+      "inputs": [
+        "支持插件机制的 agent/编辑器",
+        "已有的长会话或长文档",
+        "可接受压缩带来的信息取舍"
+      ],
+      "caveats": [
+        "压缩会丢失部分细节，关键内容需人工复核",
+        "压缩率与质量需按场景调参",
+        "项目较新，生产前需验证稳定性"
       ]
     }
   }
