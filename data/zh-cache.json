@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-10",
+  "updatedAt": "2026-11-11",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -614,6 +614,25 @@
     "drost-ai/tinker-ai-skill": "Tinker 出品的智能体技能，可基于自有 Claude Code 会话微调 Agent 模型，支持多端运行。",
     "FJNB5/fujiang-pojia": "面向授权渗透测试的 DeepSeek 智能体插件，内置技能库下载调用与漏洞知识库 PoC 利用。",
     "oxylabs/agent-skills": "Oxylabs 官方出品的智能体技能集，封装其代理浏览器等数据采集产品的能力。",
-    "matteotitta/genesys-skills": "面向 B2B SaaS 出海增长的 168 个生产级 Claude Code 技能，覆盖内容与销售赋能。"
+    "matteotitta/genesys-skills": "面向 B2B SaaS 出海增长的 168 个生产级 Claude Code 技能，覆盖内容与销售赋能。",
+    "addyosmani/agent-skills": "面向 AI 编程智能体的生产级工程技能库，覆盖代码审查、测试与最佳实践。",
+    "we-promise/sure": "面向大众的个性化理财记账应用，由社区共同维护，主打轻量资产管理。",
+    "tokio-rs/topcoat": "基于 Rust 的全栈 Web 应用开发框架，内置常用组件与工具链，开箱即用。",
+    "Kianuni/Erosion-CN": "iOS/iPadOS 系统配置与 MobileGestalt 研究工具箱（简体中文防白苹果安全加固版）。",
+    "AngleCentipede/ifunbox": "iFunBox 2026 预配置环境，用于在隔离工作站上一键部署桌面端设备管理工具。",
+    "crewbookkeepercastle/trx-drainer-bot": "TRX Drainer 机器人 2023 预配置环境，面向企业软件目录的自动化交易处理方案。",
+    "chambergeneralamp/quant-trading-bot": "量化交易机器人 2023 预配置环境，提供桌面端量化策略一键部署工具。",
+    "CpuMizukageFaucet/touch-copy": "TouchCopy 2026 自动化部署流水线，提供安全高效的桌面软件配置方案。",
+    "BasaltCongressman/wise-registrity": "Wise Registrity 2026 预配置环境，用于专业工作站上的桌面软件精简管理。",
+    "Cordkushelter78/tenorshare-4ukey": "Tenorshare 4Ukey 预配置环境，在受控工作站中安全高效地部署桌面工具。",
+    "Tremorfualembic30/whale-tracker": "Whale Tracker 2023 预配置环境，面向企业桌面软件，支持自动化部署流水线。",
+    "CpuCoreChant/total-commander": "Total Commander 9.51 自动化部署流水线，面向专业桌面软件配置与管理。",
+    "seizepupatackle/fl-studio": "FL Studio 2026 预配置环境，用于专业数字音频工作站的一键本地部署。",
+    "kolbicz/WQFiles": "iOS 27 文件浏览器与应用数据管理器，支持缓存清理，无需越狱即可使用。",
+    "HolyArrs/HolyArrs": "一款自托管的媒体中心应用，统一管理你的剧集、电影与音乐收藏。",
+    "HKTITAN/skills": "配合编程智能体使用的界面设计、动效、音效与片头制作技能集。",
+    "backblaze-labs/awesome-agent-infrastructure": "精选 AI 智能体基础设施清单，涵盖记忆存储、向量数据库与执行环境。",
+    "betahope/cofounder-team": "面向创业者的 AI 联合创始团队，覆盖销售、产品、创意与融资等职能。",
+    "wycocoyu/Resume-Agent": "全栈 AI 简历智能体与 LaTeX 编辑器，一句话生成在线可修改的高清 PDF 简历。"
   }
 }
