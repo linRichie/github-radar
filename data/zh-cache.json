@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-11",
+  "updatedAt": "2026-11-12",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -633,6 +633,20 @@
     "HKTITAN/skills": "配合编程智能体使用的界面设计、动效、音效与片头制作技能集。",
     "backblaze-labs/awesome-agent-infrastructure": "精选 AI 智能体基础设施清单，涵盖记忆存储、向量数据库与执行环境。",
     "betahope/cofounder-team": "面向创业者的 AI 联合创始团队，覆盖销售、产品、创意与融资等职能。",
-    "wycocoyu/Resume-Agent": "全栈 AI 简历智能体与 LaTeX 编辑器，一句话生成在线可修改的高清 PDF 简历。"
+    "wycocoyu/Resume-Agent": "全栈 AI 简历智能体与 LaTeX 编辑器，一句话生成在线可修改的高清 PDF 简历。",
+    "TheAlgorithms/Java": "用 Java 实现各类经典算法的开源教学合集，覆盖排序、搜索、图论、动态规划等计算机科学核心主题。",
+    "nexscope-ai/eCommerce-Skills": "面向 AI Agent 的电商技能包，覆盖亚马逊、Shopify、Etsy、TikTok Shop 等平台的产品调研、营销自动化、供应链与数据分析。",
+    "openai/codex-security": "OpenAI 推出的 Codex 安全工具，含 CLI 与 TypeScript SDK，用于发现、验证并修复代码中的安全漏洞。",
+    "shadcn/improve": "用最强模型审查代码库并生成改动方案，再交给轻量模型执行的代码库审计与规划工具。",
+    "Dodaios/ste80-humanizer": "Agent 技能，自动去除 AI 写作痕迹，将文本改写为接近 ASD-STE100 简明技术英语风格的写作润色工具。",
+    "FrigadeHQ/yogurt": "免费开源的本地 AI 会议记录工具，支持语音转写与离线隐私保护，不依赖云端运行。",
+    "HybridRobotics/supermimic": "基于单一可微分世界模型的人形机器人全身动作追踪与模仿项目，用于全身运动控制研究。",
+    "JDhruv14/line-art-animation": "面向 Claude 的技能与 TypeScript 库，生成会行走、带昼夜变化的线条动画 SVG 组件。",
+    "TomyJan/SnowLuma": "新一代远端协议框架 SnowLuma，面向机器人及即时消息（如 NapCat QQ）的协议接入与开发。",
+    "adriadam10/mkw-recomp": "将 Switch 2 游戏《马力欧赛车世界》静态重编译为原生 PC 程序的项目，属游戏移植重编译方向。",
+    "alexeyw/lot-map": "在 Claude Code 聊天旁实时展示工具调用、模型步骤、钩子与子代理的可视化地图，本地运行支持多语言。",
+    "aronhy/pibrowse": "开源的浏览器配置与档案工作区工具，可隔离管理多个浏览身份与 profiles 的工作环境。",
+    "bvvst/intern": "Inter 字体的全圆角可变字重变体，提供更多字重与友好视觉风格的排版字体资源。",
+    "yetone/rewind-for-x": "Chrome 扩展，可回看 X（推特）首页时间线上已滚动划过、错过的动态帖子。"
   }
 }
