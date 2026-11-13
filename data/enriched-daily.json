@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-12",
+  "date": "2026-11-13",
   "mode": "daily",
   "generatedBy": "workbuddy-automation",
   "note": "上榜项目结构化解读。字段：tagline 一句话定位 / value 核心价值 / features 主要功能 / scenarios 应用场景 / inputs 输入建议 / caveats 使用提醒。内容基于仓库公开信息撰写，仅供参考。",
@@ -2491,6 +2491,164 @@
         "偏教学用途，生产环境使用前需审视性能与边界条件",
         "部分实现侧重可读性而非极致优化",
         "大型合集，注意按主题定位而非整体依赖"
+      ]
+    },
+    "GoogleChrome/modern-web-guidance-src": {
+      "tagline": "Chrome 官方维护的源仓库，为编码智能体提供持续更新的 Web 前端最佳实践指引。",
+      "value": "让 AI 编程助手在生成代码时遵循最新 Web 标准与性能规范，减少过时写法。",
+      "features": [
+        "汇总 Web 平台最新最佳实践与官方建议",
+        "以可消费的源文件形式供智能体读取",
+        "覆盖性能、可访问性、语义化等前端要点",
+        "随 Web 标准演进持续更新内容"
+      ],
+      "scenarios": [
+        "让 Claude Code、Codex 等生成符合最新规范的网页代码",
+        "团队统一前端代码风格与质量基线",
+        "智能体自查并修正过时或反模式写法"
+      ],
+      "inputs": [
+        "一个支持读取仓库内容的编码智能体",
+        "目标前端项目或待生成的需求描述"
+      ],
+      "caveats": [
+        "指引为官方/社区最佳实践，需结合项目实际判断",
+        "不应盲从，关键实现仍需人工评审"
+      ]
+    },
+    "nvm-sh/nvm": {
+      "tagline": "用 bash 脚本在同一台机器上安装与切换多个 Node.js 版本的管理器。",
+      "value": "解决不同项目对 Node 版本的依赖冲突，一键切换运行环境。",
+      "features": [
+        "安装、卸载与列出多个 Node.js 版本",
+        "按目录或命令行切换当前版本",
+        "支持 .nvmrc 锁定项目版本",
+        "POSIX 兼容，跨 macOS 与 Linux 使用"
+      ],
+      "scenarios": [
+        "多项目共用一台开发机、各自要求不同 Node 版本",
+        "CI 中复现指定 Node 运行环境",
+        "快速尝鲜或回退 Node 新版本"
+      ],
+      "inputs": [
+        "支持 bash / zsh 的 Unix-like 终端",
+        "待管理的项目（可选 .nvmrc）"
+      ],
+      "caveats": [
+        "仅管理 Node 运行时，不处理系统级依赖",
+        "Windows 需配合 WSL 或 nvm-windows"
+      ]
+    },
+    "pookjw/HermesEnabler": {
+      "tagline": "在任意 Apple Watch 上启用 Hermès 专属表盘的越狱工具。",
+      "value": "突破机型限制，把原本仅限 Hermès 版手表的表盘带到普通设备。",
+      "features": [
+        "解锁并应用 Hermès 风格表盘",
+        "适配多种 Apple Watch 设备",
+        "以 Objective-C 编写，依赖越狱环境"
+      ],
+      "scenarios": [
+        "越狱用户想使用 Hermès 限定表盘",
+        "个性化手表外观、收藏特殊表盘"
+      ],
+      "inputs": [
+        "已越狱的 Apple Watch",
+        "兼容的 watchOS 版本"
+      ],
+      "caveats": [
+        "需要越狱，存在设备保修与稳定性风险",
+        "仅限个人设备使用，请勿用于商业分发"
+      ]
+    },
+    "QwenLM/qwen-code": {
+      "tagline": "通义千问开源的终端 AI 编程智能体，对标 Claude Code 的工作流。",
+      "value": "在命令行内完成代码生成、修改与多文件重构，原生中文友好。",
+      "features": [
+        "终端交互式编码助手",
+        "读取并编辑项目文件、执行命令",
+        "基于 Qwen 大模型，原生中文支持",
+        "开源可自部署"
+      ],
+      "scenarios": [
+        "日常代码编写与脚手架搭建",
+        "中文开发者在本地完成 AI 辅助编程",
+        "接入自有模型或 API 进行定制"
+      ],
+      "inputs": [
+        "本地终端与一个 Qwen 模型端点 / API",
+        "待开发的代码仓库"
+      ],
+      "caveats": [
+        "能力取决于所接入的模型版本",
+        "执行命令需授权，注意敏感操作审查"
+      ]
+    },
+    "ashhart/TensorFold": {
+      "tagline": "面向 Metal、CUDA 与 Vulkan 的 LLM 推理引擎，用 Zig 编写。",
+      "value": "跨 GPU 后端统一推理，便于在 Apple、NVIDIA 等设备上本地跑大模型。",
+      "features": [
+        "支持 Metal（Apple）、CUDA（NVIDIA）、Vulkan 多后端",
+        "用 Zig 实现，注重性能与可移植",
+        "面向 LLM 推理优化"
+      ],
+      "scenarios": [
+        "在 Mac 本地以 Metal 加速跑大模型",
+        "跨硬件平台统一推理管线",
+        "嵌入式 / 边缘设备的轻量推理"
+      ],
+      "inputs": [
+        "兼容的 GPU 设备与对应驱动",
+        "模型权重文件"
+      ],
+      "caveats": [
+        "项目较新，生态与模型覆盖仍在演进",
+        "需自行确认目标后端的兼容性"
+      ]
+    },
+    "Alishahryar1/free-claude-code": {
+      "tagline": "在终端、IDE 与浏览器中免费调用 Claude Code、Codex 等多款 AI 编程工具。",
+      "value": "聚合多个 harness 与模型，提供统一入口与浏览器原生会话能力。",
+      "features": [
+        "支持 Claude Code、Codex、VSCode、OpenCode 等多 harness",
+        "浏览器内原生会话，支持语音（ToS 友好）",
+        "多 harness 加多模型组合调用",
+        "提供免费额度入口"
+      ],
+      "scenarios": [
+        "零成本试用多种 AI 编程工具的用户",
+        "在浏览器里直接跑 AI 编码会话",
+        "对比不同 harness 与模型的效果"
+      ],
+      "inputs": [
+        "终端、应用、IDE 或浏览器环境",
+        "相应 harness 的账号 / 会话"
+      ],
+      "caveats": [
+        "免费额度与可用性随上游政策变化",
+        "非官方聚合，注意账号与数据安全"
+      ]
+    },
+    "ggml-org/llama.cpp": {
+      "tagline": "用纯 C/C++ 实现的轻量 LLM 推理框架，可在多平台本地运行大模型。",
+      "value": "无需重型依赖即可在 CPU / GPU 上跑量化大模型，普及本地推理。",
+      "features": [
+        "纯 C/C++，跨平台编译运行",
+        "支持 GGUF 量化模型与多种后端（Metal / CUDA / CPU）",
+        "提供命令行、服务端与原生绑定",
+        "广泛用于本地与个人设备推理"
+      ],
+      "scenarios": [
+        "在笔记本或树莓派等设备上跑本地模型",
+        "搭建离线、私密的对话 / 推理服务",
+        "作为其他 AI 应用的推理后端"
+      ],
+      "inputs": [
+        "一台支持编译运行的设备",
+        "一份 GGUF 格式的模型文件"
+      ],
+      "caveats": [
+        "推理速度受设备算力与量化级别影响",
+        "模型权重需自行获取并确认许可"
       ]
     }
   }

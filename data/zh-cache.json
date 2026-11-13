@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-13",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -647,6 +647,33 @@
     "alexeyw/lot-map": "在 Claude Code 聊天旁实时展示工具调用、模型步骤、钩子与子代理的可视化地图，本地运行支持多语言。",
     "aronhy/pibrowse": "开源的浏览器配置与档案工作区工具，可隔离管理多个浏览身份与 profiles 的工作环境。",
     "bvvst/intern": "Inter 字体的全圆角可变字重变体，提供更多字重与友好视觉风格的排版字体资源。",
-    "yetone/rewind-for-x": "Chrome 扩展，可回看 X（推特）首页时间线上已滚动划过、错过的动态帖子。"
+    "yetone/rewind-for-x": "Chrome 扩展，可回看 X（推特）首页时间线上已滚动划过、错过的动态帖子。",
+    "GoogleChrome/modern-web-guidance-src": "Chrome 官方出品，让编码智能体持续掌握最新 Web 前端开发最佳实践与规范。",
+    "nvm-sh/nvm": "Node 版本管理器，用 bash 脚本在同一环境切换与管理多个 Node.js 版本。",
+    "pookjw/HermesEnabler": "在任意 Apple Watch 设备上启用 Hermès 专属表盘，需配合越狱环境使用。",
+    "QwenLM/qwen-code": "通义千问开源的终端 AI 编程智能体，可在命令行中完成代码生成与修改。",
+    "ashhart/TensorFold": "面向 Metal、CUDA 与 Vulkan 的 LLM 推理引擎，使用 Zig 编写、跨平台加速。",
+    "Alishahryar1/free-claude-code": "在终端与浏览器免费调用 Claude Code、Codex 等多款 AI 编程工具与多模型。",
+    "ggml-org/llama.cpp": "用 C/C++ 实现的轻量 LLM 推理框架，可在多平台本地运行大模型。",
+    "apex-compute/ANR": "Apex Compute 推出的神经渲染（ANR）方案，面向实时高质量图形合成。",
+    "AIRzZ90/study-materials-fork": "基于 Tauri 2 的跨平台界面与交互练习项目，用于学习桌面应用开发。",
+    "tigerogijzooav/Hyperliquid-Trade-Bot": "基于 Hyperliquid 公开 API 的只读终端分析工具，评估 ROI、胜率与回撤风险。",
+    "makepad/relax": "Relax 语言的 Rust JIT 即时编译器，面向高性能运行时编译场景。",
+    "linknimiball1974/ai-texture-forge": "Blender 内的 AI 纹理工坊，用文本提示生成无缝 PBR 材质与场景投影。",
+    "op7418/guizang-game-skill": "让 AI 从零做出浏览器可玩的 3D 动作游戏，附 three.js 演示《雾锁山门》。",
+    "setyamickala/fastmint-fcfs-agentic": "通过 Binance Agentic 钱包在 BNB 智能链抢先参与 FCFS 铸币，开抢后约 2 秒入块。",
+    "DandanLLab/SnowCatQQ": "NapCat 与 SnowLuma 融合的第三方 QQ 客户端，社区维护、全源码公开。",
+    "Illyism/seo-skills": "面向 Claude Code、Cursor、Codex 的 30 个开源 SEO 技能包，含技术审计与 GEO。",
+    "anbeime/skill": "最全 AI Agent 技能商店，精选可安装技能包并自动整理 GitHub 数万 Skills 项目。",
+    "dansugc/reverse-engineer-marketing": "粘贴链接即可逆向还原对方营销体系（广告、SEO、社媒），含 CLI、MCP 与 Web 应用。",
+    "edisonmbli/refactoring-ui-skill": "源自《Refactoring UI》的非官方 Claude 技能，提供 151 条 Web UI 设计规则与诊断。",
+    "phuryn/product-engineering": "来自三个上线产品的 44 个智能体技能，覆盖产品决策、开发、评审与发布全流程。",
+    "deanpeters/Product-Manager-Skills": "基于成熟方法论的产品管理技能框架，适配 Claude Code、Codex 等 AI 智能体。",
+    "BenjiNgei/real-time-operations-intelligence-accelerator": "基于 Microsoft Fabric 的实时智能解决方案，含仪表盘、异常检测与数据分析加速器。",
+    "MAGA2010/data-master": "从原始文件到可复现 PDF 报告的可审计数据分析工具，含 Codex 技能与跨平台 CLI。",
+    "serveroshq/panel": "开源 ServerOS 面板，在一个界面集中管理你已有的 Linux 服务器，支持自托管。",
+    "Jakeschincariol/closer-skill": "用 11 个 Claude 技能跑完整销售团队流程：获客、冷邮件、跟进、陪练与合同。",
+    "oss-invisible/playwright_mcp": "反检测 Playwright MCP 服务，在隐身浏览器中运行 AI 代理完成网页自动化与抓取。",
+    "rivet-dev/open-orange": "让 Cloudflare Workers 原样跑在 AWS、GCP、Azure 或自有服务器。"
   }
 }
