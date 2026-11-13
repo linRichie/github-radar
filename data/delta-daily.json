@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-13T06:06:26+08:00",
+ "generated_at": "2026-11-13T09:23:24+08:00",
  "mode": "daily",
  "window_days": 3,
  "window_start": "2026-11-10",
@@ -8,177 +8,177 @@
  "items": [
   {
    "full": "morluto/rea",
-   "stars": 455104,
+   "stars": 455326,
    "stars_then": 446885,
-   "delta": 8219,
-   "delta_pct": 1.8,
+   "delta": 8441,
+   "delta_pct": 1.9,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "Ebony-Vinyl/dsh-our-free-model",
-   "stars": 71282,
+   "stars": 71350,
    "stars_then": 67345,
-   "delta": 3937,
-   "delta_pct": 5.8,
+   "delta": 4005,
+   "delta_pct": 5.9,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "ccch1mneyyy/dsh-Go",
-   "stars": 20688,
+   "stars": 20791,
    "stars_then": 17538,
-   "delta": 3150,
-   "delta_pct": 18.0,
+   "delta": 3253,
+   "delta_pct": 18.5,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "stablyai/orca",
-   "stars": 123399,
+   "stars": 123502,
    "stars_then": 120388,
-   "delta": 3011,
-   "delta_pct": 2.5,
+   "delta": 3114,
+   "delta_pct": 2.6,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "deepseek-ai/deepseek-harness",
-   "stars": 279754,
+   "stars": 279817,
    "stars_then": 277353,
-   "delta": 2401,
+   "delta": 2464,
    "delta_pct": 0.9,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "lemomo-ai/lemo-opuscar",
-   "stars": 15275,
+   "stars": 15314,
    "stars_then": 14076,
-   "delta": 1199,
-   "delta_pct": 8.5,
+   "delta": 1238,
+   "delta_pct": 8.8,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "google/elephant-goldfish-model",
-   "stars": 18125,
+   "stars": 18192,
    "stars_then": 17123,
-   "delta": 1002,
-   "delta_pct": 5.9,
+   "delta": 1069,
+   "delta_pct": 6.2,
    "since": "2026-11-11 05:42"
   },
   {
    "full": "JuliusBrussee/caveman",
-   "stars": 119403,
+   "stars": 119439,
    "stars_then": 118645,
-   "delta": 758,
-   "delta_pct": 0.6,
+   "delta": 794,
+   "delta_pct": 0.7,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "ruvnet/RuView",
-   "stars": 104160,
+   "stars": 104172,
    "stars_then": 103423,
-   "delta": 737,
+   "delta": 749,
    "delta_pct": 0.7,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "yetone/magpie",
-   "stars": 35391,
+   "stars": 35428,
    "stars_then": 34680,
-   "delta": 711,
-   "delta_pct": 2.1,
+   "delta": 748,
+   "delta_pct": 2.2,
    "since": "2026-11-12 06:31"
   },
   {
    "full": "tangency-labs/solidcraft",
-   "stars": 15983,
+   "stars": 16005,
    "stars_then": 15289,
-   "delta": 694,
-   "delta_pct": 4.5,
+   "delta": 716,
+   "delta_pct": 4.7,
    "since": "2026-11-10 08:00"
   },
   {
    "full": "firecrawl/firecrawl",
-   "stars": 201265,
+   "stars": 201295,
    "stars_then": 200943,
-   "delta": 322,
+   "delta": 352,
    "delta_pct": 0.2,
    "since": "2026-11-12 06:31"
   },
   {
    "full": "farion1231/cc-switch",
-   "stars": 153936,
+   "stars": 153955,
    "stars_then": 153646,
-   "delta": 290,
+   "delta": 309,
    "delta_pct": 0.2,
    "since": "2026-11-12 06:31"
   },
   {
    "full": "ollama/ollama",
-   "stars": 186805,
+   "stars": 186818,
    "stars_then": 186565,
-   "delta": 240,
+   "delta": 253,
    "delta_pct": 0.1,
    "since": "2026-11-11 05:42"
   },
   {
    "full": "NousResearch/hermes-agent",
-   "stars": 262951,
+   "stars": 262976,
    "stars_then": 262728,
-   "delta": 223,
+   "delta": 248,
    "delta_pct": 0.1,
    "since": "2026-11-12 06:31"
   },
   {
    "full": "open-webui/open-webui",
-   "stars": 158501,
+   "stars": 158507,
    "stars_then": 158320,
-   "delta": 181,
+   "delta": 187,
    "delta_pct": 0.1,
    "since": "2026-11-11 05:42"
   },
   {
    "full": "langgenius/dify",
-   "stars": 161057,
+   "stars": 161060,
    "stars_then": 160878,
-   "delta": 179,
+   "delta": 182,
    "delta_pct": 0.1,
    "since": "2026-11-11 05:42"
   },
   {
    "full": "huggingface/transformers",
-   "stars": 168919,
+   "stars": 168928,
    "stars_then": 168749,
-   "delta": 170,
+   "delta": 179,
    "delta_pct": 0.1,
    "since": "2026-11-11 05:42"
   },
   {
    "full": "f/prompts.chat",
-   "stars": 177006,
+   "stars": 177009,
    "stars_then": 176840,
-   "delta": 166,
+   "delta": 169,
    "delta_pct": 0.1,
    "since": "2026-11-11 05:42"
   },
   {
    "full": "n8n-io/n8n",
-   "stars": 210323,
+   "stars": 210332,
    "stars_then": 210213,
-   "delta": 110,
+   "delta": 119,
    "delta_pct": 0.1,
    "since": "2026-11-12 06:31"
   },
   {
    "full": "google-gemini/gemini-cli",
-   "stars": 108803,
+   "stars": 108804,
    "stars_then": 108781,
-   "delta": 22,
+   "delta": 23,
    "delta_pct": 0.0,
    "since": "2026-11-12 06:31"
   },
   {
    "full": "Significant-Gravitas/AutoGPT",
-   "stars": 188013,
+   "stars": 188011,
    "stars_then": 188000,
-   "delta": 13,
+   "delta": 11,
    "delta_pct": 0.0,
    "since": "2026-11-12 06:31"
   }
