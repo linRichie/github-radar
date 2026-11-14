@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-14",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -674,6 +674,22 @@
     "serveroshq/panel": "开源 ServerOS 面板，在一个界面集中管理你已有的 Linux 服务器，支持自托管。",
     "Jakeschincariol/closer-skill": "用 11 个 Claude 技能跑完整销售团队流程：获客、冷邮件、跟进、陪练与合同。",
     "oss-invisible/playwright_mcp": "反检测 Playwright MCP 服务，在隐身浏览器中运行 AI 代理完成网页自动化与抓取。",
-    "rivet-dev/open-orange": "让 Cloudflare Workers 原样跑在 AWS、GCP、Azure 或自有服务器。"
+    "rivet-dev/open-orange": "让 Cloudflare Workers 原样跑在 AWS、GCP、Azure 或自有服务器。",
+    "louislam/uptime-kuma": "精致的自托管监控面板，实时监测网站、服务与容器的可用性和响应延迟。",
+    "tradermonty/claude-trading-skills": "面向股民与交易员的 Claude Code 技能集：行情分析、技术图表、选股与策略开发。",
+    "backnotprop/plannotator": "围绕 AI Agent 的人机协作工作台：规划、批注、审查代码并一键回传反馈。",
+    "block/buzz": "一个「蜂群意识」式的实时通信与协作平台，让多人如同一大脑协同。",
+    "tailscale/tailcat": "基于 Tailscale 数据平面的 netcat 式工具，无需控制平面即可点对点直连。",
+    "Likely7/Veyra-NRVideo": "Windows 视频与采集增强播放器：AI 超分、DLSS5 画质增强与帧生成。",
+    "ChromeDevTools/chrome-devtools-mcp": "面向编程 Agent 的 Chrome DevTools 工具，让 AI 直接操控浏览器做调试。",
+    "deepseek-ai/chat-demo": "DeepSeek 官方聊天演示项目，用于体验其大模型的对话交互能力。",
+    "DevedevT/FFmpeg-GUI-Editor-Windows": "Windows 轻量便携的 FFmpeg 图形界面与无损视频裁剪工具，支持多国语言。",
+    "faizfahmi77/ScanDot": "实验性的安卓 3D 扫描与点云查看器，把现实物体转为可查看的 3D 点云。",
+    "Simon3Sarkis/super-odyssey-pc-recomp": "通过静态重编译把《超级马里奥：奥德赛》移植到 Windows 原生运行（需自备游戏）。",
+    "AFangTeam/PrintLab": "Mac + Codex + 拓竹的个人 3D 打印工作台与工作流，允许非商业修改与再发布。",
+    "quer3q/kraken-mount": "极简的 PS5 游戏挂载工具，支持 PKG、文件夹镜像以及 lz4、zstd 压缩格式。",
+    "JimLiu/open-artifacts": "把 Claude Design 当作本地 Agent 技能运行，生成自包含 HTML 的 UI 原型与线框。",
+    "uxuiprinciples/agent-skills": "五份 UX 专家技能文件：评估界面、发现体验异味、审计 AI 界面与流程。",
+    "Hazenix/interview-prep-skills": "AI 技术面试陪练技能：模拟面试、自适应追问、按简历出题，覆盖前后端与 AI 开发。"
   }
 }
