@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-14",
+  "updatedAt": "2026-11-15",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -690,6 +690,26 @@
     "quer3q/kraken-mount": "极简的 PS5 游戏挂载工具，支持 PKG、文件夹镜像以及 lz4、zstd 压缩格式。",
     "JimLiu/open-artifacts": "把 Claude Design 当作本地 Agent 技能运行，生成自包含 HTML 的 UI 原型与线框。",
     "uxuiprinciples/agent-skills": "五份 UX 专家技能文件：评估界面、发现体验异味、审计 AI 界面与流程。",
-    "Hazenix/interview-prep-skills": "AI 技术面试陪练技能：模拟面试、自适应追问、按简历出题，覆盖前后端与 AI 开发。"
+    "Hazenix/interview-prep-skills": "AI 技术面试陪练技能：模拟面试、自适应追问、按简历出题，覆盖前后端与 AI 开发。",
+    "dream-num/univer": "基于 Univer 开源办公内核的 SDK，将文档编辑、公式计算、协作与文件处理嵌入产品，供人及 AI 智能体协同。",
+    "ag-ui-protocol/ag-ui": "AG-UI 是智能体与前端的实时交互协议，定义了 Agent 与界面间的事件标准，让 AI 智能体无缝嵌入前端应用。",
+    "Tencent/LoopForge": "腾讯开源自托管工作流，编排 CodeBuddy、Codex、Claude Code 等编程智能体交付，含脚本与人工审批。",
+    "martin-olivier/airgorah": "基于 Rust 的 WiFi 安全审计工具，用于扫描并检测无线网络的安全漏洞。",
+    "opencoredev/islandcn": "开源的 React 灵动岛组件，可通过 shadcn 一键安装，为网页模拟灵动岛交互效果。",
+    "trackboatwrightplan/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "Tonephorepair/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "taboospecialistblade/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "TrapBladesmith/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "TremorRatTackle/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "TurkeyDesignate/GitHub-Copilot-app": "面向 GitHub 仓库的 Copilot 桌面应用，以智能体原生方式发现、运行、引导并完成软件研发任务。",
+    "Torusdrasocket/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "trackersnailgrip/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "Ultimateakiln/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "tornadonovicewhirl40/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "violetkomodolimit/ai--manus2.0": "通用型 AI 智能体系统，可在沙箱环境中调用各类工具并执行多种操作任务。",
+    "TomSchimansky/CustomTkinter": "基于 Tkinter 的现代化 Python GUI 库，支持自定义主题、深色模式与高分屏适配。",
+    "Innei/ryugi": "为编程智能体打造的工件工具：原型图板、设计文档、白板与验证报告，评论可回传智能体。",
+    "MIDILLI-Tech/vale": "轻量级 PHP 内容管理系统，开箱即用地集成博客、静态页、电商、邮件订阅与自动化功能。",
+    "nishant-Tiwari24/cracked": "面向求职的技能库，覆盖 470+ 公司的模拟面试、隐藏测试用例 OA 与简历点评，终端即可调用。"
   }
 }
