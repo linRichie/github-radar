@@ -719,6 +719,24 @@
     "duwqijlk/muse-protocol": "针对 muse.ai 的注册与邀请码兑换协议研究，采用纯 HTTP 的 Python 实现，便于自动化注册流程与邀请码批量兑换。",
     "hitkeeen/blender-ai-mcp-addon": "面向 Blender 的 AI 助手与 MCP 服务器，支持可视化聊天、场景工具和多智能体工作流，兼容 ChatGPT、Claude、Gemini、Ollama 等模型。",
     "kajisho5/ffmpeg-skill": "给编码 Agent 用的本地视频编辑技能：42 个 FFmpeg 工具配机器可读契约和 MCP 服务，支持剪辑、字幕、重构画幅与平台导出，不依赖云端。",
-    "kuafuai/andee": "住进手机或 Mac 的个人 AI 助理，能像你一样操作任意 App，无需集成、无需 Root、支持任意模型，记忆与密码始终不离开设备。"
+    "kuafuai/andee": "住进手机或 Mac 的个人 AI 助理，能像你一样操作任意 App，无需集成、无需 Root、支持任意模型，记忆与密码始终不离开设备。",
+    "google-labs-code/stitch-skills": "谷歌实验室推出的一套技能库，专为 Stitch 模型服务设计，遵循开放的智能体技能标准，可兼容多款主流编码助手使用。",
+    "ggml-org/ggml": "面向机器学习的 C/C++ 张量运算库，为大模型推理提供底层计算能力，是 llama.cpp 等轻量本地推理项目的核心基础。",
+    "elementalsouls/Claude-BugHunter": "面向 Claude Code 的漏洞挖掘技能包，含 82 个技能与 15 个斜杠命令，整理 681 个披露报告模式，覆盖 24 类漏洞与企业身份、基础设施攻击矩阵。",
+    "NVIDIA/SkillEvaluator": "英伟达推出的多层 AI 技能评估框架，提供质量闸门、语义重叠检测、合成评测集生成与实时智能体评估，衡量技能对智能体行为的影响。",
+    "duyunzhoudyz/dyz-med-paper-skills": "面向中国医生与医学研究生的医学论文写作技能集，32 个技能覆盖文献检索、统计分析、中英写作、选刊投稿与审稿修回。",
+    "Dolibarr/dolibarr": "开源 ERP 与 CRM 管理软件，以 PHP 编写，涵盖联系人、供应商、发票、订单、库存、日程与财务，面向各类规模企业、机构与自由职业者。",
+    "WindGatorRise37/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "YellowLaborerMarket/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "WyrmClimberManacle/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "TurtleReside/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "weldbladesmithwharf/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "WindowStaffGate11/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "WerewolfEmuHub/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "Violetnyudress/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "TrooperFilter/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "wisemeadowlarkspike/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "Watchlespeed/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "VortexHostFeel/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。"
   }
 }
