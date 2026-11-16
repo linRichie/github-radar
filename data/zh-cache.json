@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-15",
+  "updatedAt": "2026-11-16",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -710,6 +710,15 @@
     "TomSchimansky/CustomTkinter": "基于 Tkinter 的现代化 Python GUI 库，支持自定义主题、深色模式与高分屏适配。",
     "Innei/ryugi": "为编程智能体打造的工件工具：原型图板、设计文档、白板与验证报告，评论可回传智能体。",
     "MIDILLI-Tech/vale": "轻量级 PHP 内容管理系统，开箱即用地集成博客、静态页、电商、邮件订阅与自动化功能。",
-    "nishant-Tiwari24/cracked": "面向求职的技能库，覆盖 470+ 公司的模拟面试、隐藏测试用例 OA 与简历点评，终端即可调用。"
+    "nishant-Tiwari24/cracked": "面向求职的技能库，覆盖 470+ 公司的模拟面试、隐藏测试用例 OA 与简历点评，终端即可调用。",
+    "ApodexAI/FrontierAgent": "开源的 Agent 框架，内置原生命令行 TUI，支持 ReAct 与 Agent Team 两种模式，macOS/Linux 一条命令即可运行，无需预装或强依赖 Docker。",
+    "Eynnzerr/TelemetryCleaner": "基于 Shizuku 免 Root 清除国产安卓 SystemHelper、RegService 等系统预装隐私数据收集模块，帮助减少后台遥测与隐私泄露。",
+    "JuneYaooo/rea-video": "逐镜头逆向任何视频：判断是实拍、AI 生成还是代码制作，并给出复刻方法，拆解结果按开放的 VIDEO.md 格式输出。",
+    "Noniv/abyssal-garden": "可在浏览器里游动的梦幻水下世界：摇曳海藻、光束、沉船与蝠鲼，全部由 WebGPU 代码生成，无图片模型音频，仅单个 97KB HTML 文件。",
+    "agentes-chat/agentes-chat": "开源自托管的 Slack 替代品，让团队与 AI Agent 在频道和私信协作；Agent 基于 Claude、GPT、Gemini 等并带 MCP 工具、记忆与审批，支持多端。",
+    "duwqijlk/muse-protocol": "针对 muse.ai 的注册与邀请码兑换协议研究，采用纯 HTTP 的 Python 实现，便于自动化注册流程与邀请码批量兑换。",
+    "hitkeeen/blender-ai-mcp-addon": "面向 Blender 的 AI 助手与 MCP 服务器，支持可视化聊天、场景工具和多智能体工作流，兼容 ChatGPT、Claude、Gemini、Ollama 等模型。",
+    "kajisho5/ffmpeg-skill": "给编码 Agent 用的本地视频编辑技能：42 个 FFmpeg 工具配机器可读契约和 MCP 服务，支持剪辑、字幕、重构画幅与平台导出，不依赖云端。",
+    "kuafuai/andee": "住进手机或 Mac 的个人 AI 助理，能像你一样操作任意 App，无需集成、无需 Root、支持任意模型，记忆与密码始终不离开设备。"
   }
 }
