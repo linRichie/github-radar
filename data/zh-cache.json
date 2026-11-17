@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-16",
+  "updatedAt": "2026-11-17",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -737,6 +737,16 @@
     "TrooperFilter/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
     "wisemeadowlarkspike/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
     "Watchlespeed/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
-    "VortexHostFeel/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。"
+    "VortexHostFeel/Gemini-Config-Checker-": "链式地区扫描工具，用于查找可访问 Google AI Studio 与 Gemini 的代理配置，支持登录态浏览器校验与抗 DPI，覆盖多平台客户端。",
+    "getarcaneapp/arcane": "面向所有人的现代化 Docker 管理工具，提供直观的网页界面管理容器、镜像与编排，降低容器运维门槛。",
+    "DeanChensj/jiangshan-map": "中国历史交互地图时间轴，覆盖十八个王朝与近两百幅疆域快照，呈现古今地名沿革与诗词路线。",
+    "mvanhorn/last30days-skill": "AI 智能体技能，跨 Reddit、X、YouTube、HN 等平台与全网检索任意话题，综合生成有据可依的摘要。",
+    "google-research/paper-orchestra": "谷歌研究院推出的多智能体框架，用于自动化撰写 AI 研究论文，将写作流程拆解给多个协作智能体完成。",
+    "sveltejs/svelte": "面向大众的 Web 开发框架，通过编译时转换把组件编译为精简的原生 JavaScript，以更少代码实现高性能界面。",
+    "haziqahmedqasmi/PeakCut": "面向长视频与直播的 AI 智能剪辑工具，支持自托管并自带 AI 密钥，自动截取其中的精彩片段。",
+    "n4ze3m/tiny-voca": "从零训练的轻量英语语音合成模型，仅 450 万参数、支持两种音色，以 ONNX 格式提供便于本地部署。",
+    "yetanotherbrowser/yab": "用 Swift 打造的 macOS 原生浏览器，主打快速体验，并配套提供 iPhone 与 Android 移动端应用。",
+    "asimawdah/material-expressive-skill": "运用 Material 3 Expressive 设计生产级界面的智能体技能，支持多平台，涵盖动效、自适应布局与无障碍。",
+    "vonarmen-wq/forward-deployed-selling": "面向 AI 时代的企业销售方法，以 Claude Code 插件形式提供十余个命令、强制钩子、评审智能体与类型化记录。"
   }
 }
