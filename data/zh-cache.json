@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-17",
+  "updatedAt": "2026-11-18",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -747,6 +747,20 @@
     "n4ze3m/tiny-voca": "从零训练的轻量英语语音合成模型，仅 450 万参数、支持两种音色，以 ONNX 格式提供便于本地部署。",
     "yetanotherbrowser/yab": "用 Swift 打造的 macOS 原生浏览器，主打快速体验，并配套提供 iPhone 与 Android 移动端应用。",
     "asimawdah/material-expressive-skill": "运用 Material 3 Expressive 设计生产级界面的智能体技能，支持多平台，涵盖动效、自适应布局与无障碍。",
-    "vonarmen-wq/forward-deployed-selling": "面向 AI 时代的企业销售方法，以 Claude Code 插件形式提供十余个命令、强制钩子、评审智能体与类型化记录。"
+    "vonarmen-wq/forward-deployed-selling": "面向 AI 时代的企业销售方法，以 Claude Code 插件形式提供十余个命令、强制钩子、评审智能体与类型化记录。",
+    "cursor/plugins": "Cursor 插件规范与官方插件集合，定义插件开发标准，并提供官方实现的参考插件。",
+    "jingyaogong/minimind": "从零训练 6400 万参数大语言模型的开源教程，两小时即可跑通完整训练流程。",
+    "LottieFiles/motion-design-skill": "面向 AI agent 的通用动效设计技能，涵盖时间节奏、缓动、编排及迪士尼动画原则在 UI 的落地。",
+    "IBM/aspera-cli": "IBM Aspera 命令行接口，管理文件高速传输、打包与云端管理，并提供 MCP server 供 agent 调用。",
+    "wycocoyu/cococv": "AI 简历平台与 LaTeX 编辑器：一句话生成可在线修改的 PDF 简历，支持 AI 对话、ATS 检查与 CLI。",
+    "krisgfx9/Wireless-Device-Battery-Monitor": "Windows 10/11 任务栏托盘工具，显示无线鼠标、耳机、键盘与手柄电量，无需安装厂商软件。",
+    "erkamyaman/rust-anything": "逐步把整个应用重写为 Rust 的 agent 技能，每一步都对照原程序录制的行为校验，支持多语言迁移。",
+    "sybil-solutions/inference-optimisation-skill": "本地大模型推理提速 agent 技能，针对解码、投机解码、预填充、KV 缓存与启动等环节做爬山式优化。",
+    "joshpuckett/allo": "免费开源的西文字体项目，主打亲和友好的字形风格，任何人都可以自由使用与再分发。",
+    "chuanqisun/spaceship": "基于网页的实时创意工具，让想法随着你的操作即时呈现、被引导并不断演进。",
+    "boringmarketer/boring-marketing-skills": "为 AI agent 提供的 32 项免费营销技能，覆盖调研、定位、文案、SEO、广告、邮件及本地商家套件。",
+    "Nihongo-editor/crypto-accumulation-scanner": "社区驱动的加密货币累积动向扫描器，面向 Discord 与 Telegram 提供代币吸筹信号追踪。",
+    "Kong/kong": "云原生 API 与 AI 网关，提供 API 管理、Kubernetes Ingress 控制与 LLM 网关能力。",
+    "pugarte7/spanish-top-tech-companies": "西语 MCP 服务器，聚合西班牙优质技术岗位机会，让 AI agent 自动替你投递求职申请。"
   }
 }
