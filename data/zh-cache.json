@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-18",
+  "updatedAt": "2026-11-19",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -761,6 +761,23 @@
     "boringmarketer/boring-marketing-skills": "为 AI agent 提供的 32 项免费营销技能，覆盖调研、定位、文案、SEO、广告、邮件及本地商家套件。",
     "Nihongo-editor/crypto-accumulation-scanner": "社区驱动的加密货币累积动向扫描器，面向 Discord 与 Telegram 提供代币吸筹信号追踪。",
     "Kong/kong": "云原生 API 与 AI 网关，提供 API 管理、Kubernetes Ingress 控制与 LLM 网关能力。",
-    "pugarte7/spanish-top-tech-companies": "西语 MCP 服务器，聚合西班牙优质技术岗位机会，让 AI agent 自动替你投递求职申请。"
+    "pugarte7/spanish-top-tech-companies": "西语 MCP 服务器，聚合西班牙优质技术岗位机会，让 AI agent 自动替你投递求职申请。",
+    "HKUDS/CLI-Anything": "让所有软件都能被AI智能体原生调用的命令行工具集，把原本面向人的应用转化成Agent可直接操作的接口。",
+    "astral-sh/uv": "用Rust编写的超高速Python包与项目管理工具，主打极快的依赖解析安装与统一的虚拟环境管理体验。",
+    "jquery/jquery": "经典JavaScript库，简化HTML文档遍历、事件处理、动画与Ajax交互，兼容众多浏览器，至今仍被广泛使用。",
+    "appwrite/appwrite": "面向智能体与开发者的开源后端云平台，内置认证、数据库、存储、函数、消息、托管、实时与WAF等能力。",
+    "openvinotoolkit/openvino": "开源AI推理优化与部署工具套件，可跨多种硬件加速模型推理，提升视觉、语音等深度学习模型的运行效率。",
+    "solidjs/solid": "声明式、高效且灵活的JavaScript用户界面库，采用细粒度响应式机制，无需虚拟DOM即可高效更新视图。",
+    "punkpeye/awesome-mcp-servers": "精选MCP模型上下文协议服务器资源列表，汇集各类让AI智能体连接外部工具与数据源的服务实现。",
+    "kjagsadvisors/keeran.ai": "Keeran免费提供的Claude Code技能集，可产出视频销售信、引流磁铁、短视频与发布推广视频等成品素材。",
+    "siliconjungle/shapeshift-labs-ink-studio": "面向像素艺术风格高斯泼溅的雕刻、动画与仿真工具包，可对三维高斯泼溅场景进行编辑与动态创作。",
+    "scottsturrock/mate-wayland-desktop": "基于Ubuntu 26.04、用labwc合成器运行MATE桌面的Wayland发行版，提供源码与构建系统供自行编译。",
+    "waw666waw666/RegisterHub": "万能自动注册模板，提供可复用的自动化注册流程框架，便于按不同站点快速定制批量注册逻辑。",
+    "free-dam-man/cloud-exit-node-deploy": "云端出口节点部署相关的技能项目，用于加载并管理云环境中出口节点的部署流程与相关能力。",
+    "scarletkc/colab-playground": "Google Colab命令行工具的桌面应用，支持账号管理、带费用保护的GPU会话、端口转发与插件扩展。",
+    "Orderchodrag/smelt-minecraft-mods-to-rust-converter": "把Java版Minecraft模组转成Rust移植工程，自动生成crate、trait与可运行构建，并标出未完成部分。",
+    "xyzww888/muse-JP-Reg": "针对Muse.ai的纯HTTP注册与邀请码裂变网页界面，已适配日本住宅代理，便于批量注册与邀请推广。",
+    "memoryswordsmanlaud/watson-username-footprint-finder": "输入一个昵称即可查看它在论坛、代码仓库、留言板与存档中留下的公开足迹，免费的用户名追踪工具。",
+    "AnIT012/nihongo": "让AI写出的日语更接近真人写作风格的智能体技能，支持Claude、ChatGPT、Codex等工具调用。"
   }
 }
