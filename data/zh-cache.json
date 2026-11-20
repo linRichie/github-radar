@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-19",
+  "updatedAt": "2026-11-20",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -778,6 +778,26 @@
     "Orderchodrag/smelt-minecraft-mods-to-rust-converter": "把Java版Minecraft模组转成Rust移植工程，自动生成crate、trait与可运行构建，并标出未完成部分。",
     "xyzww888/muse-JP-Reg": "针对Muse.ai的纯HTTP注册与邀请码裂变网页界面，已适配日本住宅代理，便于批量注册与邀请推广。",
     "memoryswordsmanlaud/watson-username-footprint-finder": "输入一个昵称即可查看它在论坛、代码仓库、留言板与存档中留下的公开足迹，免费的用户名追踪工具。",
-    "AnIT012/nihongo": "让AI写出的日语更接近真人写作风格的智能体技能，支持Claude、ChatGPT、Codex等工具调用。"
+    "AnIT012/nihongo": "让AI写出的日语更接近真人写作风格的智能体技能，支持Claude、ChatGPT、Codex等工具调用。",
+    "nginx/nginx": "Nginx 官方开源仓库，高性能 HTTP 与反向代理服务器，也可用作邮件代理和通用 TCP/UDP 负载均衡器。",
+    "mjmirza/app-store-compliance": "上架合规手册与提审前检查工具，收录 117 种应用商店拒审案例及修复方案、隐私清单与数据安全检查，提供 AI 编码技能。",
+    "Tracer-Cloud/opensre": "开源 CI/CD 可靠性智能体，自动监测持续集成流水线、定位构建故障并辅助提升软件交付稳定性。",
+    "toeverything/AFFiNE": "下一代开源知识库，融合规划、整理与创作，隐私优先、可定制、开箱即用，被视为 Notion 与 Miro 的替代选择。",
+    "XiaoYouChR/Ghost-Downloader-3": "下载器的集大成者，功能全面的开源下载工具，支持多种协议与资源，一站式满足日常下载需求。",
+    "zhouxiaoka/autoclip": "开源 AI 视频剪辑桌面工具，一个链接一键出片，把播客、访谈等长视频自动剪成短视频并生成字幕、封面与发布文案。",
+    "Bodila51/gtavi-claudecode": "Claude Code 插件，把 GTA 6 直播转成可变现竖屏短视频，覆盖营销、热门追踪、精彩片段剪辑与字幕署名。",
+    "sourmitocand1987/VividFrame-GPU": "实时 GPU 视频增强管线，支持 HDR、超分辨率、补帧与杜比视界，面向游戏串流和本地播放的画面质量提升。",
+    "bothaggsigym1988/frameglide": "补帧与超分工具，把 30fps 串流提升到 PC 端 60 至 120fps，支持 DLSS、FSR、RIFE 等方案。",
+    "0marContreras/gta6recomp": "将《GTA VI》移植到 PC 的开源项目，让玩家能在个人电脑上体验这款游戏。",
+    "bookwjitchieni1986/blender-ai-mcp-addon": "Blender AI 助手与 MCP 服务器，提供聊天、场景工具与多智能体工作流，兼容 Claude、Gemini。",
+    "replit/datacat": "自托管可观测性平台，集指标、日志、链路追踪、仪表盘与告警于一体，数据存 PostgreSQL 或 ClickHouse。",
+    "iamajmeena/neonclipping": "开源本地剪辑引擎，粘贴链接约两分钟即可生成带字幕的竖屏短视频，音频优先，支持 YouTube 字幕与本地大模型。",
+    "MSNightmare/FastUnlock": "利用 Windows 讲述人功能绕过锁屏的 0day 漏洞验证项目。",
+    "Lemxy/WinRust": "用 Rust 编写的 Windows 外壳替代程序，集成任务栏、文件管理器、NTFS 搜索、任务管理器与磁盘清理。",
+    "prusa3d/prusa-connect": "Prusa 官方本地打印服务器，用于在本地管理和监控 Prusa 3D 打印机。",
+    "sfewer-r7/CVE-2026-123007": "针对 CVE-2026-123007 的 PoC 脚本，用于复现 NGINX HTTP/2 整数下溢漏洞。",
+    "diego3g/craft": "面向 AI 智能体的设计技能，从设计系统生成各状态界面并审查，兼容 Paper、Figma 或 HTML。",
+    "orbi-build/orbi": "开源可自托管的无人值守软件工厂，给 GitHub Issue 打标签即可获得独立审查、合并的 PR 与带标签的发布版本。",
+    "cporter202/apis-that-find-your-next-clients": "精选获客 API 清单，涵盖联系人信息丰富与 B2B 潜客挖掘，可立即用于扩充销售线索管道。"
   }
 }
