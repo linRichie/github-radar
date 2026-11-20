@@ -1,0 +1,8 @@
+MySQL -> SQLite migration report
+source: rm-cn-0h950fmzc0001nuo.rwlb.rds.aliyuncs.com/github_radar
+sqlite: /Users/WangLH/Documents/github-radar-db-export/github_radar.sqlite
+
+projects: MySQL=842 SQLite=842 OK
+runs: MySQL=67 SQLite=67 OK
+snapshots: MySQL=11369 SQLite=11369 OK
+integrity_check: ok
