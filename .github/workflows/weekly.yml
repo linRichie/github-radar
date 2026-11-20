@@ -17,8 +17,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: install pymysql
-        run: pip install --quiet pymysql
       - name: fetch & build
         run: node radar.mjs --mode weekly
         env:
@@ -27,22 +25,14 @@ jobs:
         # 周报用 7 天窗口算涨星；先重排再落库，保证重排后新进榜的项目也入库
         continue-on-error: true
         env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          RADAR_DB: data/backup/github_radar.sqlite
         run: |
           python scripts/delta_rank.py --mode weekly --days 7
           node radar.mjs --mode weekly --render-only
-      - name: save to aliyun mysql
+      - name: save to local sqlite
         continue-on-error: true
         env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          RADAR_DB: data/backup/github_radar.sqlite
         run: python scripts/load_db.py --mode weekly
       - name: commit
         run: |
@@ -50,11 +40,12 @@ jobs:
           git config user.email "actions@github.com"
           git add -A
           git diff --cached --quiet || git commit -m "weekly update $(date -u +%F)"
+          # SQLite 二进制冲突时统一用远程版本覆盖后继续（落库幂等，下一轮自动补齐）
           for i in 1 2 3 4 5; do
             git fetch origin main
             if ! git rebase origin/main; then
-              git checkout origin/main -- index.html domains.html cards.html 2>/dev/null || true
-              git add index.html domains.html cards.html 2>/dev/null || true
+              git checkout origin/main -- index.html domains.html cards.html data/backup/github_radar.sqlite 2>/dev/null || true
+              git add index.html domains.html cards.html data/backup/github_radar.sqlite 2>/dev/null || true
               git -c core.editor=true rebase --continue || git rebase --abort
             fi
             if git push; then echo "pushed on attempt $i"; exit 0; fi

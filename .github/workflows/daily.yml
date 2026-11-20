@@ -20,8 +20,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: install pymysql
-        run: pip install --quiet pymysql
       - name: fetch & build
         run: node radar.mjs --mode daily
         env:
@@ -31,34 +29,22 @@ jobs:
         # 先重排再落库，才能保证最终榜单上的项目（含重排后新进榜的）全部入库
         continue-on-error: true
         env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          RADAR_DB: data/backup/github_radar.sqlite
         run: |
           python scripts/delta_rank.py --mode daily --days 3
           node radar.mjs --mode daily --render-only
-      - name: save to aliyun mysql
-        # 落库失败不阻断页面发布；凭据全部来自仓库 Secrets，不入代码
+      - name: save to local sqlite
+        # 落库失败不阻断页面发布；数据库为仓库内文件，由下方 commit 步骤持久化
         continue-on-error: true
         env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          RADAR_DB: data/backup/github_radar.sqlite
         run: python scripts/load_db.py --mode daily
       - name: export history for site
         # 导出站点用的历史视图：回放分片（永久）+ 趋势文件（90 天窗口）+ 日期索引
         # 只读 DB、不删除任何数据（数据库仍全量保留）
         continue-on-error: true
         env:
-          MYSQL_HOST: ${{ secrets.MYSQL_HOST }}
-          MYSQL_PORT: ${{ secrets.MYSQL_PORT }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
-          MYSQL_DB: ${{ secrets.MYSQL_DB }}
+          RADAR_DB: data/backup/github_radar.sqlite
         run: python scripts/export_history.py --days 90
       - name: commit
         run: |
@@ -67,12 +53,13 @@ jobs:
           git add -A
           git diff --cached --quiet || git commit -m "daily update $(date -u +%F)"
           # 远程可能在此期间被人工提交推进（会报 cannot lock ref / non-fast-forward），
-          # 先 rebase 再重试；生成物冲突时用远程版本覆盖后继续
+          # 先 rebase 再重试；生成物与 SQLite 二进制冲突时统一用远程版本覆盖后继续
+          # （落库幂等，下一轮会自动补齐；避免二进制冲突导致 push 失败）
           for i in 1 2 3 4 5; do
             git fetch origin main
             if ! git rebase origin/main; then
-              git checkout origin/main -- index.html domains.html cards.html 2>/dev/null || true
-              git add index.html domains.html cards.html 2>/dev/null || true
+              git checkout origin/main -- index.html domains.html cards.html data/backup/github_radar.sqlite 2>/dev/null || true
+              git add index.html domains.html cards.html data/backup/github_radar.sqlite 2>/dev/null || true
               git -c core.editor=true rebase --continue || git rebase --abort
             fi
             if git push; then echo "pushed on attempt $i"; exit 0; fi

@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""GitHub 雷达 → 阿里云 MySQL 落盘
+"""GitHub 雷达 → 仓库内本地 SQLite 落盘
 
 用法：
-    MYSQL_HOST=... MYSQL_USER=... MYSQL_PASSWORD=... MYSQL_DB=github_radar \
-        python scripts/load_db.py --mode daily
+    python scripts/load_db.py --mode daily
+    RADAR_DB=/path/to/custom.sqlite python scripts/load_db.py --mode daily
 
 说明：
-- 凭据**只从环境变量读取**，脚本本身不含任何密钥（可安全入公开仓库）。
+- 数据库为仓库内文件 data/backup/github_radar.sqlite（可用 RADAR_DB 覆盖），
+  无凭据、无需第三方驱动；CI 写入后由工作流提交回仓库持久化。
 - **只增不删（重要）**：本脚本**不执行任何 DELETE**。snapshots 以
   `(run_id, section, domain, column_type, rank_no)` 为唯一键做 UPSERT——同一时点重复导入只会
   更新数值，不会删除既有行；runs / projects 同样只 UPSERT。任何一次历史抓取的数据都完整保留，
   供后续「历史记录 / 趋势回放」功能使用。
-- 未设置 MYSQL_HOST 时静默跳过（exit 0），便于在无 Secrets 的环境里跑 CI。
 """
 import argparse
 import json
@@ -24,85 +24,91 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
+# SQLite 方言建表（IF NOT EXISTS 兜底；已迁移库结构完整，不会重建）
 DDL = [
     """
     CREATE TABLE IF NOT EXISTS runs (
-      id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      mode VARCHAR(10) NOT NULL,
-      generated_at DATETIME NOT NULL,
-      captured_date DATE NOT NULL,
-      trending_cnt SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-      growth_cnt SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-      topic_cnt SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-      rising_cnt SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-      watch_cnt SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-      enriched_cnt SMALLINT UNSIGNED NOT NULL DEFAULT 0,
-      source VARCHAR(30) NOT NULL DEFAULT 'github-actions',
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      UNIQUE KEY uk_mode_gen (mode, generated_at),
-      KEY idx_date (captured_date)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      mode TEXT NOT NULL,
+      generated_at TEXT NOT NULL,
+      captured_date TEXT NOT NULL,
+      trending_cnt INTEGER NOT NULL DEFAULT 0,
+      growth_cnt INTEGER NOT NULL DEFAULT 0,
+      topic_cnt INTEGER NOT NULL DEFAULT 0,
+      rising_cnt INTEGER NOT NULL DEFAULT 0,
+      watch_cnt INTEGER NOT NULL DEFAULT 0,
+      enriched_cnt INTEGER NOT NULL DEFAULT 0,
+      source TEXT NOT NULL DEFAULT 'github-actions',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE (mode, generated_at)
+    )
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_date ON runs (captured_date)
     """,
     """
     CREATE TABLE IF NOT EXISTS projects (
-      id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      full_name VARCHAR(200) NOT NULL,
-      owner VARCHAR(100) NOT NULL DEFAULT '',
-      repo VARCHAR(100) NOT NULL DEFAULT '',
-      url VARCHAR(300) NOT NULL DEFAULT '',
-      lang VARCHAR(50) NOT NULL DEFAULT '',
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      full_name TEXT NOT NULL,
+      owner TEXT NOT NULL DEFAULT '',
+      repo TEXT NOT NULL DEFAULT '',
+      url TEXT NOT NULL DEFAULT '',
+      lang TEXT NOT NULL DEFAULT '',
       description TEXT,
-      desc_zh VARCHAR(600) NOT NULL DEFAULT '',
-      stars INT UNSIGNED NOT NULL DEFAULT 0,
-      stars_delta INT NOT NULL DEFAULT 0,
-      stars_period VARCHAR(20) NOT NULL DEFAULT '',
-      topics JSON NULL,
-      tagline VARCHAR(600) NOT NULL DEFAULT '',
-      core_value VARCHAR(600) NOT NULL DEFAULT '',
-      features JSON NULL,
-      scenarios JSON NULL,
-      inputs JSON NULL,
-      caveats JSON NULL,
-      enriched_at DATE NULL,
-      first_seen DATE NOT NULL,
-      last_seen DATE NOT NULL,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      UNIQUE KEY uk_full (full_name),
-      KEY idx_stars (stars),
-      KEY idx_last_seen (last_seen)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+      desc_zh TEXT NOT NULL DEFAULT '',
+      stars INTEGER NOT NULL DEFAULT 0,
+      stars_delta INTEGER NOT NULL DEFAULT 0,
+      stars_period TEXT NOT NULL DEFAULT '',
+      topics TEXT,
+      tagline TEXT NOT NULL DEFAULT '',
+      core_value TEXT NOT NULL DEFAULT '',
+      features TEXT,
+      scenarios TEXT,
+      inputs TEXT,
+      caveats TEXT,
+      enriched_at TEXT,
+      first_seen TEXT NOT NULL,
+      last_seen TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE (full_name)
+    )
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_stars ON projects (stars)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_last_seen ON projects (last_seen)
     """,
     """
     CREATE TABLE IF NOT EXISTS snapshots (
-      id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-      run_id BIGINT UNSIGNED NOT NULL,
-      captured_at DATETIME NOT NULL,
-      mode VARCHAR(10) NOT NULL,
-      section VARCHAR(20) NOT NULL,
-      domain VARCHAR(30) NOT NULL DEFAULT '',
-      column_type VARCHAR(20) NOT NULL DEFAULT '',
-      rank_no SMALLINT UNSIGNED NOT NULL,
-      full_name VARCHAR(200) NOT NULL,
-      stars INT UNSIGNED NOT NULL DEFAULT 0,
-      stars_delta INT NOT NULL DEFAULT 0,
-      lang VARCHAR(50) NOT NULL DEFAULT '',
-      KEY idx_run (run_id),
-      KEY idx_proj_time (full_name, captured_at),
-      KEY idx_section_time (mode, section, captured_at),
-      KEY idx_domain (domain, column_type, captured_at),
-      UNIQUE KEY uk_run_slot (run_id, section, domain, column_type, rank_no)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      run_id INTEGER NOT NULL,
+      captured_at TEXT NOT NULL,
+      mode TEXT NOT NULL,
+      section TEXT NOT NULL,
+      domain TEXT NOT NULL DEFAULT '',
+      column_type TEXT NOT NULL DEFAULT '',
+      rank_no INTEGER NOT NULL,
+      full_name TEXT NOT NULL,
+      stars INTEGER NOT NULL DEFAULT 0,
+      stars_delta INTEGER NOT NULL DEFAULT 0,
+      lang TEXT NOT NULL DEFAULT '',
+      UNIQUE (run_id, section, domain, column_type, rank_no)
+    )
     """,
-]
-
-# 老库升级：给已存在的 snapshots 补领域维度字段（已存在则忽略）
-ALTERS = [
-    "ALTER TABLE snapshots ADD COLUMN domain VARCHAR(30) NOT NULL DEFAULT '' AFTER section",
-    "ALTER TABLE snapshots ADD COLUMN column_type VARCHAR(20) NOT NULL DEFAULT '' AFTER domain",
-    "ALTER TABLE snapshots ADD KEY idx_domain (domain, column_type, captured_at)",
-    # 只增不删：同一 (run, 分区, 领域, 栏, 名次) 唯一，重复导入走 UPDATE 而非删除重插
-    "ALTER TABLE snapshots ADD UNIQUE KEY uk_run_slot (run_id, section, domain, column_type, rank_no)",
+    """
+    CREATE INDEX IF NOT EXISTS idx_run ON snapshots (run_id)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_proj_time ON snapshots (full_name, captured_at)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_section_time ON snapshots (mode, section, captured_at)
+    """,
+    """
+    CREATE INDEX IF NOT EXISTS idx_domain ON snapshots (domain, column_type, captured_at)
+    """,
 ]
 
 
@@ -115,19 +121,19 @@ def load_json(path, default=None):
 
 
 def bj_date(iso):
-    """UTC ISO → 北京时间的 date 对象"""
+    """UTC ISO → 北京日期字符串 YYYY-MM-DD（SQLite TEXT，字典序即时间序）"""
     if not iso:
-        return datetime.now(timezone(timedelta(hours=8))).date()
+        return datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
     dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-    return (dt.astimezone(timezone(timedelta(hours=8)))).date()
+    return (dt.astimezone(timezone(timedelta(hours=8)))).strftime("%Y-%m-%d")
 
 
 def bj_dt(iso):
-    """UTC ISO → 北京时间 naive datetime（MySQL DATETIME 精度 0，抹掉微秒保证回查一致）"""
+    """UTC ISO → 北京时间字符串 YYYY-MM-DD HH:MM:SS（SQLite TEXT，抹掉微秒保证回查一致）"""
     if not iso:
-        return datetime.now(timezone(timedelta(hours=8))).replace(tzinfo=None, microsecond=0)
+        return datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
     dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-    return dt.astimezone(timezone(timedelta(hours=8))).replace(tzinfo=None, microsecond=0)
+    return dt.astimezone(timezone(timedelta(hours=8))).strftime("%Y-%m-%d %H:%M:%S")
 
 
 def main():
@@ -136,11 +142,6 @@ def main():
     ap.add_argument("--source", default="github-actions")
     args = ap.parse_args()
 
-    host = os.getenv("MYSQL_HOST")
-    if not host:
-        print("· 未设置 MYSQL_HOST，跳过落库（本地/无 Secrets 环境）")
-        return 0
-
     payload = load_json(DATA / f"{args.mode}-latest.json")
     if not payload:
         print(f"! 找不到 data/{args.mode}-latest.json，跳过")
@@ -148,31 +149,17 @@ def main():
     enriched = load_json(DATA / f"enriched-{args.mode}.json", {}) or {}
     zh = (load_json(DATA / "zh-cache.json", {}) or {}).get("zh", {})
 
-    try:
-        import pymysql
-    except ImportError:
-        print("! 缺少 pymysql：pip install pymysql")
-        return 1
+    from radar_db import connect, DB_PATH
 
-    conn = pymysql.connect(
-        host=host,
-        port=int(os.getenv("MYSQL_PORT", "3306")),
-        user=os.getenv("MYSQL_USER", "root"),
-        password=os.getenv("MYSQL_PASSWORD", ""),
-        database=os.getenv("MYSQL_DB", "github_radar"),
-        charset="utf8mb4",
-        connect_timeout=10,
-        autocommit=False,
-        cursorclass=pymysql.cursors.DictCursor,
-    )
+    conn, is_new = connect()
+    try:
+        db_label = str(DB_PATH.relative_to(ROOT))
+    except ValueError:
+        db_label = str(DB_PATH)
+    print(f"· SQLite 数据库：{db_label}{'（新建）' if is_new else ''}")
     cur = conn.cursor()
     for ddl in DDL:
         cur.execute(ddl)
-    for alt in ALTERS:
-        try:
-            cur.execute(alt)
-        except Exception:
-            pass  # 字段/索引已存在
     conn.commit()
 
     gen_at = bj_dt(payload.get("generatedAt"))
@@ -184,10 +171,11 @@ def main():
     cur.execute(
         """INSERT INTO runs (mode, generated_at, captured_date, trending_cnt, growth_cnt,
                              topic_cnt, rising_cnt, watch_cnt, enriched_cnt, source)
-           VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-           ON DUPLICATE KEY UPDATE trending_cnt=VALUES(trending_cnt), growth_cnt=VALUES(growth_cnt),
-               topic_cnt=VALUES(topic_cnt), rising_cnt=VALUES(rising_cnt),
-               watch_cnt=VALUES(watch_cnt), enriched_cnt=VALUES(enriched_cnt), source=VALUES(source)""",
+           VALUES (?,?,?,?,?,?,?,?,?,?)
+           ON CONFLICT(mode, generated_at) DO UPDATE SET
+               trending_cnt=excluded.trending_cnt, growth_cnt=excluded.growth_cnt,
+               topic_cnt=excluded.topic_cnt, rising_cnt=excluded.rising_cnt,
+               watch_cnt=excluded.watch_cnt, enriched_cnt=excluded.enriched_cnt, source=excluded.source""",
         (
             args.mode, gen_at, cap_date,
             len(payload.get("trending", [])), len(payload.get("growthRank", [])),
@@ -195,7 +183,7 @@ def main():
             len(payload.get("watch", [])), len(enriched_projects), args.source,
         ),
     )
-    cur.execute("SELECT id FROM runs WHERE mode=%s AND generated_at=%s", (args.mode, gen_at))
+    cur.execute("SELECT id FROM runs WHERE mode=? AND generated_at=?", (args.mode, gen_at))
     run_id = cur.fetchone()["id"]
 
     # ---------- projects（四分区 + 领域三栏并集） ----------
@@ -242,14 +230,14 @@ def main():
     proj_sql = """INSERT INTO projects
         (full_name, owner, repo, url, lang, description, desc_zh, stars, stars_delta, stars_period,
          topics, first_seen, last_seen)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        ON DUPLICATE KEY UPDATE
-            owner=VALUES(owner), repo=VALUES(repo), url=VALUES(url), lang=VALUES(lang),
-            description=VALUES(description), desc_zh=VALUES(desc_zh), stars=VALUES(stars),
-            stars_delta=VALUES(stars_delta), stars_period=VALUES(stars_period),
-            topics=VALUES(topics), last_seen=VALUES(last_seen)"""
-    enriched_sql = """UPDATE projects SET tagline=%s, core_value=%s, features=%s, scenarios=%s,
-        inputs=%s, caveats=%s, enriched_at=%s WHERE full_name=%s"""
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
+        ON CONFLICT(full_name) DO UPDATE SET
+            owner=excluded.owner, repo=excluded.repo, url=excluded.url, lang=excluded.lang,
+            description=excluded.description, desc_zh=excluded.desc_zh, stars=excluded.stars,
+            stars_delta=excluded.stars_delta, stars_period=excluded.stars_period,
+            topics=excluded.topics, last_seen=excluded.last_seen"""
+    enriched_sql = """UPDATE projects SET tagline=?, core_value=?, features=?, scenarios=?,
+        inputs=?, caveats=?, enriched_at=? WHERE full_name=?"""
 
     n_proj = n_enrich = 0
     for full, r in merged.items():
@@ -281,14 +269,13 @@ def main():
             )
             n_enrich += 1
 
-    # ---------- snapshots（先删同一 run 再插，保证幂等） ----------
     # ---------- snapshots（只增不删：唯一键 UPSERT，绝不 DELETE 历史数据） ----------
     snap_sql = """INSERT INTO snapshots
         (run_id, captured_at, mode, section, domain, column_type, rank_no, full_name, stars, stars_delta, lang)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
-        ON DUPLICATE KEY UPDATE
-            full_name=VALUES(full_name), stars=VALUES(stars),
-            stars_delta=VALUES(stars_delta), lang=VALUES(lang), captured_at=VALUES(captured_at)"""
+        VALUES (?,?,?,?,?,?,?,?,?,?,?)
+        ON CONFLICT(run_id, section, domain, column_type, rank_no) DO UPDATE SET
+            full_name=excluded.full_name, stars=excluded.stars,
+            stars_delta=excluded.stars_delta, lang=excluded.lang, captured_at=excluded.captured_at"""
     rows = []
     for sec, dom, col, arr in sections:
         for i, r in enumerate(arr, 1):
@@ -308,7 +295,7 @@ def main():
     total_proj = cur.fetchone()["c"]
     cur.execute("SELECT COUNT(*) c FROM projects WHERE enriched_at IS NOT NULL")
     total_enr = cur.fetchone()["c"]
-    cur.execute("SELECT COUNT(*) c FROM snapshots WHERE run_id=%s", (run_id,))
+    cur.execute("SELECT COUNT(*) c FROM snapshots WHERE run_id=?", (run_id,))
     total_snap = cur.fetchone()["c"]
     conn.close()
 
