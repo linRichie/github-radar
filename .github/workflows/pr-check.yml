@@ -1,0 +1,58 @@
+name: pr-check
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Python 脚本语法检查
+        run: python -m compileall -q scripts && echo "python syntax OK"
+      - name: Node 入口语法检查
+        run: node --check radar.mjs && echo "node syntax OK"
+      - name: SQLite 备份完整性与行数校验
+        run: |
+          python - <<'PY'
+          import sqlite3, sys
+          db = "data/backup/github_radar.sqlite"
+          con = sqlite3.connect(db)
+          chk = con.execute("PRAGMA integrity_check").fetchone()[0]
+          print("integrity_check:", chk)
+          if chk != "ok":
+              sys.exit("SQLite 完整性检查失败")
+          expected = {"projects", "runs", "snapshots"}
+          have = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+          missing = expected - have
+          if missing:
+              sys.exit(f"缺少表: {missing}")
+          for t in sorted(expected):
+              n = con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
+              print(f"  {t}: {n} 行")
+              if n <= 0:
+                  sys.exit(f"{t} 行为空")
+          con.close()
+          PY
+      - name: SQL 备份文件结构校验
+        run: |
+          f="data/backup/github_radar_2026-11-20.sql"
+          test -s "$f" || { echo "SQL 文件缺失或为空"; exit 1; }
+          n=$(grep -c '^CREATE TABLE' "$f" || true)
+          echo "CREATE TABLE 数量: $n"
+          test "$n" -ge 3 || { echo "SQL 建表语句不足"; exit 1; }
+          grep -q 'github_radar' "$f" || { echo "SQL 未包含目标库"; exit 1; }
+          echo "SQL dump OK"
+      - name: 站点页面产物存在性校验
+        run: |
+          for f in index.html domains.html cards.html history.html search.html; do
+            test -s "$f" || { echo "页面缺失: $f"; exit 1; }
+          done
+          echo "pages OK"
