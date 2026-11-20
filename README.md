@@ -17,7 +17,7 @@
    - 表格含「N 日涨星」列，涨星最快的红色高亮
 
    > 演进过程：2026-10-23 之前只有「热门基线」一档，大项目天天提交导致榜单冻结；10-23 加「90 天新贵」档解决变化问题；10-27 改为**真实涨星增量排序**（Search API 无增量数据，靠本地快照对比实现）。
-   > **为什么是两段式**：增量只能从 MySQL 历史快照算出。delta 只依赖今天之前的数据，所以可以「先算增量 → 重排 → 最后落库」；若先落库后重排，重排后新进榜的项目会漏出入库（`solidcraft` 曾因此缺一条）。
+   > **为什么是两段式**：增量只能从本地 SQLite 历史快照算出。delta 只依赖今天之前的数据，所以可以「先算增量 → 重排 → 最后落库」；若先落库后重排，重排后新进榜的项目会漏出入库（`solidcraft` 曾因此缺一条）。
 4. **新锐项目**：检索窗口内**新建**且已积累较高 star 的仓库——发现**有趣的新项目**。
 5. ~~**生态 watch 动态**~~：**已于 2026-10-22 下线**（内容长期被 awesome 列表类仓库占据、信息价值低；抓取与页面一并移除，节省 10 次 API 调用/次）。`radar.mjs` 顶部保留 `WATCH` 列表注释备查。
 
@@ -125,20 +125,21 @@ README 请求走 GitHub 核心 API（配额 5000/h），**不占用 Search API �
 
 > 注意：`history.html` 用 `file://` 直接打开无法加载 JSON（CORS），本地预览需 `python -m http.server`。
 
-## 数据落盘（阿里云 MySQL）
+## 数据落盘（仓库内本地 SQLite）
 
-每次抓取后，CI 会调用 `scripts/load_db.py` 把数据写入阿里云 RDS（MySQL 8），便于长期趋势分析。
+每次抓取后，CI 会调用 `scripts/load_db.py` 把数据写入仓库内文件 `data/backup/github_radar.sqlite`，便于长期趋势分析。数据库从原阿里云 RDS 全量迁移而来（备份见同目录 `github_radar_*.sql` 与 `migration_report.txt`），**不再依赖云端 RDS 与任何凭据**。
 
-- **凭据**：全部通过仓库 Secrets 注入（`MYSQL_HOST` / `MYSQL_PORT` / `MYSQL_USER` / `MYSQL_PASSWORD` / `MYSQL_DB`），**代码中不含任何连接信息**；脚本检测到未设置 `MYSQL_HOST` 时自动跳过，不影响页面发布。
-- **表结构**（库 `github_radar`）：
+- **存储**：SQLite 单文件，Python 标准库 `sqlite3` 直连，**无需 pip 依赖、无凭据、无 Secrets**；可用环境变量 `RADAR_DB` 覆盖默认路径。CI 写入后由工作流 `git add -A` 提交回仓库实现持久化。
+- **表结构**（与迁移前一致）：
   - `runs`：每次运行一行（模式、抓取时间、各分区数量、解读数量），`(mode, generated_at)` 唯一。
   - `projects`：项目主表（`full_name` 唯一），含 `stars`、`desc_zh`（中文简介）、`tagline` / `core_value` / `features` / `scenarios` / `inputs` / `caveats`（解读六字段，JSON）、`first_seen` / `last_seen`。
   - `snapshots`：榜单快照（`run_id` + 分区 + 排名 + star + 增量），用于回溯任何一天的榜单位置与涨星曲线。
-- **幂等**：`runs` 按唯一键 UPSERT；同一 `run_id` 的 `snapshots` 先删后插；`projects` 按 `full_name` UPSERT。
+- **幂等**：三表均按唯一键 `ON CONFLICT ... DO UPDATE` UPSERT，绝不 DELETE 历史数据。
 - **本地手动落库**：
   ```bash
-  export MYSQL_HOST=... MYSQL_USER=... MYSQL_PASSWORD=... MYSQL_DB=github_radar
-  pip install pymysql && python scripts/load_db.py --mode daily
+  python scripts/load_db.py --mode daily
+  # 自定义数据库路径
+  RADAR_DB=/path/to/custom.sqlite python scripts/load_db.py --mode daily
   ```
 
 ## 自动化

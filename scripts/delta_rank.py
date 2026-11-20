@@ -7,12 +7,12 @@
 
 流程（在 load_db.py 之后运行）：
   1. 读 data/<mode>-latest.json 的 topicPool（03 区候选池，含当前 star）
-  2. 查 MySQL：窗口内（N 天前 ~ 昨天）每个项目最早的一条 star 作为基准
+  2. 查本地 SQLite：窗口内（N 天前 ~ 昨天）每个项目最早的一条 star 作为基准
   3. 输出 data/delta-<mode>.json
 
 用法：
-  MYSQL_HOST=... python scripts/delta_rank.py --mode daily [--days 3]
-未设置 MYSQL_HOST 时静默跳过（exit 0），不阻断 CI。
+  python scripts/delta_rank.py --mode daily [--days 3]
+数据库为仓库内 data/backup/github_radar.sqlite（可用 RADAR_DB 覆盖）。
 """
 
 import argparse
@@ -39,9 +39,7 @@ def main():
     ap.add_argument("--days", type=int, default=3, help="增量窗口天数（不含今天）")
     args = ap.parse_args()
 
-    if not os.environ.get("MYSQL_HOST"):
-        print("· 未配置 MYSQL_HOST，跳过涨星增量计算")
-        return 0
+    from radar_db import connect
 
     latest_path = os.path.join(ROOT, "data", f"{args.mode}-latest.json")
     payload = load_json(latest_path, {})
@@ -54,24 +52,12 @@ def main():
     names = list(current.keys())
     print(f"· 候选 {len(names)} 个，窗口 {args.days} 天（不含今天）")
 
-    import pymysql
-
-    conn = pymysql.connect(
-        host=os.environ["MYSQL_HOST"],
-        port=int(os.environ.get("MYSQL_PORT", 3306)),
-        user=os.environ["MYSQL_USER"],
-        password=os.environ["MYSQL_PASSWORD"],
-        database=os.environ.get("MYSQL_DB", "github_radar"),
-        charset="utf8mb4",
-        cursorclass=pymysql.cursors.DictCursor,
-        connect_timeout=10,
-        read_timeout=30,
-    )
+    conn, _ = connect()
     try:
         today = datetime.now(BJ).date()
         window_start = today - timedelta(days=args.days)
         # 基准取「窗口内、今天之前」最早的一条快照
-        placeholders = ",".join(["%s"] * len(names))
+        placeholders = ",".join(["?"] * len(names))
         sql = f"""
             SELECT s.full_name, s.stars, s.captured_at
             FROM snapshots s
@@ -79,8 +65,8 @@ def main():
                 SELECT s2.full_name, MIN(s2.captured_at) AS first_at
                 FROM snapshots s2
                 WHERE s2.full_name IN ({placeholders})
-                  AND s2.captured_at >= %s
-                  AND s2.captured_at < %s
+                  AND s2.captured_at >= ?
+                  AND s2.captured_at < ?
                   AND s2.section <> 'domain'
                 GROUP BY s2.full_name
             ) t ON t.full_name = s.full_name AND t.first_at = s.captured_at
@@ -88,9 +74,9 @@ def main():
             GROUP BY s.full_name, s.stars, s.captured_at
         """
         params = names + [f"{window_start} 00:00:00", f"{today} 00:00:00"]
-        with conn.cursor() as cur:
-            cur.execute(sql, params)
-            base = {r["full_name"]: r for r in cur.fetchall()}
+        cur = conn.cursor()
+        cur.execute(sql, params)
+        base = {r["full_name"]: r for r in cur.fetchall()}
     finally:
         conn.close()
 
@@ -110,7 +96,7 @@ def main():
                 "stars_then": then,
                 "delta": delta,
                 "delta_pct": round(delta * 100.0 / then, 1) if then else None,
-                "since": b["captured_at"].strftime("%Y-%m-%d %H:%M"),
+                "since": (b["captured_at"] or "")[:16].replace("T", " "),
             }
         )
     items.sort(key=lambda x: -x["delta"])

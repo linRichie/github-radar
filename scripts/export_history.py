@@ -12,8 +12,8 @@
   - 项目分区（section）单独去重聚合，避免同天跨分区时只留一个
   - 数据库始终全量保留，本脚本只生成「站点导出视图」，不删除任何 DB 数据
 
-用法：MYSQL_HOST=... python scripts/export_history.py [--days 90]
-未设置 MYSQL_HOST 时静默跳过（exit 0），不阻断 CI。
+用法：python scripts/export_history.py [--days 90]
+数据库为仓库内 data/backup/github_radar.sqlite（可用 RADAR_DB 覆盖）。
 """
 
 import argparse
@@ -43,23 +43,9 @@ def main():
     ap.add_argument("--days", type=int, default=90, help="趋势文件保留窗口（天）")
     args = ap.parse_args()
 
-    if not os.environ.get("MYSQL_HOST"):
-        print("· 未配置 MYSQL_HOST，跳过历史导出")
-        return 0
+    from radar_db import connect
 
-    import pymysql
-
-    conn = pymysql.connect(
-        host=os.environ["MYSQL_HOST"],
-        port=int(os.environ.get("MYSQL_PORT", 3306)),
-        user=os.environ["MYSQL_USER"],
-        password=os.environ["MYSQL_PASSWORD"],
-        database=os.environ.get("MYSQL_DB", "github_radar"),
-        charset="utf8mb4",
-        cursorclass=pymysql.cursors.DictCursor,
-        connect_timeout=10,
-        read_timeout=60,
-    )
+    conn, _ = connect()
 
     try:
         cur = conn.cursor()
@@ -71,10 +57,10 @@ def main():
         # ---------- 1) 每天最后一次抓取的完整榜单 ----------
         cur.execute(
             """
-            SELECT DATE(r.generated_at) d, r.id, r.generated_at
+            SELECT date(r.generated_at) d, r.id, r.generated_at
             FROM runs r
-            JOIN (SELECT DATE(generated_at) dd, MAX(generated_at) mx FROM runs GROUP BY DATE(generated_at)) t
-              ON t.dd = DATE(r.generated_at) AND t.mx = r.generated_at
+            JOIN (SELECT date(generated_at) dd, MAX(generated_at) mx FROM runs GROUP BY date(generated_at)) t
+              ON t.dd = date(r.generated_at) AND t.mx = r.generated_at
             ORDER BY r.generated_at
             """
         )
@@ -86,11 +72,11 @@ def main():
         written = 0
 
         for lr in last_runs:
-            date_str = lr["d"].strftime("%Y-%m-%d")
+            date_str = str(lr["d"])[:10]
             cur.execute(
                 """
                 SELECT section, domain, column_type, rank_no, full_name, stars, stars_delta, lang
-                FROM snapshots WHERE run_id=%s
+                FROM snapshots WHERE run_id=?
                 ORDER BY section, domain, column_type, rank_no
                 """,
                 (lr["id"],),
@@ -116,9 +102,10 @@ def main():
                 else:
                     sections[r["section"]].append(item)
 
+            hhmm = str(lr["generated_at"])[11:16]
             payload = {
                 "date": date_str,
-                "at": lr["generated_at"].strftime("%H:%M"),
+                "at": hhmm,
                 "sections": {k: sections.get(k, []) for k in SECTION_ORDER},
                 "domains": {k: dict(v) for k, v in domain.items()},
             }
@@ -126,16 +113,16 @@ def main():
             total = sum(len(v) for v in sections.values()) + sum(
                 len(x) for v in domain.values() for x in v.values()
             )
-            index_dates.append({"d": date_str, "n": total, "t": lr["generated_at"].strftime("%H:%M")})
+            index_dates.append({"d": date_str, "n": total, "t": hhmm})
             written += 1
 
         # ---------- 2) 趋势文件（出现 ≥2 天的项目，最近 N 天） ----------
         cutoff = (datetime.now(BJ) - timedelta(days=args.days)).date()
         cur.execute(
             """
-            SELECT s.full_name, DATE(s.captured_at) d, s.stars, s.stars_delta, s.rank_no, s.captured_at
+            SELECT s.full_name, date(s.captured_at) d, s.stars, s.stars_delta, s.rank_no, s.captured_at
             FROM snapshots s
-            WHERE s.captured_at >= %s
+            WHERE s.captured_at >= ?
             ORDER BY s.full_name, s.captured_at
             """,
             (f"{cutoff} 00:00:00",),
@@ -145,7 +132,7 @@ def main():
         # 同一天同项目：保留当天最后一条（按 captured_at 升序遍历，后者覆盖前者）
         per_proj = defaultdict(dict)
         for r in raw:
-            d = r["d"].strftime("%Y-%m-%d")
+            d = str(r["d"])[:10]
             per_proj[r["full_name"]][d] = {
                 "s": int(r["stars"] or 0),
                 "r": int(r["rank_no"] or 0),
@@ -155,7 +142,7 @@ def main():
         cur.execute(
             """
             SELECT s.full_name, s.section, s.domain, COUNT(*) n
-            FROM snapshots s WHERE s.captured_at >= %s
+            FROM snapshots s WHERE s.captured_at >= ?
             GROUP BY s.full_name, s.section, s.domain
             """,
             (f"{cutoff} 00:00:00",),
