@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-20",
+  "updatedAt": "2026-11-21",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -798,6 +798,10 @@
     "sfewer-r7/CVE-2026-123007": "针对 CVE-2026-123007 的 PoC 脚本，用于复现 NGINX HTTP/2 整数下溢漏洞。",
     "diego3g/craft": "面向 AI 智能体的设计技能，从设计系统生成各状态界面并审查，兼容 Paper、Figma 或 HTML。",
     "orbi-build/orbi": "开源可自托管的无人值守软件工厂，给 GitHub Issue 打标签即可获得独立审查、合并的 PR 与带标签的发布版本。",
-    "cporter202/apis-that-find-your-next-clients": "精选获客 API 清单，涵盖联系人信息丰富与 B2B 潜客挖掘，可立即用于扩充销售线索管道。"
+    "cporter202/apis-that-find-your-next-clients": "精选获客 API 清单，涵盖联系人信息丰富与 B2B 潜客挖掘，可立即用于扩充销售线索管道。",
+    "nataphong-lab/Open-Source-Face-Recognition-Ultimate": "开源人脸识别终极工具集，涵盖人脸识别、活体检测、防欺诈、关键点、比对、姿态与表情属性等全链路能力。",
+    "CocoSgt/riemann-hypothesis-lean": "Levent Alpöge 借助 Claude 完成的黎曼猜想 Lean 形式化证明镜像仓库，原作署名与版权归其所有。",
+    "umbra0688/windows-clipboard-manager-sync": "免费开源的 Windows 剪贴板管理器，支持可搜索历史、智能收藏、键盘快捷键与云端同步。",
+    "mankidev/antialgorithm": "创意场景智能体技能，引导模型跳出最常见、最平庸的首选方案，用于命名、创意、Logo、海报与界面设计。"
   }
 }
