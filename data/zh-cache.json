@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -802,6 +802,21 @@
     "nataphong-lab/Open-Source-Face-Recognition-Ultimate": "开源人脸识别终极工具集，涵盖人脸识别、活体检测、防欺诈、关键点、比对、姿态与表情属性等全链路能力。",
     "CocoSgt/riemann-hypothesis-lean": "Levent Alpöge 借助 Claude 完成的黎曼猜想 Lean 形式化证明镜像仓库，原作署名与版权归其所有。",
     "umbra0688/windows-clipboard-manager-sync": "免费开源的 Windows 剪贴板管理器，支持可搜索历史、智能收藏、键盘快捷键与云端同步。",
-    "mankidev/antialgorithm": "创意场景智能体技能，引导模型跳出最常见、最平庸的首选方案，用于命名、创意、Logo、海报与界面设计。"
+    "mankidev/antialgorithm": "创意场景智能体技能，引导模型跳出最常见、最平庸的首选方案，用于命名、创意、Logo、海报与界面设计。",
+    "BaaRai/ARTEX": "AI 自主渗透测试系统，结合大模型与红队工具链，自动发现漏洞、复现攻击路径，并提供漏洞赏金与开源情报支持。",
+    "tt-a1i/archify": "把想法、方案或代码库转成美观交互式架构图的智能体技能，支持流程图与时序图，可接入 Claude Code、Codex。",
+    "infiniflow/ragflow": "面向智能体的原生数据库，从检索增强生成引擎演进为上下文基础设施，为 Agent 提供知识检索、编译与管理能力。",
+    "koala73/worldmonitor": "实时全球情报仪表盘，用 AI 聚合新闻、监测地缘局势与基础设施动态，在统一界面呈现态势感知信息。",
+    "cheaper-inference/OmniRoute": "免费开源 AI 网关，单一端点聚合 375 家供应商、1400 多个模型，支持额度感知切换、令牌压缩与多端接入。",
+    "ItsNotRexed/Leonida": "把 Xbox 版《侠盗猎车手6》静态重编译到 PC 的实验项目，目标是不靠模拟器直接在 Windows 上运行游戏。",
+    "R0Y00/Xbox2Windows": "Xbox 主机静态重编译研究，覆盖着色器转换、BC7 贴图与脚本状态重放，目标是在 Windows 上原生运行。",
+    "omonkeyz/xbox-emulator": "记录用 TomBox 与 rage9 在 PC 上运行的进展与踩坑笔记，偏实验记录而非完整模拟器。",
+    "leanprover-community/riemann-hypothesis": "为黎曼猜想的 Lean 形式化验证搭建独立比对环境，对应 Alpöge 2026 年成果，便于核验证明正确性与一致性。",
+    "danielwh2/sprite-stacking": "智能体技能：把像素画四视图叠成可旋转的伪 3D 精灵图，适配 Claude Code、Codex 等编码工具。",
+    "sybil-solutions/skill-distill": "把一次优质的 Claude Code 或 Codex 会话提炼为可复用技能，让开放权重模型也能按步骤复现同类任务。",
+    "pritamux/gridlines": "界面对齐检查技能：自动绘制参考网格线，找出未对齐元素并修正内边距，提升页面排版的一致性。",
+    "howshannon/slop-cop": "审查、评分并改写文案、社媒帖、界面与代码中的 AI 套话，去除空泛表述与套路修辞，让内容更自然有力。",
+    "Johnson-Durui/ApexCluster": "面向复杂软件工程与产品设计的跨厂商多智能体集群：架构层直出 PRD 与交互原型，实现层跨厂互审并在沙箱中验证交付。",
+    "limingrui679-design/high-stakes-analytics-decision-lab": "含 15 个公开数据案例的可复用分析技能：明确决策与资源，在同一证据下对比多种方法，输出可溯源的决策报告。"
   }
 }
