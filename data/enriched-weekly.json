@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-16",
+  "date": "2026-11-23",
   "mode": "weekly",
   "generatedBy": "workbuddy-automation",
   "note": "周报上榜项目解读：trending 与 growthRank Top10 去重；当日已有日报解读的复用，其余由 AI 补全六字段。",
@@ -1006,6 +1006,225 @@
         "需按项目裁剪适配",
         "技能效果依赖模型能力",
         "定期跟进更新"
+      ]
+    },
+    "google-labs-code/stitch-skills": {
+      "tagline": "Google Stitch MCP 服务器的 Agent Skills 技能库，让编码智能体直接调用 Stitch 生成 UI 设计。",
+      "value": "把设计生成能力接进编码工作流，agent 从写代码到出界面一站完成，无需切换工具。",
+      "features": [
+        "与 Stitch MCP 服务器配套的技能集合",
+        "每个技能遵循 Agent Skills 规范",
+        "聚焦 UI 设计稿生成与迭代"
+      ],
+      "scenarios": [
+        "在编码 agent 中直接生成页面原型",
+        "设计稿到代码的快速验证"
+      ],
+      "inputs": [
+        "已配置的 Stitch MCP 服务",
+        "自然语言描述的界面需求"
+      ],
+      "caveats": [
+        "依赖 Stitch 服务可用性",
+        "生成设计需人工把关后再落地"
+      ]
+    },
+    "GoogleChrome/modern-web-guidance-src": {
+      "tagline": "Chrome 团队出品的 Web 最新最佳实践知识源，让编码 agent 不再写出过时的前端代码。",
+      "value": "解决 agent 训练数据滞后问题，用官方维护的 Web 实践文档持续校准生成结果。",
+      "features": [
+        "Chrome 团队官方维护",
+        "覆盖现代 Web 平台最佳实践",
+        "以可检索知识源形式供 agent 引用"
+      ],
+      "scenarios": [
+        "前端代码生成前的规范注入",
+        "评审 agent 产出的 Web 代码"
+      ],
+      "inputs": [
+        "Web 项目上下文",
+        "关注的技术领域（CSS/JS/PWA 等）"
+      ],
+      "caveats": [
+        "实践仍在演进，需定期更新",
+        "不能替代项目自身的代码规范"
+      ]
+    },
+    "alibaba/open-code-review": {
+      "tagline": "阿里巴巴开源的混合架构代码评审工具，在阿里规模经过实战检验，安全、快速、高效。",
+      "value": "把 AI 代码评审做成可大规模落地的工程系统，兼具本地与云端混合部署能力。",
+      "features": [
+        "混合架构：本地与云端协同评审",
+        "大规模实战验证过的检测能力",
+        "聚焦安全性与效率",
+        "Go 语言实现，易于部署"
+      ],
+      "scenarios": [
+        "企业级 PR 评审门禁",
+        "开源项目的自动化评审",
+        "安全敏感代码的强制检查"
+      ],
+      "inputs": [
+        "代码仓库与 PR 信息",
+        "评审规则与关注点配置"
+      ],
+      "caveats": [
+        "AI 评审结论仍需人工确认",
+        "规则配置需要前期投入"
+      ]
+    },
+    "mvanhorn/last30days-skill": {
+      "tagline": "让 AI agent 跨 Reddit、X、YouTube、HN、Polymarket 等平台检索近 30 天全网讨论的研究技能。",
+      "value": "补齐 agent 的时间盲区：只看训练数据会漏掉最近一个月的舆论与事件，此技能专治信息滞后。",
+      "features": [
+        "多平台聚合：Reddit/X/YouTube/HN/Polymarket/Web",
+        "限定近 30 天时间窗口",
+        "输出结构化研究结果"
+      ],
+      "scenarios": [
+        "调研某个话题的最新社区讨论",
+        "新品/热点上线前的舆论摸底",
+        "市场情绪与预测市场交叉验证"
+      ],
+      "inputs": [
+        "研究主题关键词",
+        "关注平台与输出格式偏好"
+      ],
+      "caveats": [
+        "社交平台观点噪音大，需交叉甄别",
+        "受平台接口配额限制"
+      ]
+    },
+    "ChromeDevTools/chrome-devtools-mcp": {
+      "tagline": "Chrome DevTools 官方 MCP 服务器，让编码 agent 直接操作浏览器调试、分析与验证页面。",
+      "value": "把 DevTools 的全套调试能力交给 agent，实现'改代码—看效果—查问题'闭环自动化。",
+      "features": [
+        "Chrome DevTools 官方出品",
+        "完整 MCP 协议接入",
+        "支持页面操作、性能分析、网络与控制台检查"
+      ],
+      "scenarios": [
+        "前端自动化调试与回归验证",
+        "性能瓶颈定位",
+        "端到端页面行为检查"
+      ],
+      "inputs": [
+        "本地或远程 Chrome 实例",
+        "MCP 客户端（Claude Code 等）"
+      ],
+      "caveats": [
+        "浏览器环境需提前配置",
+        "复杂调试仍需人工介入"
+      ]
+    },
+    "tradermonty/claude-trading-skills": {
+      "tagline": "面向股票投资者与交易者的 Claude Code 技能集：市场分析、技术图表与经济数据研究。",
+      "value": "把交易员常用的分析方法封装成 agent 技能，让 Claude 直接产出结构化的行情与技术面分析。",
+      "features": [
+        "市场分析技能",
+        "技术图表解读",
+        "经济数据研究",
+        "面向股票场景定制"
+      ],
+      "scenarios": [
+        "个股技术面快速分析",
+        "宏观数据整理与解读",
+        "交易前的多维度检查清单"
+      ],
+      "inputs": [
+        "标的代码与分析周期",
+        "关注的指标（MACD/RSI 等）"
+      ],
+      "caveats": [
+        "输出仅供研究参考，不构成投资建议",
+        "行情数据源需自行保证时效"
+      ]
+    },
+    "ag-ui-protocol/ag-ui": {
+      "tagline": "AG-UI 智能体—用户交互协议：把 agent 能力标准化接入前端应用的开源规范。",
+      "value": "统一 agent 与前端的通信标准，让任何 agent 都能以一致方式嵌入各类应用界面。",
+      "features": [
+        "开放交互协议规范",
+        "流式事件驱动的 agent 状态同步",
+        "支持多前端框架接入"
+      ],
+      "scenarios": [
+        "为应用添加对话式 agent 界面",
+        "多 agent 编排的可视化前端",
+        "agent 事件的标准化推送"
+      ],
+      "inputs": [
+        "agent 后端与事件流",
+        "前端应用框架"
+      ],
+      "caveats": [
+        "协议仍在迭代，注意版本兼容",
+        "复杂交互需自行扩展"
+      ]
+    },
+    "pookjw/HermesEnabler": {
+      "tagline": "让任意 Apple Watch 都能用上 Hermès 表盘的越权启用工具。",
+      "value": "绕过官方机型限制释放隐藏表盘资产，是 iOS 定制社区的经典玩法，门槛低见效快。",
+      "features": [
+        "解锁全部 Hermès 表盘",
+        "适配各代 Apple Watch 机型",
+        "无需付费购买联名款"
+      ],
+      "scenarios": [
+        "旧款手表启用新表盘",
+        "个性化表盘搭配"
+      ],
+      "inputs": [
+        "已配对的 Apple Watch 与 iPhone"
+      ],
+      "caveats": [
+        "系统更新后可能失效",
+        "属非官方修改，风险自担"
+      ]
+    },
+    "dream-num/univer": {
+      "tagline": "Univer Office SDK：用一套开源框架在应用内搭建可编辑、可计算、可协作的 AI 办公套件。",
+      "value": "开源替代嵌入第三方办公组件，自持数据的同时获得类 Google Sheets 的全能力矩阵。",
+      "features": [
+        "编辑、计算、协作、文件处理一体化",
+        "SDK 形态嵌入自有应用",
+        "AI Office 场景原生支持"
+      ],
+      "scenarios": [
+        "SaaS 产品内嵌表格/文档能力",
+        "构建企业自有的在线办公系统",
+        "AI agent 直接操作电子表格"
+      ],
+      "inputs": [
+        "前端工程（React/Vue 等）",
+        "业务数据模型与权限设计"
+      ],
+      "caveats": [
+        "复杂 Excel 兼容性需逐一验证",
+        "大规模协作部署有运维成本"
+      ]
+    },
+    "kajisho5/ffmpeg-skill": {
+      "tagline": "为编码 agent 打造的本地视频编辑技能：42 个 FFmpeg 工具加机器可读契约与 MCP 服务。",
+      "value": "让 agent 不再靠记忆拼 ffmpeg 命令行，用结构化契约保证音视频处理准确可验证。",
+      "features": [
+        "42 个封装好的 FFmpeg 工具",
+        "机器可读的工具契约",
+        "MCP 服务器形态接入",
+        "全本地运行"
+      ],
+      "scenarios": [
+        "批量转码、剪辑、抽帧",
+        "给视频加字幕与水印",
+        "agent 自动化视频后处理"
+      ],
+      "inputs": [
+        "本地安装的 FFmpeg",
+        "MCP 客户端配置"
+      ],
+      "caveats": [
+        "复杂特效仍需手写滤镜",
+        "大文件处理耗时较长"
       ]
     }
   }

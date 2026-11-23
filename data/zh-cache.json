@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-22",
+  "updatedAt": "2026-11-23",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -817,6 +817,18 @@
     "pritamux/gridlines": "界面对齐检查技能：自动绘制参考网格线，找出未对齐元素并修正内边距，提升页面排版的一致性。",
     "howshannon/slop-cop": "审查、评分并改写文案、社媒帖、界面与代码中的 AI 套话，去除空泛表述与套路修辞，让内容更自然有力。",
     "Johnson-Durui/ApexCluster": "面向复杂软件工程与产品设计的跨厂商多智能体集群：架构层直出 PRD 与交互原型，实现层跨厂互审并在沙箱中验证交付。",
-    "limingrui679-design/high-stakes-analytics-decision-lab": "含 15 个公开数据案例的可复用分析技能：明确决策与资源，在同一证据下对比多种方法，输出可溯源的决策报告。"
+    "limingrui679-design/high-stakes-analytics-decision-lab": "含 15 个公开数据案例的可复用分析技能：明确决策与资源，在同一证据下对比多种方法，输出可溯源的决策报告。",
+    "EL4CTEO/fast-anything": "别急着用 Rust 重写整个应用：先对 Python/Node/Ruby 程序做性能剖析，只把最慢的 5% 热点函数交给编码智能体移植，并验证行为一致。",
+    "Hut-hzf/ung220z-tool": "针对 UNG220Z 光猫的一键凭据提取工具，适配中兴、烽火、华为、九联多厂商，支持固件指纹识别与分家族排障，仅限自有设备找回密码与安全自查。",
+    "Jakeschincariol/founder-skill": "11 个免费 Claude 技能，在创业启动前先检验你的生意：内置 Hormozi、Thiel、Jobs 风格董事会、营销总监、CFO 和 100 个买家智能体构成的消费评审团。",
+    "Leonxlnx/earshot": "为编码智能体提供音效能力：用自然语言描述想要的声音，earshot 直接用代码合成渲染，纯 CPU 运行、无需音频模型，完全开源。",
+    "cachedarknorth54/wolfram-alpha-pro-win": "Wolfram Alpha Pro 计算知识引擎的 Windows 版：支持符号数学计算、数据分析与精选数据集，适用于 Windows 10/11 系统。",
+    "guptafedor/cursor-pro-win": "Cursor AI 代码编辑器 Windows 版：提供智能自动补全、自然语言编辑与理解整个代码库的对话能力，适用于 Windows 10/11 系统。",
+    "mdiri-ai/SoduWork": "面向团队及其智能体的 AI 原生引擎，支持多运行时、多智能体协作与自托管部署，适合自主搭建私有化 AI 工作平台。",
+    "modelflare-ai/AnyModelBot": "开源本地优先的 AI 机器人方案，可对接 GPT、Claude、Gemini、DeepSeek 等 70 多个模型，在应用、微信或飞书中使用，支持记忆、后台任务与电脑操作，按用量付费。",
+    "onehumanbeing/esp32-iphone-agent": "Manina AI：仅用约 7 美元的 ESP32 让 AI 模型操控真实 iPhone，AirPlay 当眼睛、USB HID 当手，兼容任意 OpenAI 兼容视觉模型，免 Mac、免开发者账号、免越狱。",
+    "shinyobjectz/raea": "Render Anything Engine：告诉 AI 你想做什么，即可生成视频、动效、3D 与游戏代码（React + TypeScript），基于 Rust 与 Bevy 在本地 GPU 渲染，跨三大平台。",
+    "stonelogic2002/cursor-pro-win": "Cursor AI 代码编辑器 Windows 版：提供智能自动补全、自然语言编辑与理解整个代码库的对话能力，适用于 Windows 10/11 系统。",
+    "vAPI-Network/vapi-network": "x402 API 支付的买方自控客户端：在 Base 链上用 USDC 完成 API 付费调用，把支付控制权交还给购买方。"
   }
 }
