@@ -829,6 +829,13 @@
     "onehumanbeing/esp32-iphone-agent": "Manina AI：仅用约 7 美元的 ESP32 让 AI 模型操控真实 iPhone，AirPlay 当眼睛、USB HID 当手，兼容任意 OpenAI 兼容视觉模型，免 Mac、免开发者账号、免越狱。",
     "shinyobjectz/raea": "Render Anything Engine：告诉 AI 你想做什么，即可生成视频、动效、3D 与游戏代码（React + TypeScript），基于 Rust 与 Bevy 在本地 GPU 渲染，跨三大平台。",
     "stonelogic2002/cursor-pro-win": "Cursor AI 代码编辑器 Windows 版：提供智能自动补全、自然语言编辑与理解整个代码库的对话能力，适用于 Windows 10/11 系统。",
-    "vAPI-Network/vapi-network": "x402 API 支付的买方自控客户端：在 Base 链上用 USDC 完成 API 付费调用，把支付控制权交还给购买方。"
+    "vAPI-Network/vapi-network": "x402 API 支付的买方自控客户端：在 Base 链上用 USDC 完成 API 付费调用，把支付控制权交还给购买方。",
+    "ItsNotRexed/Hookshot": "将 Switch 2 版《塞尔达传说：时之笛》重制版原生重编译到 PC 上运行的开源项目。",
+    "sshkeda/minecraft-server-on-orange-cloud": "在 Cloudflare 上完整托管 Minecraft Java 版服务器，无人游玩时自动休眠以节省资源。",
+    "ThreatDefence/agentic-attack-detections": "面向 AI 智能体攻击框架的检测规则与 IOC 集合，覆盖 KQL、Sigma、Suricata、YARA 等多种格式。",
+    "w01fb0ss/PiBot": "开源本地优先的桌面 AI 智能体团队，支持多智能体群聊、电脑操作、浏览器、MCP 与审批流。",
+    "Nilespand/tableau-desktop-win": "适用于 Windows 的 Tableau 商业智能与数据可视化平台，支持交互式仪表板、数据混合与分析计算。",
+    "birddebug/cinema-4d-win": "适用于 Windows 的 Maxon Cinema 4D 三维建模与动画套件，用于动态图形、程序化建模和渲染管线。",
+    "sveltia/sveltia-cms": "基于 Git 的开源无头 CMS，Netlify/Decap CMS 的继任者，具现代体验、一流国际化与移动端支持。"
   }
 }
