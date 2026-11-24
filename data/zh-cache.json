@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-23",
+  "updatedAt": "2026-11-24",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -836,6 +836,22 @@
     "w01fb0ss/PiBot": "开源本地优先的桌面 AI 智能体团队，支持多智能体群聊、电脑操作、浏览器、MCP 与审批流。",
     "Nilespand/tableau-desktop-win": "适用于 Windows 的 Tableau 商业智能与数据可视化平台，支持交互式仪表板、数据混合与分析计算。",
     "birddebug/cinema-4d-win": "适用于 Windows 的 Maxon Cinema 4D 三维建模与动画套件，用于动态图形、程序化建模和渲染管线。",
-    "sveltia/sveltia-cms": "基于 Git 的开源无头 CMS，Netlify/Decap CMS 的继任者，具现代体验、一流国际化与移动端支持。"
+    "sveltia/sveltia-cms": "基于 Git 的开源无头 CMS，Netlify/Decap CMS 的继任者，具现代体验、一流国际化与移动端支持。",
+    "Marvisak/VIctory": "尝试在 PC 上运行《GTA VI》的实验项目，用 Rust 探索让 Rockstar 新作登陆个人电脑的可能性。",
+    "os6/nospeaker": "利用 MacBook 触控板的触觉马达发声，把触控板变成扬声器，用 Swift 实现的趣味听觉实验。",
+    "erkamyaman/safe-anything": "纯 Rust 编写的快速漏洞扫描器，检测 XSS、SQL 注入、泄露密钥、依赖 CVE 及 AI 智能体配置风险。",
+    "lenguyenkhang816792-arch/gta-6-pc-emulator": "号称《GTA 6》PC 模拟器的项目，用 HTML 实现，宣称可在 Windows 上运行《侠盗猎车手 VI》。",
+    "Avaneesh-Inamdar/Stream-Tube-Desktop": "Rust 编写的 Windows 原生 YouTube 客户端，内置去赞助、还原标题与点踩显示功能。",
+    "betty67060/metamask-rabby-phantom-vault-decryptor": "本地 LevelDB 金库解密与助记词提取工具，面向 MetaMask、Rabby 与 Phantom 钱包的恢复场景。",
+    "mutex-gander/hyperliquid-perp-market-maker-bot": "面向 Hyperliquid 的自动交易机器人，支持 L1 永续合约跟单、网格与做市策略，Python 实现。",
+    "gableotter/fortnite-hwid-spoofer-cheat": "针对《堡垒之夜》的硬件 ID 伪装与外部 ESP 工具，宣称可绕过反作弊，含 SMBIOS 与磁盘清理。",
+    "jaredfreellm/FREELLM_INSTALL": "自托管的 OpenAI 兼容路由，聚合多个免费模型额度，自动择优、限流容错并加密保存密钥，供个人实验。",
+    "lucasito92/delta-executor-pc": "面向 Windows 11 的免密钥 Delta Roblox 脚本执行器，附带自动执行中心，C++ 实现。",
+    "Albertop596/escape-from-tarkov-cheat-radar": "《逃离塔科夫》外部雷达辅助工具，提供 2D 地图雷达、高价值物资筛选与 Boss 位置 ESP，C++ 实现。",
+    "stevie215/wave-executor": "面向 Windows 11 的免密钥 Wave Roblox 脚本执行器，支持自动注入与脚本中心，C++ 实现。",
+    "hlibsuslov/telegram-bot-ui": "Telegram 机器人 UI/UX 技能，覆盖界面、文案、键盘、导航与流式 AI 回复设计，附本地工作台。",
+    "brunnojob/cifuse": "把杂乱的 CI 日志归并为分组失败、精确证据与排查步骤，提供离线命令行、GitHub Action 与双语工作台。",
+    "diegovasquez-ai/builder-crm": "开源自托管的智能体 CRM，把三大社交平台消息汇入统一收件箱，自动回复并推进销售管道。",
+    "qbeka/jev-job-search": "基于 Claude Code 本地运行的求职工具，自动搜索软件实习与应届岗位、填写申请表单并在确认后提交。"
   }
 }
