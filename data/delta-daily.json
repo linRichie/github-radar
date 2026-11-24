@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-24T09:24:12+08:00",
+ "generated_at": "2026-11-24T10:47:36+08:00",
  "mode": "daily",
  "window_days": 3,
  "window_start": "2026-11-21",
@@ -8,259 +8,259 @@
  "items": [
   {
    "full": "morluto/rea",
-   "stars": 475629,
+   "stars": 475726,
    "stars_then": 471413,
-   "delta": 4216,
+   "delta": 4313,
    "delta_pct": 0.9,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "stablyai/orca",
-   "stars": 134542,
+   "stars": 134638,
    "stars_then": 130972,
-   "delta": 3570,
-   "delta_pct": 2.7,
+   "delta": 3666,
+   "delta_pct": 2.8,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "Ebony-Vinyl/dsh-our-free-model",
-   "stars": 85076,
+   "stars": 85141,
    "stars_then": 82069,
-   "delta": 3007,
+   "delta": 3072,
    "delta_pct": 3.7,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "BaaRai/ARTEX",
-   "stars": 17771,
+   "stars": 17857,
    "stars_then": 14984,
-   "delta": 2787,
-   "delta_pct": 18.6,
+   "delta": 2873,
+   "delta_pct": 19.2,
    "since": "2026-11-22 05:30"
   },
   {
    "full": "firecrawl/firecrawl",
-   "stars": 207941,
+   "stars": 208004,
    "stars_then": 205185,
-   "delta": 2756,
-   "delta_pct": 1.3,
+   "delta": 2819,
+   "delta_pct": 1.4,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "erkamyaman/rust-anything",
-   "stars": 8738,
+   "stars": 8771,
    "stars_then": 6565,
-   "delta": 2173,
-   "delta_pct": 33.1,
+   "delta": 2206,
+   "delta_pct": 33.6,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "ccch1mneyyy/dsh-Go",
-   "stars": 30783,
+   "stars": 30836,
    "stars_then": 28988,
-   "delta": 1795,
-   "delta_pct": 6.2,
+   "delta": 1848,
+   "delta_pct": 6.4,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "affaan-m/ECC",
-   "stars": 309594,
+   "stars": 309617,
    "stars_then": 307811,
-   "delta": 1783,
+   "delta": 1806,
    "delta_pct": 0.6,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "nextlevelbuilder/ui-ux-pro-max-skill",
-   "stars": 153297,
+   "stars": 153336,
    "stars_then": 152140,
-   "delta": 1157,
+   "delta": 1196,
    "delta_pct": 0.8,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "paperclipai/paperclip",
-   "stars": 116355,
+   "stars": 116379,
    "stars_then": 115468,
-   "delta": 887,
+   "delta": 911,
    "delta_pct": 0.8,
    "since": "2026-11-21 06:32"
   },
   {
-   "full": "thedotmack/claude-mem",
-   "stars": 119328,
-   "stars_then": 118628,
-   "delta": 700,
-   "delta_pct": 0.6,
-   "since": "2026-11-21 06:32"
-  },
-  {
    "full": "DietrichGebert/ponytail",
-   "stars": 197527,
+   "stars": 197560,
    "stars_then": 196830,
-   "delta": 697,
+   "delta": 730,
    "delta_pct": 0.4,
    "since": "2026-11-23 05:22"
   },
   {
+   "full": "thedotmack/claude-mem",
+   "stars": 119340,
+   "stars_then": 118628,
+   "delta": 712,
+   "delta_pct": 0.6,
+   "since": "2026-11-21 06:32"
+  },
+  {
    "full": "Leonxlnx/taste-skill",
-   "stars": 120668,
+   "stars": 120704,
    "stars_then": 120068,
-   "delta": 600,
+   "delta": 636,
    "delta_pct": 0.5,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "kajisho5/ffmpeg-skill",
-   "stars": 10234,
+   "stars": 10266,
    "stars_then": 9661,
-   "delta": 573,
-   "delta_pct": 5.9,
+   "delta": 605,
+   "delta_pct": 6.3,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "shinyobjectz/raea",
-   "stars": 4707,
+   "stars": 4721,
    "stars_then": 4160,
-   "delta": 547,
-   "delta_pct": 13.1,
+   "delta": 561,
+   "delta_pct": 13.5,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "yetone/magpie",
-   "stars": 40492,
+   "stars": 40555,
    "stars_then": 40020,
-   "delta": 472,
-   "delta_pct": 1.2,
+   "delta": 535,
+   "delta_pct": 1.3,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "harry0703/MoneyPrinterTurbo",
-   "stars": 145246,
+   "stars": 145257,
    "stars_then": 144831,
-   "delta": 415,
+   "delta": 426,
    "delta_pct": 0.3,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "nexu-io/open-design",
-   "stars": 109175,
+   "stars": 109190,
    "stars_then": 108830,
-   "delta": 345,
+   "delta": 360,
    "delta_pct": 0.3,
    "since": "2026-11-22 05:30"
   },
   {
    "full": "Panniantong/Agent-Reach",
-   "stars": 114265,
+   "stars": 114288,
    "stars_then": 113996,
-   "delta": 269,
-   "delta_pct": 0.2,
+   "delta": 292,
+   "delta_pct": 0.3,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "browser-use/browser-use",
-   "stars": 121868,
+   "stars": 121873,
    "stars_then": 121615,
-   "delta": 253,
+   "delta": 258,
    "delta_pct": 0.2,
    "since": "2026-11-21 06:32"
   },
   {
    "full": "mdiri-ai/SoduWork",
-   "stars": 7052,
+   "stars": 7067,
    "stars_then": 6811,
-   "delta": 241,
-   "delta_pct": 3.5,
+   "delta": 256,
+   "delta_pct": 3.8,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "Jakeschincariol/founder-skill",
-   "stars": 4782,
+   "stars": 4785,
    "stars_then": 4628,
-   "delta": 154,
-   "delta_pct": 3.3,
+   "delta": 157,
+   "delta_pct": 3.4,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "vAPI-Network/vapi-network",
-   "stars": 5663,
+   "stars": 5674,
    "stars_then": 5556,
-   "delta": 107,
-   "delta_pct": 1.9,
+   "delta": 118,
+   "delta_pct": 2.1,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "Leonxlnx/earshot",
-   "stars": 5645,
+   "stars": 5649,
    "stars_then": 5555,
-   "delta": 90,
-   "delta_pct": 1.6,
+   "delta": 94,
+   "delta_pct": 1.7,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "langgenius/dify",
-   "stars": 161769,
+   "stars": 161777,
    "stars_then": 161687,
-   "delta": 82,
+   "delta": 90,
    "delta_pct": 0.1,
    "since": "2026-11-23 05:36"
   },
   {
    "full": "oil-oil/oil-ui",
-   "stars": 3928,
+   "stars": 3935,
    "stars_then": 3869,
-   "delta": 59,
-   "delta_pct": 1.5,
+   "delta": 66,
+   "delta_pct": 1.7,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "f/prompts.chat",
-   "stars": 178327,
+   "stars": 178331,
    "stars_then": 178274,
-   "delta": 53,
+   "delta": 57,
    "delta_pct": 0.0,
    "since": "2026-11-23 05:36"
   },
   {
    "full": "onehumanbeing/esp32-iphone-agent",
-   "stars": 5276,
+   "stars": 5283,
    "stars_then": 5227,
-   "delta": 49,
-   "delta_pct": 0.9,
+   "delta": 56,
+   "delta_pct": 1.1,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "ollama/ollama",
-   "stars": 187915,
+   "stars": 187920,
    "stars_then": 187883,
-   "delta": 32,
+   "delta": 37,
+   "delta_pct": 0.0,
+   "since": "2026-11-23 05:36"
+  },
+  {
+   "full": "n8n-io/n8n",
+   "stars": 211861,
+   "stars_then": 211831,
+   "delta": 30,
    "delta_pct": 0.0,
    "since": "2026-11-23 05:36"
   },
   {
    "full": "modelflare-ai/AnyModelBot",
-   "stars": 4992,
+   "stars": 4995,
    "stars_then": 4973,
-   "delta": 19,
+   "delta": 22,
    "delta_pct": 0.4,
    "since": "2026-11-23 05:22"
   },
   {
    "full": "Nanako0129/sepia",
-   "stars": 3940,
+   "stars": 3939,
    "stars_then": 3929,
-   "delta": 11,
+   "delta": 10,
    "delta_pct": 0.3,
    "since": "2026-11-23 05:22"
-  },
-  {
-   "full": "n8n-io/n8n",
-   "stars": 211842,
-   "stars_then": 211831,
-   "delta": 11,
-   "delta_pct": 0.0,
-   "since": "2026-11-23 05:36"
   }
  ]
 }
