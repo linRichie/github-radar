@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-24",
+  "updatedAt": "2026-11-25",
   "zh": {
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
@@ -852,6 +852,23 @@
     "hlibsuslov/telegram-bot-ui": "Telegram 机器人 UI/UX 技能，覆盖界面、文案、键盘、导航与流式 AI 回复设计，附本地工作台。",
     "brunnojob/cifuse": "把杂乱的 CI 日志归并为分组失败、精确证据与排查步骤，提供离线命令行、GitHub Action 与双语工作台。",
     "diegovasquez-ai/builder-crm": "开源自托管的智能体 CRM，把三大社交平台消息汇入统一收件箱，自动回复并推进销售管道。",
-    "qbeka/jev-job-search": "基于 Claude Code 本地运行的求职工具，自动搜索软件实习与应届岗位、填写申请表单并在确认后提交。"
+    "qbeka/jev-job-search": "基于 Claude Code 本地运行的求职工具，自动搜索软件实习与应届岗位、填写申请表单并在确认后提交。",
+    "ubiquitarianism/leonida": "Leonida 项目的延续，为 GTA VI 提供从 Xbox 移植到 PC 的接口层，让主机版内容可在个人电脑上运行。",
+    "fxceless/victory-fork": "VIctory 的进行中分支，尝试让 Xbox Series 游戏在 Windows PC 上渲染并运行，仓库不附带任何游戏文件，仅作技术验证。",
+    "Indigo-0167/universal-game-mod-manager": "免费的 Windows 游戏模组管理器，用于发现、安装、更新与管理 Unity 和 Unreal 引擎的通用模组，便于统一维护。",
+    "zero5122/offline-file-converter-windows": "Windows 离线文件转换工具，可在本地私密转换 PDF、文档、图片、音频与视频，无需联网上传。",
+    "rowanbyte3329/stardew-valley-mod-manager": "开源星露谷物语模组管理器，支持 SMAPI、模组更新与自定义模组配置，面向 Windows 玩家。",
+    "Basil0879/steam-game-idler": "免费 Steam 挂机工具，支持刷交易卡、管理成就、提升游戏时长，并可多账号自动化运行。",
+    "solv4626/steam-achievement-manager-windows": "开源 Steam 成就管理器，可在 Windows 上管理游戏成就并编辑 Steam 游戏统计数据，适合成就与数据维护。",
+    "umbradev315/ffmpeg-video-audio-converter": "开源 FFmpeg 图形界面，支持视频音频格式转换、批量媒体处理与画质分析，面向 Windows 用户。",
+    "Umbra9179/clipboard-history-manager-windows": "开源 Windows 剪贴板管理器，支持可搜索历史、图片预览、标签分类、内容编辑与数据备份。",
+    "olive527/steam-library-manager-windows": "免费游戏库管理与备份工具，支持 Steam、Origin 和 Ubisoft Connect 的多游戏库统一管理，并提供本地备份能力。",
+    "kai415-debug/ffmpeg-video-audio-converter": "免费 Windows FFmpeg 图形界面，提供音视频转换、批量转码与多种多媒体格式编码能力，免去手写命令行。",
+    "Nebula4207/av1-video-encoder-gui": "免费 Windows 平台 AV1 视频编码图形界面，集成多种主流编码器并支持并行处理，适合批量编码转换任务。",
+    "peak85-sketch/stardew-valley-mod-manager": "开源星露谷模组管理器，支持 SMAPI、模组更新与自定义配置档案，基于 Avalonia 构建，面向 Windows 玩家。",
+    "ProjectLeonidaL/leonida": "Leonida 计划的延续项目，通过静态重编译技术将 GTA VI 从 Xbox 移植到 PC，由社区开源推进并持续更新。",
+    "paulp-o/ask-user-questions-mcp": "增强版提问工具，以轻量 MCP 服务、插件及 CLI 形式让多个并行 AI 智能体向你发起追问，落实人机协同。",
+    "2hjaito/davish": "把服务器当桌面用的轻量 SSH 客户端，提供类操作系统界面，服务端无需安装任何组件。",
+    "Hermit-CRM/hermit-crm": "免费开源 CRM，面向创业者、自由职业者和独立销售，本地优先、AI 原生，数据由自己掌控。"
   }
 }
