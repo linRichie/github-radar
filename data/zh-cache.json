@@ -1,7 +1,10 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-25",
+  "updatedAt": "2026-11-26",
   "zh": {
+    "avatarmanz/VIctory-7900XTX": "针对 AMD RX 7900 XTX 显卡调优的 VIctory 兼容层分支，加快准备与纹理回读速度，仓库不含游戏文件。",
+    "chanke17/KuroCat": "开源免费的原生桌面萌猫与 OBS 悬浮窗，可作为 Bongo Cat 替代品，支持全平台、数位板和在线皮肤工坊。",
+    "carmentune/best-black-friday-saas-deals": "2026 年黑五 SaaS 优惠精选清单，汇总营销、SEO 与商业软件的折扣和优惠券，方便横向比价与选购。",
     "MadsLorentzen/ai-job-search": "跑在本地机器上的 AI 求职框架：基于 Claude Code 评估职位、定制简历、写求职信、准备面试。",
     "cloudflare/security-audit-skill": "面向编码 agent 的多阶段安全审计技能，产出可机读、经独立验证的审计发现。",
     "stablyai/orca": "统一调度 agent 舰队的平台：用自有订阅运行任意编码 agent，支持桌面、移动与远程运行时。",
