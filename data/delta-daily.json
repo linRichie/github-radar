@@ -1,178 +1,194 @@
 {
- "generated_at": "2026-11-27T08:21:44+08:00",
+ "generated_at": "2026-11-28T07:57:19+08:00",
  "mode": "daily",
  "window_days": 3,
- "window_start": "2026-11-24",
+ "window_start": "2026-11-25",
  "candidates": 80,
- "matched": 21,
+ "matched": 23,
  "items": [
   {
    "full": "stablyai/orca",
-   "stars": 140377,
-   "stars_then": 134542,
-   "delta": 5835,
-   "delta_pct": 4.3,
-   "since": "2026-11-24 09:24"
+   "stars": 142435,
+   "stars_then": 136078,
+   "delta": 6357,
+   "delta_pct": 4.7,
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "BaaRai/ARTEX",
-   "stars": 22275,
-   "stars_then": 17771,
-   "delta": 4504,
-   "delta_pct": 25.3,
-   "since": "2026-11-24 09:24"
+   "stars": 23533,
+   "stars_then": 19270,
+   "delta": 4263,
+   "delta_pct": 22.1,
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "morluto/rea",
-   "stars": 479753,
-   "stars_then": 475629,
-   "delta": 4124,
-   "delta_pct": 0.9,
-   "since": "2026-11-24 09:24"
+   "stars": 481112,
+   "stars_then": 477105,
+   "delta": 4007,
+   "delta_pct": 0.8,
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "Ebony-Vinyl/dsh-our-free-model",
-   "stars": 88161,
-   "stars_then": 85076,
-   "delta": 3085,
+   "stars": 89103,
+   "stars_then": 86020,
+   "delta": 3083,
    "delta_pct": 3.6,
-   "since": "2026-11-24 09:24"
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "firecrawl/firecrawl",
-   "stars": 210931,
-   "stars_then": 207941,
-   "delta": 2990,
-   "delta_pct": 1.4,
-   "since": "2026-11-24 09:24"
+   "stars": 211668,
+   "stars_then": 208919,
+   "delta": 2749,
+   "delta_pct": 1.3,
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "erkamyaman/rust-anything",
-   "stars": 10212,
-   "stars_then": 8738,
-   "delta": 1474,
-   "delta_pct": 16.9,
-   "since": "2026-11-24 09:24"
+   "stars": 10771,
+   "stars_then": 9204,
+   "delta": 1567,
+   "delta_pct": 17.0,
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "nextlevelbuilder/ui-ux-pro-max-skill",
-   "stars": 154633,
+   "stars": 155148,
    "stars_then": 153753,
-   "delta": 880,
-   "delta_pct": 0.6,
+   "delta": 1395,
+   "delta_pct": 0.9,
    "since": "2026-11-25 08:25"
   },
   {
    "full": "Graphify-Labs/graphify",
-   "stars": 153850,
+   "stars": 154268,
    "stars_then": 153007,
-   "delta": 843,
-   "delta_pct": 0.6,
-   "since": "2026-11-25 08:25"
-  },
-  {
-   "full": "farion1231/cc-switch",
-   "stars": 157424,
-   "stars_then": 156649,
-   "delta": 775,
-   "delta_pct": 0.5,
-   "since": "2026-11-24 09:24"
-  },
-  {
-   "full": "NousResearch/hermes-agent",
-   "stars": 266387,
-   "stars_then": 265676,
-   "delta": 711,
-   "delta_pct": 0.3,
-   "since": "2026-11-24 09:24"
-  },
-  {
-   "full": "harry0703/MoneyPrinterTurbo",
-   "stars": 145869,
-   "stars_then": 145499,
-   "delta": 370,
-   "delta_pct": 0.3,
+   "delta": 1261,
+   "delta_pct": 0.8,
    "since": "2026-11-25 08:25"
   },
   {
    "full": "paperclipai/paperclip",
-   "stars": 117384,
+   "stars": 117607,
    "stars_then": 117047,
-   "delta": 337,
-   "delta_pct": 0.3,
+   "delta": 560,
+   "delta_pct": 0.5,
    "since": "2026-11-26 08:02"
+  },
+  {
+   "full": "pbakaus/impeccable",
+   "stars": 118048,
+   "stars_then": 117532,
+   "delta": 516,
+   "delta_pct": 0.4,
+   "since": "2026-11-27 08:21"
   },
   {
    "full": "EL4CTEO/fast-anything",
-   "stars": 4228,
+   "stars": 4460,
    "stars_then": 3950,
-   "delta": 278,
-   "delta_pct": 7.0,
+   "delta": 510,
+   "delta_pct": 12.9,
    "since": "2026-11-26 08:02"
   },
   {
-   "full": "open-webui/open-webui",
-   "stars": 159644,
-   "stars_then": 159369,
-   "delta": 275,
-   "delta_pct": 0.2,
-   "since": "2026-11-24 09:24"
+   "full": "harry0703/MoneyPrinterTurbo",
+   "stars": 146001,
+   "stars_then": 145499,
+   "delta": 502,
+   "delta_pct": 0.3,
+   "since": "2026-11-25 08:25"
   },
   {
    "full": "JuliusBrussee/caveman",
-   "stars": 123089,
+   "stars": 123321,
    "stars_then": 122859,
-   "delta": 230,
-   "delta_pct": 0.2,
+   "delta": 462,
+   "delta_pct": 0.4,
    "since": "2026-11-26 08:02"
   },
   {
    "full": "thedotmack/claude-mem",
-   "stars": 119990,
+   "stars": 120211,
    "stars_then": 119764,
-   "delta": 226,
-   "delta_pct": 0.2,
+   "delta": 447,
+   "delta_pct": 0.4,
    "since": "2026-11-26 08:02"
   },
   {
+   "full": "Leonxlnx/taste-skill",
+   "stars": 122331,
+   "stars_then": 121976,
+   "delta": 355,
+   "delta_pct": 0.3,
+   "since": "2026-11-27 08:21"
+  },
+  {
    "full": "TauricResearch/TradingAgents",
-   "stars": 123851,
+   "stars": 123936,
    "stars_then": 123704,
-   "delta": 147,
+   "delta": 232,
+   "delta_pct": 0.2,
+   "since": "2026-11-25 08:25"
+  },
+  {
+   "full": "browser-use/browser-use",
+   "stars": 122232,
+   "stars_then": 122072,
+   "delta": 160,
+   "delta_pct": 0.1,
+   "since": "2026-11-26 08:02"
+  },
+  {
+   "full": "langchain-ai/langchain",
+   "stars": 150095,
+   "stars_then": 149949,
+   "delta": 146,
    "delta_pct": 0.1,
    "since": "2026-11-25 08:25"
   },
   {
    "full": "huggingface/transformers",
-   "stars": 169373,
-   "stars_then": 169274,
-   "delta": 99,
-   "delta_pct": 0.1,
-   "since": "2026-11-24 09:24"
-  },
-  {
-   "full": "langchain-ai/langchain",
-   "stars": 150039,
-   "stars_then": 149949,
-   "delta": 90,
+   "stars": 169393,
+   "stars_then": 169279,
+   "delta": 114,
    "delta_pct": 0.1,
    "since": "2026-11-25 08:25"
   },
   {
-   "full": "browser-use/browser-use",
-   "stars": 122154,
-   "stars_then": 122072,
-   "delta": 82,
+   "full": "f/prompts.chat",
+   "stars": 178701,
+   "stars_then": 178594,
+   "delta": 107,
    "delta_pct": 0.1,
-   "since": "2026-11-26 08:02"
+   "since": "2026-11-27 08:21"
   },
   {
-   "full": "Significant-Gravitas/AutoGPT",
-   "stars": 188203,
-   "stars_then": 188155,
-   "delta": 48,
+   "full": "n8n-io/n8n",
+   "stars": 212405,
+   "stars_then": 212303,
+   "delta": 102,
    "delta_pct": 0.0,
-   "since": "2026-11-24 09:24"
+   "since": "2026-11-27 08:21"
+  },
+  {
+   "full": "ollama/ollama",
+   "stars": 188336,
+   "stars_then": 188240,
+   "delta": 96,
+   "delta_pct": 0.1,
+   "since": "2026-11-27 08:21"
+  },
+  {
+   "full": "langgenius/dify",
+   "stars": 162029,
+   "stars_then": 161959,
+   "delta": 70,
+   "delta_pct": 0.0,
+   "since": "2026-11-27 08:21"
   }
  ]
 }
