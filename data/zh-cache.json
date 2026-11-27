@@ -1,6 +1,6 @@
 {
   "_note": "榜单项目中文简介缓存（跨天累积，不按日过期）。由 WorkBuddy 定时任务维护：新上榜项目补译，已有条目复用。key = owner/repo。",
-  "updatedAt": "2026-11-26",
+  "updatedAt": "2026-11-27",
   "zh": {
     "avatarmanz/VIctory-7900XTX": "针对 AMD RX 7900 XTX 显卡调优的 VIctory 兼容层分支，加快准备与纹理回读速度，仓库不含游戏文件。",
     "chanke17/KuroCat": "开源免费的原生桌面萌猫与 OBS 悬浮窗，可作为 Bongo Cat 替代品，支持全平台、数位板和在线皮肤工坊。",
@@ -872,6 +872,23 @@
     "ProjectLeonidaL/leonida": "Leonida 计划的延续项目，通过静态重编译技术将 GTA VI 从 Xbox 移植到 PC，由社区开源推进并持续更新。",
     "paulp-o/ask-user-questions-mcp": "增强版提问工具，以轻量 MCP 服务、插件及 CLI 形式让多个并行 AI 智能体向你发起追问，落实人机协同。",
     "2hjaito/davish": "把服务器当桌面用的轻量 SSH 客户端，提供类操作系统界面，服务端无需安装任何组件。",
-    "Hermit-CRM/hermit-crm": "免费开源 CRM，面向创业者、自由职业者和独立销售，本地优先、AI 原生，数据由自己掌控。"
+    "Hermit-CRM/hermit-crm": "免费开源 CRM，面向创业者、自由职业者和独立销售，本地优先、AI 原生，数据由自己掌控。",
+    "alesha-pro/llm.asm": "纯 x86-64 NASM 汇编实现的 Qwen3-0.6B 推理、裸机可启动系统与从零训练 Mini-GPT，附盲文交互界面，零 C 与零依赖。",
+    "lsernau/grh-lean": "用 Lean 4 写下广义黎曼猜想的简短形式化证明，展示这一数学猜想在定理证明器中的表达与推演路径。",
+    "nexu-io/opengame": "面向 AI 智能体的游戏开发框架，内置百余款可改造游戏，把多种编码智能体组成全栈工作室并发布到微信、抖音等平台。",
+    "Reukix/Reloc": "通过本地回环模拟 iOS 配件级定位的 Swift 工具，覆盖 iAP2、MFi-v3 与 NMEA，用于测试应用的位置相关能力。",
+    "DoubleGhosty/cool_fox": "自称 GTA VI PC 版运行时的延续分支，提供 Wine 与 Vulkan 修复、帧率解锁及 Port 5 CBV 适配改动，面向 PC 玩家与兼容研究者。",
+    "Moh4696/inkworks-skill": "为 Claude Code 等智能体设计的技能，按工程图纸风格生成可交互的 3D 原理说明页，适合讲解结构与流程。",
+    "0x1A6C1A9Y/focus-clock": "一个极简网页计时器，帮助专注工作、定时休息，并一次只推进一件事，适合作为轻量专注辅助工具。",
+    "gary23w/f-ck_data_brokers": "免费开源的 Python 脚本，代用户向数据经纪商批量提交退出与删除请求，覆盖 GDPR、CCPA 等隐私法规场景。",
+    "HoangMinh-sikula/rob-run-mod-trainer": "面向 Rob Run 的模组训练辅助工具，主打自定义跑步节奏、调整规则约束并构建自己的模组配置。",
+    "erkamyaman/rea-games": "逆向分析游戏并用 Web、Rust 或 Godot 重建，再逐帧验证行为一致，采用开放的 GAME.md 格式记录规格。",
+    "HSgod/ps5-fpsunlocker-gta6": "面向已越狱 PS5 的《GTA VI》帧率解锁工具，使用 C 语言实现，目标是解除游戏帧数上限并提升运行流畅度。",
+    "ReachProject-Git/Reach-Project-Emulator-For-GTA-6": "GTA 6 文件尚未发布，该仓库用于追踪模拟器相关进展与更新线索，当前不提供可运行的模拟功能。",
+    "leafsnowcache/craft-docs": "Windows 10/11 上的块编辑器笔记工具，用于撰写整理笔记、文档与项目计划，并支持团队共享和网页发布。",
+    "aakashg/growth-podcast-transcripts": "把 Aakash Gupta 的增长播客 166 期节目转成 Markdown 文稿，标注说话人与时间戳，适合检索与内容再利用。",
+    "hubooooooo/agent-workshop": "Agent 工坊：输入 PRD、需求点子或 Agent 方向，推导架构方案、组件选型与代码骨架，产出可在真实环境运行的产品。",
+    "gulucaptain/Best-Paper-Writing-Skill": "Claude 与 Codex 技能，从 60 篇获奖论文提炼 CVPR、ICCV、NeurIPS 等顶会摘要、引言、方法与实验写法，辅助生成初稿。",
+    "MiguelFranken/payload-inplace": "为 Payload CMS 站点提供原地实时编辑：行内改文案、调用原生字段、拖拽调整区块并保留审核草稿。"
   }
 }
